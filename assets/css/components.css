@@ -69,6 +69,7 @@ p{ margin:0; }
   margin-bottom:20px;
 }
 .kicker svg{ width:.9em; height:.9em; flex:none; }
+.kicker .brand{ letter-spacing:.04em; }
 .on-dark .kicker, .contact .kicker{ color:#a0a0a0; }
 
 /* Grands titres : Inter 700 majuscules, 2e ligne Inter 300 grise */

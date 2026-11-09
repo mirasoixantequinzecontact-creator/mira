@@ -300,131 +300,83 @@ body.is-loaded .hero-eye{ opacity:1; transform:none; }
 
 /* ======== ANCIENNES SECTIONS — en cours de migration (étapes 3 à 5) ======== */
 /* ============================================================
-   5. SECTION GÉNÉRIQUE
+   MÉTHODE — 4 étapes (grille brochure : titre à gauche, étapes à droite)
    ============================================================ */
-
-/* Teintes de section façon Apple — fonds lavés qui alternent en douceur.
-   Transition fondue entre chaque teinte via un léger dégradé vertical. */
-.tint-rose{background:linear-gradient(180deg, transparent, var(--paper-deep) 18%, var(--paper-deep) 82%, transparent);}
-.tint-sand{background:linear-gradient(180deg, transparent, var(--paper-deep) 18%, var(--paper-deep) 82%, transparent);}
-.tint-slate{background:linear-gradient(180deg, transparent, var(--paper-deep) 18%, var(--paper-deep) 82%, transparent);}
-.tint-mist{background:linear-gradient(180deg, transparent, var(--paper-deep) 18%, var(--paper-deep) 82%, transparent);}
-
-
+.methode{ display:grid; gap:40px; }
+@media (min-width: 901px){ .methode{ grid-template-columns:260px 1fr; gap:80px; } }
+.process-grid{ list-style:none; margin:0; padding:0; border-top:1px solid var(--border); }
+.process-step{
+  display:grid; grid-template-columns:40px 1fr; gap:24px; align-items:start;
+  padding:24px 0; border-bottom:1px solid var(--border);
+}
+.process-num{ font-size:11px; font-weight:700; letter-spacing:.15em; color:var(--grey); padding-top:4px; }
+.process-step h3{ font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; line-height:1.4; margin-bottom:4px; }
+.process-step p{ color:var(--text); }
 
 /* ============================================================
-   7. MÉTHODE / PROCESS
-   Étapes en brouillon — structure sobre, à valider avec le client.
+   POURQUOI MIRA — 4 cases bordées de noir
    ============================================================ */
-.process-grid{
-  display:grid;
-  gap:48px;
-  grid-template-columns:1fr;
+main > section.pourquoi{ background:var(--paper-deep); }
+.benefices{
+  list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:1fr;
+  border-left:1px solid var(--line); border-top:1px solid var(--line);
 }
-@media (min-width: 720px){
-  .process-grid{grid-template-columns:repeat(2, 1fr);}
-}
-@media (min-width: 1080px){
-  .process-grid{grid-template-columns:repeat(4, 1fr);}
-}
-.process-step{border-top:1px solid var(--ink); padding-top:20px;}
-.process-num{
-  font-family:var(--font-display);
-  font-weight:900;
-  font-size:0.95rem;
-  color:var(--accent);
-  display:block;
-  margin-bottom:14px;
-}
-.process-step h3{font-size:1.15rem; margin-bottom:10px;}
-.process-step p{color:var(--grey); font-size:0.95rem; margin:0;}
+@media (min-width: 641px){ .benefices{ grid-template-columns:repeat(2, 1fr); } }
+@media (min-width: 1081px){ .benefices{ grid-template-columns:repeat(4, 1fr); } }
+.benefice{ padding:32px 28px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
+.benefice-num{ display:block; margin-bottom:20px; font-size:11px; font-weight:700; letter-spacing:.15em; color:var(--grey); }
+.benefice h3{ font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; line-height:1.35; margin-bottom:10px; }
+.benefice p{ color:var(--text); font-size:15px; }
 
 /* ============================================================
-   9. À PROPOS
-   Texte de positionnement en brouillon — à valider avec le client.
+   CLIENTS — logos défilants (niveaux de gris, couleur au survol)
    ============================================================ */
-.about{
-  display:grid;
-  gap:48px;
-  grid-template-columns:1fr;
+.clients-marquee{ border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.clients-marquee .marquee-track{ list-style:none; margin:0; padding:0; align-items:center; gap:clamp(40px, 6vw, 80px); }
+.clients-marquee li{ flex:none; }
+.clients-marquee a, .clients-marquee span{ display:block; }
+.clients-marquee img{
+  height:40px; width:auto; max-width:160px; object-fit:contain;
+  filter:grayscale(1); opacity:.75; transition:filter .3s ease, opacity .3s ease;
 }
-@media (min-width: 880px){
-  .about{grid-template-columns:0.9fr 1.1fr; align-items:start;}
-}
-.about p{font-size:1.05rem; max-width:54ch;}
-.about p + p{margin-top:20px; color:var(--grey);}
+.clients-marquee li:hover img{ filter:none; opacity:1; }
+.marquee:focus-within .marquee-track{ animation-play-state:paused; }
 
 /* ============================================================
-   10. TÉMOIGNAGES — emplacement réservé, aucun faux témoignage.
+   RÉSULTATS — abonnés avant / après
    ============================================================ */
-.testimonial-placeholder{
-  border:1px solid var(--border);
-  padding:48px var(--gutter);
-  text-align:center;
-}
-.testimonial-placeholder p{
-  font-family:var(--font-display);
-  font-weight:700;
-  font-size:clamp(1.2rem, 2.6vw, 1.7rem);
-  color:var(--grey);
-  margin:0 0 8px;
-}
-.testimonial-placeholder span{font-size:0.85rem; color:var(--grey);}
+.resultats-grid{ display:grid; gap:24px; }
+@media (min-width: 901px){ .resultats-grid{ grid-template-columns:repeat(2, 1fr); } }
+.resultat{ border:1px solid var(--line); padding:24px; display:grid; gap:16px; }
+.resultat-handle{ font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--grey); }
+.resultat-chiffre{ font-size:clamp(28px, 4vw, 44px); font-weight:700; letter-spacing:-0.03em; line-height:1; }
+.resultat-chiffre .light{ font-weight:300; color:var(--grey-display); }
+.resultat-periode{ color:var(--text); }
+.resultat-captures{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.resultat-captures figure{ margin:0; }
+.resultat-captures img{ width:100%; aspect-ratio:9 / 16; object-fit:cover; border:1px solid var(--border); }
+.resultat-captures figcaption{ margin-top:6px; font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--grey); }
+.resultat-date{ font-size:12px; color:var(--grey); }
 
-/* Avis clients — cartes prêtes à recevoir de VRAIS avis (voir HTML) */
-.reviews-grid{
-  display:grid;
-  gap:20px;
-  grid-template-columns:1fr;
-}
-.reviews-grid:not(:empty){margin-bottom:28px;}
-@media (min-width: 720px){ .reviews-grid{grid-template-columns:repeat(2, 1fr);} }
-@media (min-width: 1080px){ .reviews-grid{grid-template-columns:repeat(3, 1fr);} }
-.review-card{
-  border:1px solid var(--border);
-  background:var(--paper);
-  padding:28px;
-  display:flex; flex-direction:column; gap:18px;
-}
-.review-source{
-  display:inline-flex; align-items:center; gap:8px;
-  font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--grey);
-}
-.review-source svg{width:16px; height:16px;}
-.review-stars{color:var(--accent); letter-spacing:2px; font-size:0.95rem;}
-.review-card blockquote{margin:0; font-size:1rem; line-height:1.6;}
-.review-author{display:flex; align-items:center; gap:12px; margin-top:auto;}
-.review-avatar{
-  width:40px; height:40px; border-radius:50%;
-  background:var(--paper-deep); object-fit:cover; flex:none;
-}
-.review-author strong{display:block; font-size:0.92rem;}
-.review-author a, .review-author span{font-size:0.82rem; color:var(--grey);}
-.reviews-cta{margin-top:28px; text-align:center; font-size:0.9rem; color:var(--grey);}
-.reviews-cta a{color:var(--ink); border-bottom:1px solid currentColor;}
-
-/* Espace projet en ligne */
-.portal{
-  display:grid; gap:48px; grid-template-columns:1fr; align-items:center;
-}
-@media (min-width: 880px){ .portal{grid-template-columns:1fr 1fr;} }
-.portal h2{font-size:clamp(1.8rem, 3.4vw, 2.8rem);}
-.portal p{color:var(--grey); max-width:48ch;}
-.portal ul{list-style:none; margin:24px 0 8px; padding:0; display:flex; flex-direction:column; gap:14px;}
-.portal li{display:flex; gap:12px; color:var(--grey);}
-.portal li::before{content:"—"; color:var(--accent);}
-.portal-mock{
-  border:1px solid var(--border); background:var(--paper); padding:28px;
-  display:flex; flex-direction:column; gap:16px;
-}
-.portal-mock .row{display:flex; justify-content:space-between; font-size:0.85rem; color:var(--grey);}
-.portal-mock .bar{height:4px; background:var(--paper-deep);}
-.portal-mock .bar span{display:block; height:100%; width:60%; background:var(--accent);}
-.portal-mock .step{display:flex; align-items:center; gap:10px; font-size:0.9rem;}
-.portal-mock .dot{width:8px; height:8px; border-radius:50%; background:var(--border); flex:none;}
-.portal-mock .step.done .dot{background:var(--ink);}
-.portal-mock .step.current .dot{background:var(--accent);}
-.portal-mock .step.todo{color:var(--grey);}
+/* ============================================================
+   TÉMOIGNAGES — vidéos + avis écrits (modèles dans le HTML)
+   ============================================================ */
+#temoignages .carousel + .reviews-grid:not(:empty){ margin-top:48px; }
+.reviews-grid{ display:grid; gap:20px; grid-template-columns:1fr; }
+@media (min-width: 720px){ .reviews-grid{ grid-template-columns:repeat(2, 1fr); } }
+@media (min-width: 1080px){ .reviews-grid{ grid-template-columns:repeat(3, 1fr); } }
+.review-card{ border:1px solid var(--line); background:var(--paper); padding:28px; display:flex; flex-direction:column; gap:18px; }
+.review-source{ display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--grey); }
+.review-source svg{ width:16px; height:16px; }
+.review-stars{ color:var(--ink); letter-spacing:2px; }
+.review-card blockquote{ margin:0; font-size:1rem; line-height:1.6; }
+.review-author{ display:flex; align-items:center; gap:12px; margin-top:auto; }
+.review-avatar{ width:40px; height:40px; background:var(--paper-deep); object-fit:cover; flex:none; }
+.review-author strong{ display:block; font-size:.92rem; }
+.review-author a, .review-author span{ font-size:.82rem; color:var(--grey); }
+.reviews-cta{ margin-top:32px; font-size:.9rem; color:var(--text); }
+.reviews-cta a{ color:var(--ink); border-bottom:1px solid currentColor; }
 
 /* FAQ */
 .faq-list{border-top:1px solid var(--border);}

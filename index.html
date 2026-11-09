@@ -323,82 +323,116 @@
   </section>
 
   <!-- ============================================================
-       MÉTHODE — étapes en brouillon, à valider avec le client.
+       MÉTHODE — les 4 étapes de la brochure.
        ============================================================ -->
-  <section id="methode" class="tint-slate">
+  <section id="methode">
+    <div class="container methode">
+      <div class="reveal">
+        <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Notre approche</span>
+        <h2 class="title">Quatre <span class="light">étapes.</span></h2>
+      </div>
+      <ol class="process-grid reveal">
+        <li class="process-step">
+          <span class="process-num">01</span>
+          <div>
+            <h3>Étude du projet</h3>
+            <p>Analyse, prise d'informations, d'idées et préparation d'un plan détaillé pour la suite.</p>
+          </div>
+        </li>
+        <li class="process-step">
+          <span class="process-num">02</span>
+          <div>
+            <h3>Tournage</h3>
+            <p>Discret, rapide et adapté au rythme de votre lieu. Matériel professionnel.</p>
+          </div>
+        </li>
+        <li class="process-step">
+          <span class="process-num">03</span>
+          <div>
+            <h3>Montage &amp; livraison</h3>
+            <p>Formats optimisés pour chaque réseau. Étalonnage et colorimétrie soignés.</p>
+          </div>
+        </li>
+        <li class="process-step">
+          <span class="process-num">04</span>
+          <div>
+            <h3>Publication</h3>
+            <p>Stratégie éditoriale et calendrier de publication pour maximiser la portée de chaque contenu.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       POURQUOI MIRA — les 4 bénéfices de la brochure.
+       Aucun concurrent cité, aucune comparaison.
+       ============================================================ -->
+  <section id="pourquoi" class="pourquoi">
     <div class="container">
       <div class="section-head reveal">
-        <h2>Méthode</h2>
-        <p>Quatre étapes, sans détour.</p>
-      </div>
-
-      <div class="process-grid reveal">
-        <div class="process-step">
-          <span class="process-num">01</span>
-          <h3>Écoute</h3>
-          <p>Comprendre le contexte, les enjeux et l'audience avant toute proposition.</p>
-        </div>
-        <div class="process-step">
-          <span class="process-num">02</span>
-          <h3>Stratégie</h3>
-          <p>Définir un territoire de marque clair et un plan d'action priorisé.</p>
-        </div>
-        <div class="process-step">
-          <span class="process-num">03</span>
-          <h3>Création</h3>
-          <p>Concevoir les contenus, visuels et dispositifs qui portent la stratégie.</p>
-        </div>
-        <div class="process-step">
-          <span class="process-num">04</span>
-          <h3>Déploiement</h3>
-          <p>Diffuser, ajuster et mesurer, dans un cycle d'amélioration continue.</p>
+        <div>
+          <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Pourquoi <span class="brand"><em>m</em>ira</span></span>
+          <h2 class="title">Ce que vous <span class="light">gagnez.</span></h2>
         </div>
       </div>
+      <ul class="benefices reveal">
+        <li class="benefice">
+          <span class="benefice-num">01</span>
+          <h3>Visibilité en ligne &amp; locale</h3>
+          <p>Des contenus optimisés pour les algorithmes TikTok et Instagram qui mettent votre enseigne devant les bonnes personnes.</p>
+        </li>
+        <li class="benefice">
+          <span class="benefice-num">02</span>
+          <h3>Engagement authentique</h3>
+          <p>On capture la vraie vie de votre établissement — ce qui crée de la confiance et fidélise durablement votre audience.</p>
+        </li>
+        <li class="benefice">
+          <span class="benefice-num">03</span>
+          <h3>Plus de clients &amp; réservations</h3>
+          <p>Une présence forte sur les réseaux se traduit directement par plus de passage, de réservations et de notoriété locale.</p>
+        </li>
+        <li class="benefice">
+          <span class="benefice-num">04</span>
+          <h3>Flexibilité totale</h3>
+          <p>Commencez avec un Pack Découverte sans engagement, et montez en puissance quand les résultats sont là.</p>
+        </li>
+      </ul>
     </div>
   </section>
 
   <!-- ============================================================
-       À PROPOS — texte de positionnement en brouillon.
+       CLIENTS — bandeau de logos (CSS .marquee réutilisé).
+       Contenu : assets/data/clients.js. Affiché seulement à partir de 4 logos réels.
        ============================================================ -->
-  <section id="apropos" class="tint-rose">
-    <div class="container about">
-      <div class="reveal">
-        <span class="eyebrow">L'agence</span>
-        <h2>Peu de prestations. Beaucoup d'exigence.</h2>
+  <section id="clients" class="clients" data-section="clients" hidden>
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Références</span>
+          <h2 class="title">Ils nous font <span class="light">confiance.</span></h2>
+        </div>
       </div>
-      <div class="reveal">
-        <p>Mira est une agence de communication qui pense la marque comme un langage : précis, cohérent, sans bruit inutile.</p>
-        <p>Nous intervenons sur la stratégie, le contenu et les médias, avec la même attention portée à chaque détail, du premier brief à la mise en ligne.</p>
-      </div>
+    </div>
+    <div class="marquee clients-marquee">
+      <ul class="marquee-track" data-render="clients" aria-label="Logos de nos clients"></ul>
     </div>
   </section>
 
   <!-- ============================================================
-       ESPACE PROJET — fonctionnalité réelle (connexion.html → suivi.html).
+       RÉSULTATS — abonnés avant / après, publiés avec l'accord du client.
+       Contenu : assets/data/resultats.js. Section retirée si vide.
        ============================================================ -->
-  <section id="espace" class="tint-sand">
-    <div class="container portal">
-      <div class="reveal">
-        <span class="eyebrow">Votre espace projet</span>
-        <h2>Votre projet, visible à chaque étape.</h2>
-        <p>Chaque client reçoit un accès personnel pour suivre l'avancement de son projet en ligne, sans relance ni tableau partagé.</p>
-        <ul>
-          <li>Étapes du projet et pourcentage d'avancement</li>
-          <li>Date de livraison prévue</li>
-          <li>Historique des dernières actions de l'équipe</li>
-          <li>Accès privé : chaque client ne voit que son propre projet</li>
-        </ul>
-        <a href="connexion.html" class="btn-primary">Accéder à mon espace</a>
+  <section id="resultats" data-section="resultats" hidden>
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Résultats</span>
+          <h2 class="title">Les chiffres <span class="light">parlent.</span></h2>
+        </div>
+        <p>Chiffres publiés avec l'accord du client.</p>
       </div>
-      <div class="portal-mock reveal" aria-hidden="true">
-        <div class="row"><span>Exemple de suivi</span><span>Avancement 60 %</span></div>
-        <div class="bar"><span></span></div>
-        <div class="step done"><span class="dot"></span>Brief &amp; cadrage</div>
-        <div class="step done"><span class="dot"></span>Stratégie de marque</div>
-        <div class="step current"><span class="dot"></span>Création &amp; design — en cours</div>
-        <div class="step todo"><span class="dot"></span>Production &amp; intégration</div>
-        <div class="step todo"><span class="dot"></span>Livraison</div>
-      </div>
+      <div class="resultats-grid" data-render="resultats"></div>
     </div>
   </section>
 
@@ -409,18 +443,33 @@
          2. Copiez un des modèles <article class="review-card"> ci-dessous
             HORS du commentaire et remplissez-le avec SES mots exacts.
          3. Mettez le lien vers la publication d'origine (preuve publique).
-         4. Supprimez le bloc .testimonial-placeholder dès le premier avis.
+         4. La section s'affiche automatiquement dès le premier avis (ou la première vidéo).
+       Témoignages vidéo : assets/data/temoignages.js (même composant que les réalisations).
        Les faux avis sont une pratique commerciale trompeuse
        (Code de la consommation, art. L121-2 et L121-4).
        ============================================================ -->
-  <section id="temoignages">
+  <section id="temoignages" data-section="temoignages" hidden>
     <div class="container">
       <div class="section-head reveal">
-        <h2>Ils en parlent</h2>
+        <div>
+          <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Témoignages</span>
+          <h2 class="title">Ils <span class="light">existent.</span></h2>
+        </div>
         <p>Les retours de nos clients, publiés avec leur accord.</p>
       </div>
 
-      <div class="reviews-grid reveal"><!--
+      <!-- Interviews de fin de tournage (vidéos 9:16) -->
+      <div class="carousel" data-carousel>
+        <ul class="carousel-track" data-render="temoignages" aria-label="Témoignages vidéo de nos clients"></ul>
+        <div class="carousel-arrows">
+          <button type="button" class="carousel-arrow" data-dir="-1" aria-label="Témoignages précédents">←</button>
+          <button type="button" class="carousel-arrow" data-dir="1" aria-label="Témoignages suivants">→</button>
+        </div>
+      </div>
+
+      <!-- Avis écrits -->
+
+      <div class="reviews-grid"><!--
         MODÈLE — avis Instagram
         <article class="review-card">
           <span class="review-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg> Instagram</span>
@@ -460,11 +509,7 @@
         </article>
       --></div>
 
-      <div class="testimonial-placeholder reveal">
-        <p>Premiers avis à venir</p>
-        <span>Les retours de nos clients seront publiés ici, avec leur accord et un lien vers la publication d'origine.</span>
-      </div>
-      <p class="reviews-cta">Vous avez travaillé avec Mira ? <a href="mailto:mira.soixantequinze.contact@gmail.com?subject=Mon%20avis%20sur%20Mira%20Agency">Partagez votre avis</a></p>
+      <p class="reviews-cta">Vous avez travaillé avec <span class="brand"><em>m</em>ira</span> ? <a href="mailto:mira.soixantequinze.contact@gmail.com?subject=Mon%20avis%20sur%20Mira">Partagez votre avis</a><!-- SYNC config.js : email --></p>
     </div>
   </section>
 
