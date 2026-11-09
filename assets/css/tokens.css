@@ -22,7 +22,8 @@
 ::selection{ background:#0a0a0a; color:#fff; }
 
 /* Le nom en texte : « mira », m en vraie italique Inter, le reste hérite du contexte */
-.brand{ font:inherit; white-space:nowrap; }
+/* text-transform:none : jamais « MIRA » en capitales, même dans un titre ou un kicker en majuscules */
+.brand{ font:inherit; white-space:nowrap; text-transform:none; }
 .brand em{ font-style:italic; }
 
 /* Logo : wordmark SVG inline (fill="currentColor") — noir sur fond clair, blanc sur fond noir */

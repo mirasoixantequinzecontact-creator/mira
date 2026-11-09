@@ -155,81 +155,170 @@
   </div>
 
   <!-- ============================================================
-       SERVICES — liste réelle fournie par le client.
+       RÉALISATIONS — carrousel de vidéos 9:16.
+       Contenu : assets/data/realisations.js (rendu par sections.js).
+       Section retirée (avec son lien de nav) tant qu'il n'y a aucune vidéo réelle.
        ============================================================ -->
-  <section id="services" class="tint-sand">
+  <section id="realisations" class="section-videos" data-section="realisations" hidden>
     <div class="container">
       <div class="section-head reveal">
-        <h2>Prestations</h2>
-        <p>Huit champs d'intervention, traités avec la même exigence.</p>
+        <div>
+          <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Réalisations</span>
+          <h2 class="title">On a <span class="light">filmé.</span></h2>
+        </div>
+        <p>Des vidéos tournées dans de vrais lieux, montées et étalonnées pour Instagram et TikTok. Touchez une vidéo pour la voir en entier, avec le son.</p>
+      </div>
+      <div class="carousel" data-carousel>
+        <ul class="carousel-track" data-render="realisations" aria-label="Vidéos de nos réalisations"></ul>
+        <div class="carousel-arrows">
+          <button type="button" class="carousel-arrow" data-dir="-1" aria-label="Vidéos précédentes">←</button>
+          <button type="button" class="carousel-arrow" data-dir="1" aria-label="Vidéos suivantes">→</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       AVANT / APRÈS — comparateur brut / étalonné.
+       Contenu : assets/data/avantApres.js. Section retirée si vide.
+       ============================================================ -->
+  <section id="avant-apres" data-section="avant-apres" hidden>
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Le détail qui change tout</span>
+          <h2 class="title">Avant <span class="light">/ après.</span></h2>
+        </div>
+        <p>L'étalonnage est inclus dans toutes nos vidéos.</p>
+      </div>
+      <div class="compare-list" data-render="avant-apres"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SERVICES — 3 lignes, chacune ouvre la prise de rendez-vous.
+       ============================================================ -->
+  <section id="services">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Nos services</span>
+          <h2 class="title">Ce qu'on <span class="light">fait.</span></h2>
+        </div>
+        <p>Chez <span class="brand"><em>m</em>ira</span>, on tourne dans votre lieu, on monte, on étalonne et on publie. Vous restez concentré sur votre métier, on s'occupe de votre visibilité.</p>
       </div>
 
       <div class="services-list reveal">
-        <a class="service-row" href="#contact">
+        <button type="button" class="service-row" data-open-booking>
           <span class="service-index">01</span>
           <span>
-            <span class="service-title">Stratégie de marque</span>
-            <span class="service-desc">Positionnement, territoire de marque et plan d'action.</span>
+            <span class="service-title">Réalisation vidéo</span>
+            <span class="service-desc">Tournage 4K discret dans votre lieu, montage et étalonnage, formats pensés pour Instagram et TikTok.</span>
           </span>
           <span class="service-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="service-row" href="#contact">
+        </button>
+        <button type="button" class="service-row" data-open-booking>
           <span class="service-index">02</span>
           <span>
-            <span class="service-title">Réseaux sociaux</span>
-            <span class="service-desc">Pilotage éditorial et animation des comptes de marque.</span>
+            <span class="service-title">Community management</span>
+            <span class="service-desc">Stratégie éditoriale, calendrier de publication et gestion de vos comptes.</span>
           </span>
           <span class="service-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="service-row" href="#contact">
+        </button>
+        <button type="button" class="service-row" data-open-booking>
           <span class="service-index">03</span>
           <span>
-            <span class="service-title">Création de contenu</span>
-            <span class="service-desc">Formats visuels et éditoriaux pensés pour chaque canal.</span>
+            <span class="service-title">Identité visuelle &amp; logos</span>
+            <span class="service-desc">Refonte de votre charte graphique pour une image cohérente partout.</span>
           </span>
           <span class="service-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="service-row" href="#contact">
-          <span class="service-index">04</span>
-          <span>
-            <span class="service-title">Publicité payante</span>
-            <span class="service-desc">Campagnes médias, ciblage et optimisation continue.</span>
-          </span>
-          <span class="service-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="service-row" href="#contact">
-          <span class="service-index">05</span>
-          <span>
-            <span class="service-title">Marketing d'influence</span>
-            <span class="service-desc">Sélection de profils et pilotage de collaborations.</span>
-          </span>
-          <span class="service-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="service-row" href="#contact">
-          <span class="service-index">06</span>
-          <span>
-            <span class="service-title">Production vidéo</span>
-            <span class="service-desc">Écriture, tournage et montage de contenus de marque.</span>
-          </span>
-          <span class="service-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="service-row" href="#contact">
-          <span class="service-index">07</span>
-          <span>
-            <span class="service-title">Création de site web</span>
-            <span class="service-desc">Sites vitrines et plateformes, du design au développement.</span>
-          </span>
-          <span class="service-arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="service-row" href="#contact">
-          <span class="service-index">08</span>
-          <span>
-            <span class="service-title">Conseil en croissance</span>
-            <span class="service-desc">Diagnostic et recommandations pour accélérer le développement.</span>
-          </span>
-          <span class="service-arrow" aria-hidden="true">↗</span>
-        </a>
+        </button>
       </div>
+    </div>
+  </section>
+
+  <div class="band" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       OFFRES — contenu de la brochure, SANS AUCUN PRIX :
+       le tarif est fixé sur devis après l'appel de 20 min.
+       ============================================================ -->
+  <section id="offres" class="offres">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Offres</span>
+          <h2 class="title">Nos formules <span class="light">à titre indicatif.</span></h2>
+        </div>
+      </div>
+
+      <div class="offres-note reveal">
+        <span class="offres-note-label">Note</span>
+        <p>Les formules présentées sont indicatives et constituent une base de travail. Chaque projet est unique : le tarif est fixé sur devis après un appel de 20 min, gratuit et sans engagement.</p>
+      </div>
+
+      <div class="packs-head reveal">
+        <div>
+          <span class="packs-kicker">Offre de lancement · 1er mois · sans engagement</span>
+          <h3 class="title title--sm">Packs <span class="light">Découverte.</span></h3>
+        </div>
+        <p>Tester la création de contenus vidéo professionnels sans engagement long terme. L'occasion idéale de poser les bases de votre présence sur les réseaux et de découvrir ce qui fonctionne le mieux pour votre image.</p>
+      </div>
+
+      <div class="packs">
+        <article class="pack reveal">
+          <div>
+            <h4 class="pack-name"><span class="brand"><em>m</em>ira</span> Flash</h4>
+            <span class="pack-sub">Entrée</span>
+          </div>
+          <ul class="pack-items">
+            <li>2 vidéos « Fragments » (15–45 sec) — présentation synthétique de votre lieu</li>
+            <li>1 vidéo « Mirage » (1 min) — présentation immersive</li>
+            <li>2 contenus « TikTok Trend » (15–60 sec) — moments tendance</li>
+            <li>Conseil en stratégie de contenu</li>
+          </ul>
+          <button type="button" class="btn-ghost pack-cta" data-open-booking data-pack="Mira Flash">Découvrir cette offre</button>
+        </article>
+
+        <article class="pack pack-recommended reveal">
+          <div>
+            <span class="recommended-label">★ Recommandé</span>
+            <h4 class="pack-name"><span class="brand"><em>m</em>ira</span> Essentiel</h4>
+          </div>
+          <ul class="pack-items">
+            <li>4 vidéos « Fragments » (15–45 sec) — présentation synthétique de votre lieu</li>
+            <li>2 vidéos « Mirage » (1 min) — présentations immersives</li>
+            <li>4 contenus « TikTok Trend » (15–60 sec) — moments tendance</li>
+            <li>Conseil en stratégie de contenu</li>
+          </ul>
+          <button type="button" class="btn-light pack-cta" data-open-booking data-pack="Mira Essentiel">Découvrir cette offre</button>
+        </article>
+
+        <article class="pack reveal">
+          <div>
+            <h4 class="pack-name"><span class="brand"><em>m</em>ira</span> Essentiel+</h4>
+            <span class="pack-sub">Complet</span>
+          </div>
+          <ul class="pack-items">
+            <li>5 vidéos « Fragments » (15–45 sec) — présentation synthétique de votre lieu</li>
+            <li>2 vidéos « Mirage » (1 min) — présentations immersives</li>
+            <li>5 contenus « TikTok Trend » (15–60 sec) — moments tendance</li>
+            <li>Gestion totale du community management (Instagram, TikTok…)</li>
+          </ul>
+          <button type="button" class="btn-ghost pack-cta" data-open-booking data-pack="Mira Essentiel+">Découvrir cette offre</button>
+        </article>
+      </div>
+
+      <details class="monthly reveal">
+        <summary>Voir les formules mensuelles</summary>
+        <p class="monthly-intro">Pour une présence régulière et une identité forte, une fois les bases posées.</p>
+        <ul class="monthly-list">
+          <li><span class="monthly-name"><span class="brand"><em>m</em>ira</span> Classic</span><span class="monthly-desc">Développement de votre présence</span><button type="button" class="monthly-cta" data-open-booking data-pack="Mira Classic">En parler</button></li>
+          <li><span class="monthly-name"><span class="brand"><em>m</em>ira</span> Management</span><span class="monthly-desc">Community management complet</span><button type="button" class="monthly-cta" data-open-booking data-pack="Mira Management">En parler</button></li>
+          <li><span class="monthly-name"><span class="brand"><em>m</em>ira</span> Logo</span><span class="monthly-desc">Refonte de votre charte graphique</span><button type="button" class="monthly-cta" data-open-booking data-pack="Mira Logo">En parler</button></li>
+          <li><span class="monthly-name">Pack Premium</span><span class="monthly-desc">Tout inclus</span><button type="button" class="monthly-cta" data-open-booking data-pack="Pack Premium">En parler</button></li>
+        </ul>
+      </details>
     </div>
   </section>
 
@@ -263,74 +352,6 @@
           <span class="process-num">04</span>
           <h3>Déploiement</h3>
           <p>Diffuser, ajuster et mesurer, dans un cycle d'amélioration continue.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       RÉALISATIONS — emplacements réservés, aucun visuel inventé.
-       Remplacer chaque .placeholder-visual par une image réelle :
-       <img src="projet-1.jpg" alt="Description du projet" loading="lazy">
-       ============================================================ -->
-  <section id="realisations" class="tint-mist">
-    <div class="container">
-      <div class="section-head reveal">
-        <h2>Réalisations</h2>
-        <p>Une sélection de projets sera publiée ici.</p>
-      </div>
-
-      <!-- Filtres fonctionnels, prêts à trier de vrais projets dès leur ajout -->
-      <div class="work-filters reveal" role="group" aria-label="Filtrer les réalisations par catégorie">
-        <button class="filter-btn is-active" data-filter="tous" type="button">Tous</button>
-        <button class="filter-btn" data-filter="branding" type="button">Branding</button>
-        <button class="filter-btn" data-filter="social" type="button">Social</button>
-        <button class="filter-btn" data-filter="video" type="button">Vidéo</button>
-        <button class="filter-btn" data-filter="web" type="button">Web</button>
-      </div>
-
-      <div class="work-grid reveal">
-        <div class="work-card" data-category="branding">
-          <div class="placeholder-visual">
-            <span class="visual-label">Visuel à venir</span>
-            <span class="work-overlay">Bientôt en ligne ↗</span>
-          </div>
-          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Branding</span></div>
-        </div>
-        <div class="work-card" data-category="social">
-          <div class="placeholder-visual">
-            <span class="visual-label">Visuel à venir</span>
-            <span class="work-overlay">Bientôt en ligne ↗</span>
-          </div>
-          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Social</span></div>
-        </div>
-        <div class="work-card" data-category="video">
-          <div class="placeholder-visual">
-            <span class="visual-label">Visuel à venir</span>
-            <span class="work-overlay">Bientôt en ligne ↗</span>
-          </div>
-          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Vidéo</span></div>
-        </div>
-        <div class="work-card" data-category="web">
-          <div class="placeholder-visual">
-            <span class="visual-label">Visuel à venir</span>
-            <span class="work-overlay">Bientôt en ligne ↗</span>
-          </div>
-          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Web</span></div>
-        </div>
-        <div class="work-card" data-category="branding">
-          <div class="placeholder-visual">
-            <span class="visual-label">Visuel à venir</span>
-            <span class="work-overlay">Bientôt en ligne ↗</span>
-          </div>
-          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Branding</span></div>
-        </div>
-        <div class="work-card" data-category="social">
-          <div class="placeholder-visual">
-            <span class="visual-label">Visuel à venir</span>
-            <span class="work-overlay">Bientôt en ligne ↗</span>
-          </div>
-          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Social</span></div>
         </div>
       </div>
     </div>

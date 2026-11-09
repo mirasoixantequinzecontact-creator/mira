@@ -118,18 +118,4 @@ if (ambianceVideo) {
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// ---- Filtres des réalisations (ancienne grille — retirés à l'étape 3) ----
-const filterBtns = document.querySelectorAll('.filter-btn');
-const workCards = document.querySelectorAll('.work-card');
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    filterBtns.forEach(b => b.classList.remove('is-active'));
-    btn.classList.add('is-active');
-    const filter = btn.dataset.filter;
-    workCards.forEach(card => {
-      card.classList.toggle('is-hidden', !(filter === 'tous' || card.dataset.category === filter));
-    });
-  });
-});
-
 initScrollspy();
