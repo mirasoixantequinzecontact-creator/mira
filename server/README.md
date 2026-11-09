@@ -1,4 +1,4 @@
-# Espace Mira — back-end d'authentification
+# Espace mira — back-end d'authentification
 
 Serveur **Node.js / Express** qui gère la connexion (email + mot de passe haché),
 les sessions, les rôles (équipe / client) et le suivi de projet. Il sert aussi
@@ -13,6 +13,9 @@ Dans un terminal, placez-vous dans le dossier `server/` puis :
 
 ```bash
 npm install        # installe les dépendances
+# npm 11+ : si un avertissement « install-scripts » cite better-sqlite3,
+# lancez « npm install-scripts approve better-sqlite3 » puis « npm rebuild better-sqlite3 »
+# (son module natif doit être compilé pour votre version de Node).
 cp .env.example .env   # (Windows PowerShell : copy .env.example .env)
 npm run seed       # crée la base + les comptes de départ
 ```
@@ -40,7 +43,7 @@ npm start
 
 Puis ouvrez **http://localhost:3000**.
 
-- `index.html` → site public, bouton « Démarrer un projet » → formulaire de RDV.
+- `index.html` → vitrine ; « Réserver un appel » ouvre l'agenda (modale), « Être rappelé » → `rendez-vous.html`.
 - Footer → « Connexion » → `connexion.html`.
 - Onglet **Équipe** → tableau de bord interne.
 - Onglet **Client** → suivi de son projet.
@@ -66,11 +69,11 @@ Puis ouvrez **http://localhost:3000**.
   ne crée **jamais** de comptes de démonstration automatiquement.
 
 ## Demandes de rendez-vous
-Le formulaire « Démarrer un projet » enregistre les demandes dans la base
+Le formulaire « Être rappelé » (`rendez-vous.html`) enregistre les demandes dans la base
 (table `requests`). Elles apparaissent dans l'**espace équipe**, section « Demandes reçues ».
 
 ## Gérer les comptes et projets
-Les données sont dans la base SQLite `server/mira.db`.
+Les données sont dans la base SQLite `server/mira.db` (ou au chemin défini par `DB_PATH` dans `.env`).
 - Ajouter un client / un projet : adaptez `seed.js` puis relancez `npm run seed`
   *(attention : `seed.js` remet les données à zéro)*, ou insérez directement en base.
 - Pour de l'ajout sans reset, on pourra créer des routes d'administration
@@ -80,11 +83,18 @@ Les données sont dans la base SQLite `server/mira.db`.
 1. Hébergez sur un serveur Node (votre VPS, Render, Railway, etc.).
 2. Mettez un `SESSION_SECRET` long et aléatoire dans `.env`.
 3. Passez `NODE_ENV=production` et servez en **HTTPS** (active le cookie sécurisé).
+4. **Base de données persistante** : réglez `DB_PATH` vers un disque qui survit aux déploiements
+   (ex. volume Railway monté sur `/data` → `DB_PATH=/data/mira.db`). Sans disque persistant,
+   la base — comptes, projets, demandes — est effacée à chaque déploiement.
+5. Si l'agenda passe de Cal.com à Calendly, réglez `BOOKING_PROVIDER=calendly` (domaines autorisés dans la CSP).
 
 ## RGPD
-- **Aucun service tiers** appelé depuis le navigateur : polices hébergées dans `/fonts`,
-  CSP qui interdit tout autre domaine. Pas de cookie publicitaire ni de mesure d'audience,
-  donc pas de bandeau cookies nécessaire.
+- **Aucun service tiers au chargement des pages** : polices hébergées dans `/fonts`, CSP qui
+  n'autorise que l'agenda de prise de RDV (Cal.com : `app.cal.com`, `cal.com`).
+  Cet agenda n'est chargé que lorsque le visiteur clique sur « Réserver un appel ».
+  Pas de cookie publicitaire ni de mesure d'audience, donc pas de bandeau cookies nécessaire.
+- **Cal.com** est sous-traitant pour la prise de RDV en ligne (nom, e-mail, téléphone, réponses) :
+  à déclarer dans le registre et à encadrer par son DPA.
 - **Consentement** obligatoire dans le formulaire, horodaté (`requests.consent_at`).
 - **Conservation** : les demandes de plus de 3 ans sont supprimées automatiquement.
 - **Droit à l'effacement** : bouton « Supprimer » sur chaque demande dans l'espace équipe.

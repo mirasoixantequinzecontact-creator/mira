@@ -7,8 +7,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#ffffff">
-<title>Démarrer un projet — Mira Agency</title>
-<meta name="description" content="Présentez votre projet à Mira Agency et proposez un créneau pour être rappelé.">
+<title>Être rappelé — Mira</title>
+<meta name="description" content="Laissez vos coordonnées : mira vous rappelle au créneau de votre choix pour parler vidéo et réseaux sociaux.">
+<link rel="canonical" href="https://mira.agency/rendez-vous.html">
 <link rel="icon" href="/assets/img/brand/favicon.ico" sizes="32x32">
 <link rel="icon" href="/assets/img/brand/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/img/brand/apple-touch-icon.png">
@@ -16,191 +17,85 @@
 
 <link rel="stylesheet" href="/fonts/fonts.css">
 <link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/components.css">
 
 <style>
   /* ============================================================
-     1. VARIABLES — identiques à la page d'accueil pour cohérence
+     « ÊTRE RAPPELÉ » — styles propres à cette page.
+     Base, boutons, footer, modale : /assets/css/components.css.
      ============================================================ */
-  /* Mise en page propre à cette page (la palette est dans /assets/css/tokens.css) */
-  body{ --max-w:1180px; --form-w:720px; --gutter:6vw; --section-pad:clamp(64px, 10vw, 140px); }
+  .back-link{ font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; }
+  .back-link:hover{ text-decoration:underline; }
 
-
-
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth; transition:background-color .4s ease;}
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto;}
-    *{animation:none !important; transition:none !important;}
+  /* ---- En-tête de page ---- */
+  .form-hero{ padding:calc(var(--header-h) + clamp(48px, 7vw, 96px)) 0 clamp(32px, 5vw, 56px); border-bottom:1px solid var(--line); }
+  .form-hero h1{ font-size:clamp(2.6rem, 8vw, 5rem); }
+  .form-hero p{ margin-top:24px; max-width:56ch; color:var(--text); }
+  .form-hero .switch{ margin-top:12px; }
+  .link-btn{
+    background:none; border:0; border-bottom:1px solid currentColor; border-radius:0; padding:0;
+    font:inherit; color:var(--ink); cursor:pointer;
   }
 
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--font-body);
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-    transition:background-color .4s ease, color .4s ease;
-  }
+  /* ---- Formulaire (ids, names et validation inchangés) ---- */
+  .form-section{ padding:clamp(40px, 6vw, 72px) 0 var(--section-pad); }
+  .form-card{ max-width:720px; }
+  form{ display:block; }
+  .form-grid{ display:grid; gap:24px 28px; grid-template-columns:1fr 1fr; }
+  @media (max-width: 640px){ .form-grid{ grid-template-columns:1fr; } }
+  .field{ display:flex; flex-direction:column; }
+  .field.full{ grid-column:1 / -1; }
+  .hp{ position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden; }
 
-  a{color:inherit; text-decoration:none;}
-  h1,h2{font-family:var(--font-display); font-weight:900; letter-spacing:-0.02em; line-height:1.05; margin:0;}
-
-  .container{max-width:var(--max-w); margin:0 auto; padding:0 var(--gutter);}
-
-  .eyebrow{
-    font-family:var(--font-body); font-weight:600; font-size:0.75rem;
-    letter-spacing:0.14em; text-transform:uppercase; color:var(--accent);
-    display:block; margin-bottom:1.2rem;
-  }
-
-  /* ============================================================
-     2. LOGO + HEADER (repris de l'accueil)
-     ============================================================ */
-  .logo{
-    display:inline-flex; align-items:center;
-    font-family:var(--font-display); font-weight:900;
-    font-size:1.3rem; letter-spacing:-0.02em; color:var(--ink);
-  }
-
-
-  .site-header{
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    background:rgba(255,255,255,0.92); backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--border);
-  }
-
-  .site-header .container{
-    display:flex; align-items:center; justify-content:space-between;
-    padding-top:16px; padding-bottom:16px;
-  }
-  .header-actions{display:flex; align-items:center; gap:16px;}
-  .back-link{font-size:0.9rem; font-weight:500;}
-  .back-link:hover{color:var(--accent);}
-
-
-
-
-
-
-
-
-  /* ============================================================
-     3. EN-TÊTE DE PAGE
-     ============================================================ */
-  .form-hero{
-    position:relative;
-    padding-top:calc(var(--section-pad) + 50px);
-    padding-bottom:clamp(32px, 5vw, 56px);
-    overflow:hidden;
-  }
-  .form-hero h1{font-size:clamp(2rem, 5vw, 3.4rem); max-width:18ch;}
-  .form-hero p{margin-top:20px; max-width:52ch; color:var(--grey); font-size:1.05rem;}
-
-  /* ============================================================
-     4. FORMULAIRE
-     ============================================================ */
-  .form-section{padding-bottom:var(--section-pad);}
-  .form-card{max-width:var(--form-w);}
-
-  form{display:block;}
-  .form-grid{
-    display:grid; gap:24px 28px;
-    grid-template-columns:1fr 1fr;
-  }
-  .field{display:flex; flex-direction:column;}
-  .hp{position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden;}
-  .consent label{display:flex; gap:10px; align-items:flex-start; font-size:0.88rem; font-weight:400; line-height:1.5;}
-  .consent input{margin-top:4px; accent-color:var(--accent);}
-  .consent a{border-bottom:1px solid currentColor;}
-  .rgpd-note{grid-column:1 / -1; margin:0; font-size:0.78rem; line-height:1.55; color:var(--grey);}
-  .rgpd-note a{border-bottom:1px solid currentColor;}
-  .form-error{grid-column:1 / -1; margin:0; padding:14px 16px; border:1px solid var(--accent); color:var(--accent); font-size:0.9rem;}
-  .form-error a{border-bottom:1px solid currentColor;}
-  .field.full{grid-column:1 / -1;}
-
-  @media (max-width: 640px){
-    .form-grid{grid-template-columns:1fr;}
-  }
-
-  label{
-    font-size:0.82rem; font-weight:600; letter-spacing:0.02em;
-    margin-bottom:8px; color:var(--ink);
-  }
-  label .req{color:var(--accent);}
-  .hint{font-size:0.78rem; color:var(--grey); margin-top:6px;}
+  label{ font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px; color:var(--ink); }
+  label .req{ color:var(--ink); }
+  .hint{ font-size:13px; color:var(--grey); margin-top:6px; }
 
   input, select, textarea{
-    font-family:var(--font-body); font-size:0.98rem; color:var(--ink);
-    background:var(--paper); border:1px solid var(--border);
+    font-family:var(--font-body); font-size:16px; color:var(--ink);
+    background:var(--paper); border:1px solid var(--border); border-radius:0;
     padding:13px 14px; width:100%;
-    transition:border-color .2s ease, box-shadow .2s ease, background-color .4s ease;
+    transition:border-color .2s ease;
   }
-  input:hover, select:hover, textarea:hover{border-color:var(--grey);}
-  input:focus, select:focus, textarea:focus{
-    outline:none; border-color:var(--accent);
-    box-shadow:0 0 0 3px var(--paper-deep);
-  }
-  textarea{resize:vertical; min-height:120px;}
-  select{appearance:none; cursor:pointer;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%236B6660' stroke-width='1.5'/></svg>");
-    background-repeat:no-repeat; background-position:right 14px center;
-    padding-right:38px;
+  input:hover, select:hover, textarea:hover{ border-color:var(--grey); }
+  input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--ink); box-shadow:0 0 0 1px var(--ink); }
+  textarea{ resize:vertical; min-height:120px; }
+  select{
+    appearance:none; cursor:pointer;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%230a0a0a' stroke-width='1.5'/></svg>");
+    background-repeat:no-repeat; background-position:right 14px center; padding-right:38px;
   }
   /* Champ invalide signalé seulement après tentative d'envoi */
-  form.submitted :invalid{border-color:#B23B3B;}
-  form.submitted :invalid:focus{box-shadow:0 0 0 3px rgba(178,59,59,0.18);}
+  form.submitted :invalid{ border-color:#b3261e; }
+
+  /* Consentement : la case garde sa taille (elle héritait de width:100%) */
+  .consent label{ display:block; position:relative; padding-left:30px; font-size:14px; font-weight:400; letter-spacing:0; text-transform:none; line-height:1.5; }
+  .consent input{ position:absolute; left:0; top:1px; width:18px; height:18px; margin:0; padding:0; accent-color:var(--ink); }
+  .consent a{ border-bottom:1px solid currentColor; }
 
   .callout{
-    grid-column:1 / -1;
-    border:1px solid var(--border);
-    background:var(--paper-deep);
-    padding:18px 20px;
-    font-size:0.88rem; color:var(--grey);
-    display:flex; gap:12px; align-items:flex-start;
+    grid-column:1 / -1; display:flex; gap:12px; align-items:flex-start;
+    border:1px solid var(--line); background:var(--paper-deep); padding:18px 20px;
+    font-size:14px; color:var(--text);
   }
-  .callout strong{color:var(--ink); font-weight:600;}
+  .callout strong{ color:var(--ink); font-weight:600; }
 
-  .form-foot{
-    grid-column:1 / -1;
-    display:flex; flex-wrap:wrap; align-items:center; gap:18px;
-    margin-top:6px;
-  }
-  .btn-primary{
-    display:inline-block; background:var(--ink); color:var(--paper);
-    padding:16px 34px; font-size:0.95rem; font-weight:600;
-    border:none; cursor:pointer; font-family:var(--font-body);
-    transition:background .25s ease, transform .25s ease;
-  }
-  .btn-primary:hover{background:var(--accent); transform:translateY(-2px);}
-  .form-foot small{font-size:0.78rem; color:var(--grey); max-width:34ch;}
+  .form-error{ grid-column:1 / -1; margin:0; padding:14px 16px; border:1px solid #b3261e; color:#b3261e; font-size:14px; }
+  .form-error a{ border-bottom:1px solid currentColor; }
+  .form-foot{ grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; gap:18px; margin-top:6px; }
+  .form-foot small{ font-size:13px; color:var(--grey); max-width:34ch; }
+  .rgpd-note{ grid-column:1 / -1; margin:0; font-size:13px; line-height:1.6; color:var(--grey); }
+  .rgpd-note a{ border-bottom:1px solid currentColor; }
 
-  /* Message de confirmation après envoi */
-  .form-success{
-    display:none;
-    border:1px solid var(--border);
-    background:var(--paper-deep);
-    padding:clamp(28px, 5vw, 48px);
-    max-width:var(--form-w);
-  }
-  .form-success.is-shown{display:block;}
-  .form-success h2{font-size:clamp(1.4rem, 3vw, 2rem); margin-bottom:14px;}
-  .form-success p{color:var(--grey); margin:0 0 8px;}
-  .form-success .recap{
-    margin-top:20px; padding-top:20px; border-top:1px solid var(--border);
-    font-size:0.92rem;
-  }
-  .form-success .recap dt{font-weight:600; color:var(--ink);}
-  .form-success .recap dd{margin:2px 0 12px; color:var(--grey);}
-
-  /* ============================================================
-     5. FOOTER (allégé)
-     ============================================================ */
-  .site-footer{padding:40px 0; border-top:1px solid var(--border);}
-  .site-footer .container{
-    display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px;
-    font-size:0.8rem; color:var(--grey);
-  }
+  /* ---- Confirmation après envoi ---- */
+  .form-success{ display:none; border:1px solid var(--line); background:var(--paper-deep); padding:clamp(28px, 5vw, 48px); max-width:720px; }
+  .form-success.is-shown{ display:block; }
+  .form-success h2{ font-size:clamp(1.4rem, 3vw, 2rem); font-weight:700; text-transform:uppercase; letter-spacing:-0.03em; line-height:1; margin-bottom:14px; }
+  .form-success p{ color:var(--text); margin:0 0 8px; }
+  .form-success .eyebrow{ display:block; font-size:11px; font-weight:700; letter-spacing:.25em; text-transform:uppercase; color:var(--grey); margin-bottom:16px; }
+  .form-success .recap{ margin-top:20px; padding-top:20px; border-top:1px solid var(--border); font-size:15px; }
+  .form-success .recap dt{ font-weight:600; color:var(--ink); }
+  .form-success .recap dd{ margin:2px 0 12px; color:var(--text); }
 </style>
 </head>
 <body>
@@ -208,25 +103,31 @@
 <!-- ============================================================
      HEADER
      ============================================================ -->
-<header class="site-header">
+<svg class="svg-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="m-italique" viewBox="18.5 25.7 392.7 392.7"><path fill="currentColor" fill-rule="evenodd" d="M403.33 135.67 L398.00 127.33 L392.33 121.17 L385.00 115.50 L376.17 110.67 L366.50 107.00 L358.67 105.00 L344.83 103.17 L336.17 103.00 L325.33 104.00 L315.67 106.00 L305.67 109.17 L294.00 114.33 L284.67 119.83 L275.50 126.50 L260.33 142.00 L256.67 131.33 L253.33 124.83 L249.67 119.83 L241.83 113.00 L233.00 108.33 L222.67 105.00 L209.67 103.17 L200.50 103.00 L187.67 104.00 L176.67 106.00 L165.83 109.17 L156.50 113.00 L147.50 118.00 L138.67 124.50 L131.00 131.83 L122.67 141.33 L122.17 139.33 L128.67 110.50 L128.33 109.17 L68.50 109.17 L20.50 340.33 L82.17 340.83 L83.17 340.17 L109.17 216.17 L112.33 204.83 L117.83 191.33 L123.17 181.83 L129.50 173.17 L134.67 167.67 L142.17 161.50 L150.00 156.83 L157.17 154.17 L163.17 153.00 L172.00 152.83 L179.17 154.17 L183.50 156.00 L188.00 159.00 L191.83 162.83 L194.33 166.50 L196.50 172.17 L197.00 181.17 L194.67 197.50 L165.00 340.17 L165.83 340.83 L228.33 340.67 L255.17 214.00 L259.17 201.00 L262.83 192.33 L268.00 182.83 L273.50 175.00 L280.67 167.17 L287.17 161.83 L295.83 156.67 L302.67 154.17 L308.67 153.00 L317.50 152.83 L326.83 155.00 L332.17 158.00 L337.00 162.50 L339.50 166.00 L341.83 171.50 L342.50 181.33 L340.67 195.00 L310.50 340.17 L311.50 340.83 L373.33 340.67 L407.83 178.67 L409.00 167.67 L408.83 154.17 L406.83 144.33Z"/></symbol>
+  <symbol id="wordmark" viewBox="16 16 1144 334"><path fill="currentColor" fill-rule="evenodd" d="M1086.17 272.50 L1086.50 340.67 L1156.00 340.33 L1155.83 272.33ZM449.67 109.00 L449.00 109.83 L449.00 340.00 L449.83 340.83 L511.50 340.83 L512.50 340.00 L512.50 109.83 L510.50 108.83ZM701.83 105.17 L690.67 103.00 L676.00 104.00 L663.17 107.33 L650.33 113.00 L638.50 120.83 L630.17 128.50 L623.17 137.00 L614.83 151.50 L613.67 150.83 L613.17 109.33 L553.50 109.67 L553.83 340.67 L616.67 340.33 L616.83 229.67 L619.00 210.83 L622.33 198.83 L626.83 189.17 L634.00 179.33 L642.67 171.83 L651.33 167.00 L659.83 164.00 L671.50 162.00 L684.83 161.83 L701.00 163.83 L702.33 163.33 L702.50 106.00ZM403.33 135.67 L398.00 127.33 L392.33 121.17 L385.00 115.50 L376.17 110.67 L366.50 107.00 L358.67 105.00 L344.83 103.17 L336.17 103.00 L325.33 104.00 L315.67 106.00 L305.67 109.17 L294.00 114.33 L284.67 119.83 L275.50 126.50 L260.33 142.00 L256.67 131.33 L253.33 124.83 L249.67 119.83 L241.83 113.00 L233.00 108.33 L222.67 105.00 L209.67 103.17 L200.50 103.00 L187.67 104.00 L176.67 106.00 L165.83 109.17 L156.50 113.00 L147.50 118.00 L138.67 124.50 L131.00 131.83 L122.67 141.33 L122.17 139.33 L128.67 110.50 L128.33 109.17 L68.50 109.17 L20.50 340.33 L82.17 340.83 L83.17 340.17 L109.17 216.17 L112.33 204.83 L117.83 191.33 L123.17 181.83 L129.50 173.17 L134.67 167.67 L142.17 161.50 L150.00 156.83 L157.17 154.17 L163.17 153.00 L172.00 152.83 L179.17 154.17 L183.50 156.00 L188.00 159.00 L191.83 162.83 L194.33 166.50 L196.50 172.17 L197.00 181.17 L194.67 197.50 L165.00 340.17 L165.83 340.83 L228.33 340.67 L255.17 214.00 L259.17 201.00 L262.83 192.33 L268.00 182.83 L273.50 175.00 L280.67 167.17 L287.17 161.83 L295.83 156.67 L302.67 154.17 L308.67 153.00 L317.50 152.83 L326.83 155.00 L332.17 158.00 L337.00 162.50 L339.50 166.00 L341.83 171.50 L342.50 181.33 L340.67 195.00 L310.50 340.17 L311.50 340.83 L373.33 340.67 L407.83 178.67 L409.00 167.67 L408.83 154.17 L406.83 144.33ZM739.83 128.83 L730.33 139.33 L723.00 151.67 L720.17 159.17 L718.00 168.00 L716.83 176.67 L717.33 179.83 L779.00 180.00 L780.17 179.00 L782.17 168.83 L785.17 161.83 L788.83 156.67 L792.83 153.00 L799.83 149.00 L808.83 146.17 L818.00 145.00 L827.83 145.00 L843.50 147.17 L849.50 149.50 L855.33 153.50 L859.67 158.67 L862.67 165.33 L863.83 172.00 L863.83 180.83 L862.67 185.33 L859.50 190.33 L855.17 193.83 L847.00 197.83 L830.83 201.83 L782.83 208.00 L756.67 214.00 L748.33 217.00 L739.83 221.17 L731.17 227.00 L724.83 233.00 L716.67 244.50 L712.17 255.33 L710.00 266.00 L709.50 280.83 L711.00 295.00 L714.17 305.67 L719.83 316.50 L726.00 324.33 L736.00 332.83 L746.83 338.83 L758.00 342.83 L775.17 346.00 L790.00 346.67 L804.50 345.83 L817.00 343.83 L829.00 340.83 L840.50 336.67 L849.67 331.83 L858.00 326.00 L865.50 319.33 L866.83 320.17 L869.00 334.00 L870.83 340.00 L871.83 340.83 L934.50 340.67 L934.67 339.50 L931.17 330.67 L929.17 320.50 L927.33 296.67 L926.83 158.17 L924.83 148.67 L922.00 141.33 L918.00 134.67 L913.00 128.67 L905.83 122.17 L896.67 116.17 L885.17 111.00 L875.83 108.00 L853.00 104.00 L821.83 102.67 L811.67 103.00 L794.67 105.00 L773.33 110.00 L764.83 113.17 L753.17 119.00ZM863.83 228.67 L863.83 256.00 L861.67 271.50 L859.00 278.83 L854.67 286.50 L849.67 292.17 L845.00 296.00 L837.67 300.33 L830.33 302.83 L817.67 304.67 L807.17 304.67 L797.67 303.50 L788.83 300.83 L782.33 297.00 L777.67 292.00 L775.00 287.17 L773.17 280.50 L773.17 269.00 L774.33 264.00 L776.50 259.17 L780.00 254.33 L784.33 250.33 L791.83 246.00 L800.33 243.00 L813.00 240.17 L842.67 235.83 L854.17 232.67 L862.67 228.17ZM449.17 20.50 L449.50 72.67 L512.33 72.33 L512.17 20.33Z"/></symbol>
+</svg>
+
+<a href="#main" class="skip-link">Aller au contenu principal</a>
+
+<header class="site-header" id="site-header">
   <div class="container">
-    <a href="/" class="logo" aria-label="mira. — accueil"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="16 16 1144 334"><path fill="currentColor" fill-rule="evenodd" d="M1086.17 272.50 L1086.50 340.67 L1156.00 340.33 L1155.83 272.33ZM449.67 109.00 L449.00 109.83 L449.00 340.00 L449.83 340.83 L511.50 340.83 L512.50 340.00 L512.50 109.83 L510.50 108.83ZM701.83 105.17 L690.67 103.00 L676.00 104.00 L663.17 107.33 L650.33 113.00 L638.50 120.83 L630.17 128.50 L623.17 137.00 L614.83 151.50 L613.67 150.83 L613.17 109.33 L553.50 109.67 L553.83 340.67 L616.67 340.33 L616.83 229.67 L619.00 210.83 L622.33 198.83 L626.83 189.17 L634.00 179.33 L642.67 171.83 L651.33 167.00 L659.83 164.00 L671.50 162.00 L684.83 161.83 L701.00 163.83 L702.33 163.33 L702.50 106.00ZM403.33 135.67 L398.00 127.33 L392.33 121.17 L385.00 115.50 L376.17 110.67 L366.50 107.00 L358.67 105.00 L344.83 103.17 L336.17 103.00 L325.33 104.00 L315.67 106.00 L305.67 109.17 L294.00 114.33 L284.67 119.83 L275.50 126.50 L260.33 142.00 L256.67 131.33 L253.33 124.83 L249.67 119.83 L241.83 113.00 L233.00 108.33 L222.67 105.00 L209.67 103.17 L200.50 103.00 L187.67 104.00 L176.67 106.00 L165.83 109.17 L156.50 113.00 L147.50 118.00 L138.67 124.50 L131.00 131.83 L122.67 141.33 L122.17 139.33 L128.67 110.50 L128.33 109.17 L68.50 109.17 L20.50 340.33 L82.17 340.83 L83.17 340.17 L109.17 216.17 L112.33 204.83 L117.83 191.33 L123.17 181.83 L129.50 173.17 L134.67 167.67 L142.17 161.50 L150.00 156.83 L157.17 154.17 L163.17 153.00 L172.00 152.83 L179.17 154.17 L183.50 156.00 L188.00 159.00 L191.83 162.83 L194.33 166.50 L196.50 172.17 L197.00 181.17 L194.67 197.50 L165.00 340.17 L165.83 340.83 L228.33 340.67 L255.17 214.00 L259.17 201.00 L262.83 192.33 L268.00 182.83 L273.50 175.00 L280.67 167.17 L287.17 161.83 L295.83 156.67 L302.67 154.17 L308.67 153.00 L317.50 152.83 L326.83 155.00 L332.17 158.00 L337.00 162.50 L339.50 166.00 L341.83 171.50 L342.50 181.33 L340.67 195.00 L310.50 340.17 L311.50 340.83 L373.33 340.67 L407.83 178.67 L409.00 167.67 L408.83 154.17 L406.83 144.33ZM739.83 128.83 L730.33 139.33 L723.00 151.67 L720.17 159.17 L718.00 168.00 L716.83 176.67 L717.33 179.83 L779.00 180.00 L780.17 179.00 L782.17 168.83 L785.17 161.83 L788.83 156.67 L792.83 153.00 L799.83 149.00 L808.83 146.17 L818.00 145.00 L827.83 145.00 L843.50 147.17 L849.50 149.50 L855.33 153.50 L859.67 158.67 L862.67 165.33 L863.83 172.00 L863.83 180.83 L862.67 185.33 L859.50 190.33 L855.17 193.83 L847.00 197.83 L830.83 201.83 L782.83 208.00 L756.67 214.00 L748.33 217.00 L739.83 221.17 L731.17 227.00 L724.83 233.00 L716.67 244.50 L712.17 255.33 L710.00 266.00 L709.50 280.83 L711.00 295.00 L714.17 305.67 L719.83 316.50 L726.00 324.33 L736.00 332.83 L746.83 338.83 L758.00 342.83 L775.17 346.00 L790.00 346.67 L804.50 345.83 L817.00 343.83 L829.00 340.83 L840.50 336.67 L849.67 331.83 L858.00 326.00 L865.50 319.33 L866.83 320.17 L869.00 334.00 L870.83 340.00 L871.83 340.83 L934.50 340.67 L934.67 339.50 L931.17 330.67 L929.17 320.50 L927.33 296.67 L926.83 158.17 L924.83 148.67 L922.00 141.33 L918.00 134.67 L913.00 128.67 L905.83 122.17 L896.67 116.17 L885.17 111.00 L875.83 108.00 L853.00 104.00 L821.83 102.67 L811.67 103.00 L794.67 105.00 L773.33 110.00 L764.83 113.17 L753.17 119.00ZM863.83 228.67 L863.83 256.00 L861.67 271.50 L859.00 278.83 L854.67 286.50 L849.67 292.17 L845.00 296.00 L837.67 300.33 L830.33 302.83 L817.67 304.67 L807.17 304.67 L797.67 303.50 L788.83 300.83 L782.33 297.00 L777.67 292.00 L775.00 287.17 L773.17 280.50 L773.17 269.00 L774.33 264.00 L776.50 259.17 L780.00 254.33 L784.33 250.33 L791.83 246.00 L800.33 243.00 L813.00 240.17 L842.67 235.83 L854.17 232.67 L862.67 228.17ZM449.17 20.50 L449.50 72.67 L512.33 72.33 L512.17 20.33Z"/></svg></a>
-    <div class="header-actions">
-      <a href="index.html" class="back-link">← Retour</a>
-    </div>
+    <a href="/" class="logo" aria-label="mira. — accueil"><svg viewBox="16 16 1144 334" aria-hidden="true" focusable="false"><use href="#wordmark"/></svg></a>
+    <a href="/" class="back-link">← Retour au site</a>
   </div>
 </header>
 
-<main>
+<main id="main">
 
   <!-- ============================================================
        EN-TÊTE DE PAGE
        ============================================================ -->
   <section class="form-hero">
     <div class="container">
-      <span class="eyebrow">Démarrer un projet</span>
-      <h1>Parlons de votre projet.</h1>
-      <p>Renseignez vos coordonnées et le contexte de votre entreprise. Indiquez un créneau qui vous convient : nous vous rappellerons pour en discuter.</p>
+      <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Rappel</span>
+      <h1 class="title">Être <span class="light">rappelé.</span></h1>
+      <p>Laissez vos coordonnées, on vous rappelle au créneau de votre choix.</p>
+      <p class="switch">Vous préférez choisir votre créneau tout de suite ? <button type="button" class="link-btn" data-open-booking>Réserver un appel</button></p>
     </div>
   </section>
 
@@ -323,7 +224,7 @@
 
           <!-- Information RGPD à la collecte (art. 13) -->
           <p class="rgpd-note">
-            Les informations saisies sont utilisées par Mira Agency uniquement pour traiter votre demande et vous recontacter.
+            Les informations saisies sont utilisées par <span class="brand"><em>m</em>ira</span> uniquement pour traiter votre demande et vous recontacter.
             Elles sont conservées 3 ans au maximum après notre dernier échange, ne sont jamais vendues ni cédées.
             Vous pouvez y accéder, les rectifier ou les faire supprimer à tout moment en écrivant à
             <a href="mailto:mira.soixantequinze.contact@gmail.com">mira.soixantequinze.contact@gmail.com</a>.
@@ -346,19 +247,73 @@
 
 </main>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
-<footer class="site-footer">
+<footer class="site-footer on-dark">
   <div class="container">
-    <span>© <span id="year"></span> Mira Agency. Tous droits réservés.</span>
-    <span><a href="mentions-legales.html">Mentions légales</a> · <a href="confidentialite.html">Confidentialité</a></span>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <picture>
+          <source type="image/webp" srcset="/assets/img/brand/monogramme-m-blanc.webp">
+          <img src="/assets/img/brand/monogramme-m-blanc.png" width="228" height="160" alt="Monogramme mira : m et l'œil, by mira.soixantequinze" loading="lazy">
+        </picture>
+        <span class="footer-signature"><span class="brand"><em>m</em>ira.agency</span></span>
+      </div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h2>Navigation</h2>
+          <ul>
+            <li><a href="/#realisations">Réalisations</a></li>
+            <li><a href="/#offres">Offres</a></li>
+            <li><a href="/#methode">Méthode</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="/#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Contact</h2>
+          <ul>
+            <li><button type="button" class="footer-link" data-open-booking>Réserver un appel</button></li>
+            <li><a href="/rendez-vous.html">Être rappelé</a></li>
+            <li><a href="mailto:mira.soixantequinze.contact@gmail.com">Email</a><!-- SYNC config.js : email --></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Réseaux</h2>
+          <!-- SYNC config.js : instagram, tiktok, linkedin (vide = lien retiré) -->
+          <ul>
+            <li><a href="https://instagram.com/mira_soixantequinze" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li data-social="tiktok" hidden><a href="#" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+            <li data-social="linkedin" hidden><a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Légal</h2>
+          <ul>
+            <li><a href="/mentions-legales.html">Mentions légales</a></li>
+            <li><a href="/confidentialite.html">Politique de confidentialité</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Espace</h2>
+          <ul>
+            <li><a href="/connexion.html">Suivre mon projet</a></li>
+            <li><a href="/connexion.html">Connexion équipe</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SYNC config.js : legal.editeur, legal.siret -->
+    <p class="footer-legal">© <span id="year">2026</span> <span class="brand"><em>m</em>ira</span> — TODO_PRENOM_NOM EI — SIRET TODO_SIRET · Paris, Île-de-France</p>
+
+    <svg class="footer-wordmark reveal" viewBox="16 16 1144 334" aria-hidden="true" focusable="false"><use href="#wordmark"/></svg>
   </div>
 </footer>
 
 <!-- ============================================================
      JS — thème, validation, envoi vers /api/rendez-vous.
      ============================================================ -->
+<script type="module" src="/assets/js/common.js"></script>
 <script>
   // ---- Date minimale = aujourd'hui (pas de rappel dans le passé) ----
   const dateInput = document.getElementById('date-dispo');

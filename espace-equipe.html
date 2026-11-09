@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#ffffff">
-<title>Espace équipe — Mira Agency</title>
+<title>Espace équipe — Mira</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="/assets/img/brand/favicon.ico" sizes="32x32">
 <link rel="icon" href="/assets/img/brand/favicon.svg" type="image/svg+xml">
@@ -24,19 +24,20 @@
   @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;}}
   body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.5; -webkit-font-smoothing:antialiased; transition:background-color .4s ease, color .4s ease;}
   a{color:inherit; text-decoration:none;}
-  h1,h2,h3{font-family:var(--font-display); font-weight:900; letter-spacing:-0.02em; margin:0;}
+  h1,h2,h3{font-family:var(--font-display); font-weight:700; letter-spacing:-0.03em; margin:0;}
   .container{max-width:var(--max-w); margin:0 auto; padding:0 var(--gutter);}
   .eyebrow{font-weight:600; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:.8rem;}
 
   /* Header */
-  .site-header{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--border);}
+  .site-header{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--line);}
 
   .site-header .container{display:flex; align-items:center; justify-content:space-between; padding:14px var(--gutter);}
   .logo{display:inline-flex; align-items:center; gap:12px; font-family:var(--font-display); font-weight:900; font-size:1.2rem; color:var(--ink);}
 
   .logo .tag{font-family:var(--font-body); font-weight:600; font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--grey); border:1px solid var(--border); padding:3px 8px;}
   .header-actions{display:flex; align-items:center; gap:16px; font-size:.88rem;}
-  .header-actions .who{color:var(--grey);} .header-actions a:hover{color:var(--accent);}
+  .header-actions .who{color:var(--grey);}
+  @media (max-width:640px){ .header-actions .who{display:none;} } .header-actions a:hover{color:var(--accent);}
 
 
 
@@ -47,7 +48,7 @@
   .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:28px;}
   @media (max-width:760px){ .kpis{grid-template-columns:repeat(2,1fr);} }
   .kpi{border:1px solid var(--border); padding:20px; background:var(--paper-deep);}
-  .kpi .num{font-family:var(--font-display); font-weight:900; font-size:1.9rem; line-height:1;}
+  .kpi .num{font-family:var(--font-display); font-weight:700; font-size:1.9rem; line-height:1;}
   .kpi .lbl{font-size:.8rem; color:var(--grey); margin-top:8px;}
 
   /* Barre d'outils */
@@ -156,7 +157,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <span>© <span id="year"></span> Mira Agency — interne.</span>
+    <span>© <span id="year"></span> <span class="brand"><em>m</em>ira</span> — interne.</span>
     <span>Accès réservé aux équipes</span>
   </div>
 </footer>

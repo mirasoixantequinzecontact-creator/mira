@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#ffffff">
-<title>Suivi de projet — Mira Agency</title>
+<title>Suivi de projet — Mira</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="/assets/img/brand/favicon.ico" sizes="32x32">
 <link rel="icon" href="/assets/img/brand/favicon.svg" type="image/svg+xml">
@@ -24,17 +24,18 @@
   @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;}}
   body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.55; -webkit-font-smoothing:antialiased; transition:background-color .4s ease, color .4s ease;}
   a{color:inherit; text-decoration:none;}
-  h1,h2,h3{font-family:var(--font-display); font-weight:900; letter-spacing:-0.02em; line-height:1.1; margin:0;}
+  h1,h2,h3{font-family:var(--font-display); font-weight:700; letter-spacing:-0.03em; line-height:1.1; margin:0;}
   .container{max-width:var(--max-w); margin:0 auto; padding:0 var(--gutter);}
   .eyebrow{font-weight:600; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:1rem;}
 
   /* Header */
-  .site-header{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--border);}
+  .site-header{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--line);}
 
   .site-header .container{display:flex; align-items:center; justify-content:space-between; padding:16px var(--gutter);}
   .logo{display:inline-flex; align-items:center; font-family:var(--font-display); font-weight:900; font-size:1.3rem; color:var(--ink);}
 
   .header-actions{display:flex; align-items:center; gap:16px; font-size:.88rem;}
+  @media (max-width:640px){ #user-email{display:none;} }
   .header-actions a{color:var(--grey);} .header-actions a:hover{color:var(--ink);}
 
 
@@ -168,13 +169,13 @@
 <div class="container empty-state" id="empty-state">
   <span class="eyebrow">Référence introuvable</span>
   <h2>Aucun projet pour cette référence.</h2>
-  <p>Vérifiez la référence reçue par email, ou contactez votre interlocuteur Mira.</p>
+  <p>Vérifiez la référence reçue par email, ou contactez votre interlocuteur <span class="brand"><em>m</em>ira</span>.</p>
   <a href="connexion.html" class="btn">Réessayer</a>
 </div>
 
 <footer class="site-footer">
   <div class="container">
-    <span>© <span id="year"></span> Mira Agency.</span>
+    <span>© <span id="year"></span> <span class="brand"><em>m</em>ira</span>.</span>
     <span><a href="confidentialite.html">Confidentialité</a> · <a href="mentions-legales.html">Mentions légales</a></span>
   </div>
 </footer>
