@@ -1,0 +1,198 @@
+/* ============================================================
+   COMPOSANTS PARTAGÉS — pages publiques (vitrine, rendez-vous,
+   mentions légales, confidentialité, 404).
+   Palette et variables : tokens.css. DA : brochure noir / blanc.
+   ============================================================ */
+
+/* ---------- 1. Base ---------- */
+/* Pleine largeur avec marges de 48px, comme la brochure (plafonnée à 1440px) */
+:root{
+  --max-w:1440px;
+  --gutter:clamp(24px, 3.4vw, 48px);
+  --section-pad:clamp(64px, 9vw, 120px);
+  --header-h:72px;
+}
+@media (max-width: 900px){ :root{ --header-h:64px; } }
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; scroll-padding-top:var(--header-h); }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation:none !important; transition:none !important; }
+}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+@media (max-width: 640px){ body{ font-size:15px; } }
+img, svg, video{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+h1, h2, h3{ font-family:var(--font-display); margin:0; }
+p{ margin:0; }
+
+.container{
+  max-width:var(--max-w);
+  margin:0 auto;
+  padding-left:var(--gutter);
+  padding-right:var(--gutter);
+}
+
+/* Focus clavier visible partout (le style par défaut est retiré par certains composants) */
+:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+.on-dark :focus-visible, .contact :focus-visible, .site-footer :focus-visible{ outline-color:#fff; }
+
+.skip-link{
+  position:absolute; left:-9999px; top:0;
+  background:var(--ink); color:#fff; padding:10px 16px; z-index:999;
+}
+.skip-link:focus{ left:12px; top:12px; }
+
+.visually-hidden{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* Sprite SVG (symboles réutilisés : m italique, wordmark) */
+.svg-sprite{ position:absolute; width:0; height:0; overflow:hidden; }
+
+/* ---------- 2. Typographie de marque ---------- */
+/* Kicker : remplace .eyebrow — 11px, 700, majuscules, puce « m » italique */
+.kicker{
+  display:inline-flex; align-items:center; gap:.55em;
+  font-size:11px; font-weight:700; letter-spacing:.25em; text-transform:uppercase;
+  color:var(--grey);
+  margin-bottom:20px;
+}
+.kicker svg{ width:.9em; height:.9em; flex:none; }
+.on-dark .kicker, .contact .kicker{ color:#a0a0a0; }
+
+/* Grands titres : Inter 700 majuscules, 2e ligne Inter 300 grise */
+.title{
+  font-weight:700; text-transform:uppercase;
+  line-height:.92; letter-spacing:-0.04em;
+  font-size:clamp(2rem, 4.5vw, 3.5rem);
+}
+.title .light{ display:block; font-weight:300; color:var(--grey-display); }
+
+/* En-tête de section : [kicker + titre] à gauche, texte à droite (grille brochure)
+   <div class="section-head"><div><span class="kicker">…</span><h2 class="title">…</h2></div><p>…</p></div> */
+.section-head{
+  display:grid; gap:24px;
+  margin-bottom:clamp(36px, 5vw, 64px);
+}
+.section-head p{ color:var(--text); max-width:56ch; }
+@media (min-width: 901px){
+  .section-head{ grid-template-columns:minmax(260px, auto) 1fr; gap:80px; align-items:end; }
+}
+
+/* Tags encadrés */
+.tags{ display:flex; flex-wrap:wrap; gap:6px; list-style:none; margin:0; padding:0; }
+.tag{
+  display:inline-block; border:1px solid var(--ink);
+  font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase;
+  padding:5px 10px; line-height:1.4;
+}
+
+/* ---------- 3. Boutons (angles droits) ---------- */
+.btn-primary, .btn-ghost, .btn-light{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  min-height:48px; padding:14px 26px;
+  font-family:var(--font-body); font-size:12px; font-weight:700;
+  letter-spacing:.15em; text-transform:uppercase; line-height:1.2;
+  border:1px solid var(--ink); border-radius:0; cursor:pointer;
+  transition:background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+.btn-primary{ background:var(--ink); color:#fff; }
+.btn-primary:hover{ background:#fff; color:var(--ink); }
+.btn-ghost{ background:transparent; color:var(--ink); }
+.btn-ghost:hover{ background:var(--ink); color:#fff; }
+/* Variante sur fond noir */
+.btn-light{ background:#fff; color:var(--ink); border-color:#fff; }
+.btn-light:hover{ background:transparent; color:#fff; }
+
+/* ---------- 4. Header (vitrine, 404, pages légales) ---------- */
+.site-header{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  border-bottom:1px solid var(--border);
+}
+/* Fond flouté porté par un pseudo-élément : un backdrop-filter sur le header
+   lui-même ferait du header le repère du menu mobile (position:fixed). */
+.site-header::before{
+  content:""; position:absolute; inset:0; z-index:-1;
+  background:rgba(255,255,255,.94);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.site-header > .container{
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  height:var(--header-h);
+  transition:height .25s ease;
+}
+.site-header.is-scrolled > .container{ height:calc(var(--header-h) - 10px); }
+
+.main-nav ul{ list-style:none; margin:0; padding:0; display:flex; align-items:center; gap:clamp(18px, 2.6vw, 36px); }
+.main-nav a{
+  position:relative;
+  font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+}
+.main-nav a::after{
+  content:""; position:absolute; left:0; right:0; bottom:-6px; height:1px;
+  background:var(--ink); transform:scaleX(0); transform-origin:left;
+  transition:transform .3s ease;
+}
+.main-nav a:hover::after, .main-nav a.is-active::after{ transform:scaleX(1); }
+.nav-cta{ min-height:42px; padding:11px 20px; }
+.nav-item-cta{ display:none; }
+
+.nav-toggle{
+  display:none; position:relative;
+  width:44px; height:44px; margin-right:-10px;
+  background:none; border:0; cursor:pointer; color:var(--ink);
+}
+.nav-toggle span{
+  position:absolute; left:10px; right:10px; height:2px; background:currentColor;
+  transition:transform .25s ease, top .25s ease;
+}
+.nav-toggle span:nth-child(1){ top:17px; }
+.nav-toggle span:nth-child(2){ top:25px; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1){ top:21px; transform:rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2){ top:21px; transform:rotate(-45deg); }
+
+@media (max-width: 900px){
+  .nav-toggle{ display:block; }
+  .nav-cta-wrap{ display:none; }
+  .main-nav{
+    position:fixed; left:0; right:0; top:var(--header-h); bottom:0;
+    background:#fff; border-top:1px solid var(--line);
+    padding:32px var(--gutter) calc(32px + env(safe-area-inset-bottom));
+    overflow-y:auto;
+    visibility:hidden; opacity:0; transform:translateY(-8px);
+    transition:opacity .25s ease, transform .25s ease, visibility 0s linear .25s;
+  }
+  .main-nav.open{ visibility:visible; opacity:1; transform:none; transition-delay:0s; }
+  .main-nav ul{ flex-direction:column; align-items:stretch; gap:0; }
+  .main-nav li{ border-bottom:1px solid var(--border); }
+  .main-nav a{ display:block; padding:18px 0; font-size:24px; font-weight:700; letter-spacing:-0.02em; }
+  .main-nav a::after{ display:none; }
+  .nav-item-cta{ display:block; border-bottom:0 !important; padding-top:28px; }
+  .nav-item-cta .btn-primary{ width:100%; }
+  html.menu-open{ overflow:hidden; }
+}
+
+/* ---------- 5. Révélation discrète au scroll ---------- */
+.reveal{ opacity:0; transform:translateY(12px); transition:opacity .4s ease, transform .4s ease; }
+.reveal.is-visible{ opacity:1; transform:none; }
+
+/* ---------- 6. Notification ---------- */
+.toast{
+  position:fixed; left:50%; bottom:calc(32px + env(safe-area-inset-bottom));
+  transform:translate(-50%, 16px);
+  background:var(--ink); color:#fff; padding:12px 22px; font-size:.85rem;
+  opacity:0; pointer-events:none; z-index:300;
+  transition:opacity .3s ease, transform .3s ease;
+}
+.toast.is-shown{ opacity:1; transform:translate(-50%, 0); }

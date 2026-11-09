@@ -1,0 +1,448 @@
+/* ============================================================
+   VITRINE (index.html) — styles propres à la page d'accueil.
+   Base, header, boutons, kickers, titres : components.css.
+   ============================================================ */
+
+/* Sections : filet noir entre chaque bloc (remplace l'alternance de fonds teintés) */
+main > section{ padding:var(--section-pad) 0; border-bottom:1px solid var(--line); }
+/* Bande noire pleine de 16px : séparations fortes (avant Offres et Contact) */
+.band{ height:16px; background:var(--ink); }
+
+/* ============================================================
+   HERO — accroche « On filme. / Vous existez. » + œil
+   ============================================================ */
+main > section.hero{
+  padding-top:calc(var(--header-h) + clamp(40px, 7vw, 96px));
+  padding-bottom:clamp(40px, 6vw, 72px);
+}
+.hero > .container{ display:grid; gap:40px; }
+@media (min-width: 901px){
+  .hero > .container{ grid-template-columns:minmax(0, 1.5fr) minmax(300px, 1fr); gap:clamp(40px, 5vw, 80px); align-items:end; }
+}
+.hero h1{
+  font-size:clamp(56px, 12vw, 160px);
+  font-weight:700; text-transform:uppercase;
+  line-height:.92; letter-spacing:-0.04em;
+}
+.hero h1 .light{ display:block; font-weight:300; color:var(--grey-display); }
+/* Animation d'entrée, mot par mot */
+.hero h1 .word{
+  display:inline-block;
+  opacity:0; transform:translateY(40%);
+  transition:opacity .6s ease, transform .6s ease;
+  transition-delay:calc(var(--i) * 80ms);
+}
+body.is-loaded .hero h1 .word{ opacity:1; transform:none; }
+/* Mobile : un mot par ligne, comme la brochure */
+@media (max-width: 640px){ .hero h1 .word{ display:block; } }
+
+.hero-aside{ display:flex; flex-direction:column; align-items:flex-start; gap:28px; }
+.hero-sub{ color:var(--text); max-width:44ch; }
+.hero-actions{ display:flex; flex-wrap:wrap; gap:12px; }
+
+/* L'œil : apparaît en fondu juste après les mots du titre. Taille max 240px (140px mobile) :
+   au-delà, le grain du fichier source devient flou. */
+.hero-eye{ opacity:0; transform:scale(.96); transition:opacity .6s ease .7s, transform .6s ease .7s; }
+body.is-loaded .hero-eye{ opacity:1; transform:none; }
+.hero-eye img{ width:240px; height:auto; }
+@media (max-width: 900px){ .hero-eye img{ width:140px; } }
+
+/* ============================================================
+   BANDEAU D'AMBIANCE — 3 photos (ou le showreel s'il existe)
+   ============================================================ */
+.ambiance{ border-bottom:1px solid var(--line); }
+.ambiance-photos{ display:grid; grid-template-columns:repeat(3, 1fr); height:220px; }
+.ambiance-photos picture{ overflow:hidden; border-right:1px solid var(--line); }
+.ambiance-photos picture:last-child{ border-right:0; }
+.ambiance-photos img{ width:100%; height:100%; object-fit:cover; filter:brightness(.92); transition:transform .6s ease, filter .4s ease; }
+.ambiance-photos picture:hover img{ transform:scale(1.03); filter:none; }
+@media (max-width: 640px){
+  .ambiance-photos{
+    display:flex; overflow-x:auto; scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch; scrollbar-width:none;
+  }
+  .ambiance-photos::-webkit-scrollbar{ display:none; }
+  .ambiance-photos picture{ flex:0 0 82%; scroll-snap-align:start; }
+}
+.ambiance-video video{ width:100%; height:220px; object-fit:cover; background:var(--paper-deep); }
+@media (min-width: 901px){ .ambiance-video video{ height:420px; } }
+
+/* ============================================================
+   BANDEAU DÉFILANT (CSS réutilisé pour les logos clients)
+   ============================================================ */
+.marquee{
+  overflow:hidden;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:18px 0;
+}
+.marquee-track{
+  display:flex;
+  gap:14px;
+  white-space:nowrap;
+  width:max-content;
+  animation:marquee-scroll 36s linear infinite;
+}
+.marquee:hover .marquee-track{animation-play-state:paused;}
+.marquee-track span{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:0.95rem;
+  color:var(--grey);
+}
+@keyframes marquee-scroll{
+  from{transform:translateX(0);}
+  to{transform:translateX(-50%);}
+}
+@media (prefers-reduced-motion: reduce){
+  .marquee-track{animation:none;}
+  .marquee{overflow-x:auto;}
+}
+
+
+/* ======== ANCIENNES SECTIONS — en cours de migration (étapes 3 à 5) ======== */
+/* ============================================================
+   5. SECTION GÉNÉRIQUE
+   ============================================================ */
+
+/* Teintes de section façon Apple — fonds lavés qui alternent en douceur.
+   Transition fondue entre chaque teinte via un léger dégradé vertical. */
+.tint-rose{background:linear-gradient(180deg, transparent, var(--paper-deep) 18%, var(--paper-deep) 82%, transparent);}
+.tint-sand{background:linear-gradient(180deg, transparent, var(--paper-deep) 18%, var(--paper-deep) 82%, transparent);}
+.tint-slate{background:linear-gradient(180deg, transparent, var(--paper-deep) 18%, var(--paper-deep) 82%, transparent);}
+.tint-mist{background:linear-gradient(180deg, transparent, var(--paper-deep) 18%, var(--paper-deep) 82%, transparent);}
+
+
+
+/* ============================================================
+   6. SERVICES — liste éditoriale (pas de cartes/icônes stock)
+   Descriptions courtes = brouillon, à valider avec le client.
+   ============================================================ */
+.services-list{border-top:1px solid var(--border);}
+.service-row{
+  display:grid;
+  grid-template-columns:64px 1fr auto;
+  align-items:center;
+  gap:24px;
+  padding:28px 0;
+  border-bottom:1px solid var(--border);
+  opacity:0;
+  transform:translateY(14px);
+  transition:padding-left .3s ease, opacity .5s ease, transform .5s ease;
+}
+.services-list.is-visible .service-row{opacity:1; transform:none;}
+.services-list.is-visible .service-row:nth-child(1){transition-delay:.02s;}
+.services-list.is-visible .service-row:nth-child(2){transition-delay:.08s;}
+.services-list.is-visible .service-row:nth-child(3){transition-delay:.14s;}
+.services-list.is-visible .service-row:nth-child(4){transition-delay:.20s;}
+.services-list.is-visible .service-row:nth-child(5){transition-delay:.26s;}
+.services-list.is-visible .service-row:nth-child(6){transition-delay:.32s;}
+.services-list.is-visible .service-row:nth-child(7){transition-delay:.38s;}
+.services-list.is-visible .service-row:nth-child(8){transition-delay:.44s;}
+.service-row:hover{padding-left:12px;}
+.service-index{
+  font-family:var(--font-display);
+  font-weight:700;
+  color:var(--grey);
+  font-size:0.95rem;
+}
+.service-title{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(1.1rem, 2.4vw, 1.5rem);
+}
+.service-desc{
+  display:block;
+  font-family:var(--font-body);
+  font-weight:400;
+  font-size:0.95rem;
+  color:var(--grey);
+  margin-top:6px;
+}
+.service-arrow{
+  font-size:1.4rem;
+  transition:transform .3s ease, color .3s ease;
+}
+.service-row:hover .service-arrow{transform:translate(4px,-4px); color:var(--accent);}
+
+/* ============================================================
+   7. MÉTHODE / PROCESS
+   Étapes en brouillon — structure sobre, à valider avec le client.
+   ============================================================ */
+.process-grid{
+  display:grid;
+  gap:48px;
+  grid-template-columns:1fr;
+}
+@media (min-width: 720px){
+  .process-grid{grid-template-columns:repeat(2, 1fr);}
+}
+@media (min-width: 1080px){
+  .process-grid{grid-template-columns:repeat(4, 1fr);}
+}
+.process-step{border-top:1px solid var(--ink); padding-top:20px;}
+.process-num{
+  font-family:var(--font-display);
+  font-weight:900;
+  font-size:0.95rem;
+  color:var(--accent);
+  display:block;
+  margin-bottom:14px;
+}
+.process-step h3{font-size:1.15rem; margin-bottom:10px;}
+.process-step p{color:var(--grey); font-size:0.95rem; margin:0;}
+
+/* ============================================================
+   8. RÉALISATIONS — grille avec emplacements réservés.
+   Remplacer .placeholder-visual par <img src="..." alt="...">
+   quand les visuels réels seront disponibles.
+   ============================================================ */
+.work-grid{
+  display:grid;
+  gap:32px;
+  grid-template-columns:1fr;
+}
+@media (min-width: 720px){
+  .work-grid{grid-template-columns:repeat(2, 1fr);}
+}
+@media (min-width: 1080px){
+  .work-grid{grid-template-columns:repeat(3, 1fr);}
+}
+.work-filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:32px;
+}
+.filter-btn{
+  border:1px solid var(--border);
+  background:none;
+  color:var(--grey);
+  font-family:var(--font-body);
+  font-size:0.85rem;
+  padding:8px 16px;
+  cursor:pointer;
+  transition:border-color .25s ease, color .25s ease;
+}
+.filter-btn:hover, .filter-btn.is-active{border-color:var(--ink); color:var(--ink);}
+
+.work-card{
+  display:block;
+  transition:opacity .3s ease, transform .3s ease;
+}
+.work-card.is-hidden{display:none;}
+.placeholder-visual{
+  position:relative;
+  aspect-ratio:4/3;
+  width:100%;
+  background:
+    repeating-linear-gradient(135deg, var(--paper-deep) 0 2px, transparent 2px 14px);
+  border:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+  overflow:hidden;
+}
+.placeholder-visual > *{position:relative; z-index:1;}
+.visual-label{
+  font-size:0.78rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--grey);
+  transition:opacity .3s ease;
+}
+.work-overlay{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(18,18,18,0.85);
+  color:#F6F3EE;
+  font-size:0.78rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.work-card:hover .work-overlay{opacity:1;}
+.work-card:hover .visual-label{opacity:0;}
+.work-meta{
+  display:flex;
+  justify-content:space-between;
+  margin-top:14px;
+  font-size:0.92rem;
+}
+.work-meta .cat{color:var(--grey);}
+
+/* ============================================================
+   9. À PROPOS
+   Texte de positionnement en brouillon — à valider avec le client.
+   ============================================================ */
+.about{
+  display:grid;
+  gap:48px;
+  grid-template-columns:1fr;
+}
+@media (min-width: 880px){
+  .about{grid-template-columns:0.9fr 1.1fr; align-items:start;}
+}
+.about p{font-size:1.05rem; max-width:54ch;}
+.about p + p{margin-top:20px; color:var(--grey);}
+
+/* ============================================================
+   10. TÉMOIGNAGES — emplacement réservé, aucun faux témoignage.
+   ============================================================ */
+.testimonial-placeholder{
+  border:1px solid var(--border);
+  padding:48px var(--gutter);
+  text-align:center;
+}
+.testimonial-placeholder p{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(1.2rem, 2.6vw, 1.7rem);
+  color:var(--grey);
+  margin:0 0 8px;
+}
+.testimonial-placeholder span{font-size:0.85rem; color:var(--grey);}
+
+/* Avis clients — cartes prêtes à recevoir de VRAIS avis (voir HTML) */
+.reviews-grid{
+  display:grid;
+  gap:20px;
+  grid-template-columns:1fr;
+}
+.reviews-grid:not(:empty){margin-bottom:28px;}
+@media (min-width: 720px){ .reviews-grid{grid-template-columns:repeat(2, 1fr);} }
+@media (min-width: 1080px){ .reviews-grid{grid-template-columns:repeat(3, 1fr);} }
+.review-card{
+  border:1px solid var(--border);
+  background:var(--paper);
+  padding:28px;
+  display:flex; flex-direction:column; gap:18px;
+}
+.review-source{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--grey);
+}
+.review-source svg{width:16px; height:16px;}
+.review-stars{color:var(--accent); letter-spacing:2px; font-size:0.95rem;}
+.review-card blockquote{margin:0; font-size:1rem; line-height:1.6;}
+.review-author{display:flex; align-items:center; gap:12px; margin-top:auto;}
+.review-avatar{
+  width:40px; height:40px; border-radius:50%;
+  background:var(--paper-deep); object-fit:cover; flex:none;
+}
+.review-author strong{display:block; font-size:0.92rem;}
+.review-author a, .review-author span{font-size:0.82rem; color:var(--grey);}
+.reviews-cta{margin-top:28px; text-align:center; font-size:0.9rem; color:var(--grey);}
+.reviews-cta a{color:var(--ink); border-bottom:1px solid currentColor;}
+
+/* Espace projet en ligne */
+.portal{
+  display:grid; gap:48px; grid-template-columns:1fr; align-items:center;
+}
+@media (min-width: 880px){ .portal{grid-template-columns:1fr 1fr;} }
+.portal h2{font-size:clamp(1.8rem, 3.4vw, 2.8rem);}
+.portal p{color:var(--grey); max-width:48ch;}
+.portal ul{list-style:none; margin:24px 0 8px; padding:0; display:flex; flex-direction:column; gap:14px;}
+.portal li{display:flex; gap:12px; color:var(--grey);}
+.portal li::before{content:"—"; color:var(--accent);}
+.portal-mock{
+  border:1px solid var(--border); background:var(--paper); padding:28px;
+  display:flex; flex-direction:column; gap:16px;
+}
+.portal-mock .row{display:flex; justify-content:space-between; font-size:0.85rem; color:var(--grey);}
+.portal-mock .bar{height:4px; background:var(--paper-deep);}
+.portal-mock .bar span{display:block; height:100%; width:60%; background:var(--accent);}
+.portal-mock .step{display:flex; align-items:center; gap:10px; font-size:0.9rem;}
+.portal-mock .dot{width:8px; height:8px; border-radius:50%; background:var(--border); flex:none;}
+.portal-mock .step.done .dot{background:var(--ink);}
+.portal-mock .step.current .dot{background:var(--accent);}
+.portal-mock .step.todo{color:var(--grey);}
+
+/* FAQ */
+.faq-list{border-top:1px solid var(--border);}
+.faq-list details{border-bottom:1px solid var(--border); padding:22px 0;}
+.faq-list summary{
+  cursor:pointer; list-style:none;
+  display:flex; justify-content:space-between; gap:24px;
+  font-family:var(--font-display); font-weight:700; font-size:1.05rem;
+}
+.faq-list summary::-webkit-details-marker{display:none;}
+.faq-list summary::after{content:"+"; color:var(--accent); font-weight:500; transition:transform .25s ease;}
+.faq-list details[open] summary::after{transform:rotate(45deg);}
+.faq-list details p{margin:14px 0 0; color:var(--grey); max-width:70ch;}
+
+/* ============================================================
+   11. CONTACT — adresse de contact à confirmer avec le client.
+   ============================================================ */
+.contact{
+  background:var(--ink);
+  color:var(--paper);
+}
+.contact h2{color:var(--paper); font-size:clamp(2rem, 5vw, 3.4rem); max-width:16ch;}
+.contact-sub{color:var(--paper); opacity:.68; max-width:42ch; margin-top:20px;}
+.eyebrow--invert{color:var(--paper); opacity:.75;}
+.contact-actions{
+  margin-top:36px;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:22px;
+}
+.contact .btn-primary{
+  background:var(--paper); color:var(--ink); margin-top:0;
+}
+.contact .btn-primary:hover{background:var(--accent); color:var(--paper);}
+.copy-email{
+  background:none;
+  border:none;
+  border-bottom:1px solid currentColor;
+  color:var(--paper);
+  opacity:.7;
+  font-family:var(--font-body);
+  font-size:0.85rem;
+  cursor:pointer;
+  padding:4px 0;
+  transition:opacity .25s ease;
+}
+.copy-email:hover{opacity:1;}
+.contact .contact-email{overflow-wrap:anywhere;}
+
+/* ============================================================
+   12. FOOTER
+   ============================================================ */
+.site-footer{padding:64px 0 36px;}
+.footer-top{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:32px;
+  padding-bottom:36px;
+  border-bottom:1px solid var(--border);
+}
+.footer-cols{
+  display:flex;
+  gap:clamp(32px, 6vw, 80px);
+  flex-wrap:wrap;
+}
+.footer-col h4{
+  font-size:0.78rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--grey);
+  margin:0 0 14px;
+  font-weight:600;
+}
+.footer-col ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+.footer-col a{font-size:0.92rem;}
+.footer-bottom{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:28px;
+  font-size:0.8rem;
+  color:var(--grey);
+}
