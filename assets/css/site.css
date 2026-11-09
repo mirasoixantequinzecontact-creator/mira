@@ -298,168 +298,58 @@ body.is-loaded .hero-eye{ opacity:1; transform:none; }
   color:var(--ink); cursor:pointer;
 }
 
-/* ======== ANCIENNES SECTIONS — en cours de migration (étapes 3 à 5) ======== */
 /* ============================================================
-   MÉTHODE — 4 étapes (grille brochure : titre à gauche, étapes à droite)
+   FAQ — numérotée, une seule question ouverte à la fois
    ============================================================ */
-.methode{ display:grid; gap:40px; }
-@media (min-width: 901px){ .methode{ grid-template-columns:260px 1fr; gap:80px; } }
-.process-grid{ list-style:none; margin:0; padding:0; border-top:1px solid var(--border); }
-.process-step{
-  display:grid; grid-template-columns:40px 1fr; gap:24px; align-items:start;
-  padding:24px 0; border-bottom:1px solid var(--border);
-}
-.process-num{ font-size:11px; font-weight:700; letter-spacing:.15em; color:var(--grey); padding-top:4px; }
-.process-step h3{ font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; line-height:1.4; margin-bottom:4px; }
-.process-step p{ color:var(--text); }
-
-/* ============================================================
-   POURQUOI MIRA — 4 cases bordées de noir
-   ============================================================ */
-main > section.pourquoi{ background:var(--paper-deep); }
-.benefices{
-  list-style:none; margin:0; padding:0;
-  display:grid; grid-template-columns:1fr;
-  border-left:1px solid var(--line); border-top:1px solid var(--line);
-}
-@media (min-width: 641px){ .benefices{ grid-template-columns:repeat(2, 1fr); } }
-@media (min-width: 1081px){ .benefices{ grid-template-columns:repeat(4, 1fr); } }
-.benefice{ padding:32px 28px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
-.benefice-num{ display:block; margin-bottom:20px; font-size:11px; font-weight:700; letter-spacing:.15em; color:var(--grey); }
-.benefice h3{ font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; line-height:1.35; margin-bottom:10px; }
-.benefice p{ color:var(--text); font-size:15px; }
-
-/* ============================================================
-   CLIENTS — logos défilants (niveaux de gris, couleur au survol)
-   ============================================================ */
-.clients-marquee{ border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
-.clients-marquee .marquee-track{ list-style:none; margin:0; padding:0; align-items:center; gap:clamp(40px, 6vw, 80px); }
-.clients-marquee li{ flex:none; }
-.clients-marquee a, .clients-marquee span{ display:block; }
-.clients-marquee img{
-  height:40px; width:auto; max-width:160px; object-fit:contain;
-  filter:grayscale(1); opacity:.75; transition:filter .3s ease, opacity .3s ease;
-}
-.clients-marquee li:hover img{ filter:none; opacity:1; }
-.marquee:focus-within .marquee-track{ animation-play-state:paused; }
-
-/* ============================================================
-   RÉSULTATS — abonnés avant / après
-   ============================================================ */
-.resultats-grid{ display:grid; gap:24px; }
-@media (min-width: 901px){ .resultats-grid{ grid-template-columns:repeat(2, 1fr); } }
-.resultat{ border:1px solid var(--line); padding:24px; display:grid; gap:16px; }
-.resultat-handle{ font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--grey); }
-.resultat-chiffre{ font-size:clamp(28px, 4vw, 44px); font-weight:700; letter-spacing:-0.03em; line-height:1; }
-.resultat-chiffre .light{ font-weight:300; color:var(--grey-display); }
-.resultat-periode{ color:var(--text); }
-.resultat-captures{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.resultat-captures figure{ margin:0; }
-.resultat-captures img{ width:100%; aspect-ratio:9 / 16; object-fit:cover; border:1px solid var(--border); }
-.resultat-captures figcaption{ margin-top:6px; font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--grey); }
-.resultat-date{ font-size:12px; color:var(--grey); }
-
-/* ============================================================
-   TÉMOIGNAGES — vidéos + avis écrits (modèles dans le HTML)
-   ============================================================ */
-#temoignages .carousel + .reviews-grid:not(:empty){ margin-top:48px; }
-.reviews-grid{ display:grid; gap:20px; grid-template-columns:1fr; }
-@media (min-width: 720px){ .reviews-grid{ grid-template-columns:repeat(2, 1fr); } }
-@media (min-width: 1080px){ .reviews-grid{ grid-template-columns:repeat(3, 1fr); } }
-.review-card{ border:1px solid var(--line); background:var(--paper); padding:28px; display:flex; flex-direction:column; gap:18px; }
-.review-source{ display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--grey); }
-.review-source svg{ width:16px; height:16px; }
-.review-stars{ color:var(--ink); letter-spacing:2px; }
-.review-card blockquote{ margin:0; font-size:1rem; line-height:1.6; }
-.review-author{ display:flex; align-items:center; gap:12px; margin-top:auto; }
-.review-avatar{ width:40px; height:40px; background:var(--paper-deep); object-fit:cover; flex:none; }
-.review-author strong{ display:block; font-size:.92rem; }
-.review-author a, .review-author span{ font-size:.82rem; color:var(--grey); }
-.reviews-cta{ margin-top:32px; font-size:.9rem; color:var(--text); }
-.reviews-cta a{ color:var(--ink); border-bottom:1px solid currentColor; }
-
-/* FAQ */
-.faq-list{border-top:1px solid var(--border);}
-.faq-list details{border-bottom:1px solid var(--border); padding:22px 0;}
+.faq-list{ border-top:1px solid var(--line); }
+.faq-list details{ border-bottom:1px solid var(--border); }
 .faq-list summary{
-  cursor:pointer; list-style:none;
-  display:flex; justify-content:space-between; gap:24px;
-  font-family:var(--font-display); font-weight:700; font-size:1.05rem;
+  display:grid; grid-template-columns:48px 1fr auto; gap:16px; align-items:baseline;
+  padding:22px 0; cursor:pointer; list-style:none;
+  font-weight:700; font-size:clamp(16px, 1.6vw, 18px); line-height:1.4;
 }
-.faq-list summary::-webkit-details-marker{display:none;}
-.faq-list summary::after{content:"+"; color:var(--accent); font-weight:500; transition:transform .25s ease;}
-.faq-list details[open] summary::after{transform:rotate(45deg);}
-.faq-list details p{margin:14px 0 0; color:var(--grey); max-width:70ch;}
+.faq-list summary::-webkit-details-marker{ display:none; }
+.faq-list summary::after{ content:"+"; font-weight:400; font-size:24px; line-height:1; }
+.faq-list details[open] summary::after{ content:"−"; }
+.faq-num{ font-size:11px; font-weight:700; letter-spacing:.15em; color:var(--grey); }
+.faq-list details p{ padding:0 0 22px 64px; color:var(--text); max-width:calc(70ch + 64px); }
+.faq-list details p a{ color:var(--ink); border-bottom:1px solid currentColor; white-space:nowrap; }
+.faq-cta{ margin:0 0 24px 64px; }
+@media (max-width: 640px){
+  .faq-list summary{ grid-template-columns:32px 1fr auto; gap:12px; }
+  .faq-list details p{ padding-left:44px; }
+  .faq-cta{ margin-left:44px; }
+}
 
 /* ============================================================
-   11. CONTACT — adresse de contact à confirmer avec le client.
+   CONTACT — fond noir, prolongé par le footer (un seul bloc noir)
    ============================================================ */
-.contact{
-  background:var(--ink);
-  color:var(--paper);
+main > section.contact{ background:var(--ink); color:#fff; border-bottom:0; }
+.contact-eye{ display:block; margin-bottom:32px; }
+.contact-eye img{ width:140px; height:auto; }
+.contact-title{ font-size:clamp(2.6rem, 8vw, 6rem); }
+.contact .title .light{ color:#8c8c8c; }
+.contact-sub{ color:#c8c8c8; max-width:52ch; margin:24px 0 32px; }
+.contact-cta{ min-height:56px; padding:18px 32px; font-size:13px; }
+.contact-list{
+  list-style:none; margin:56px 0 0; padding:0;
+  border-top:1px solid rgba(255,255,255,.15);
 }
-.contact h2{color:var(--paper); font-size:clamp(2rem, 5vw, 3.4rem); max-width:16ch;}
-.contact-sub{color:var(--paper); opacity:.68; max-width:42ch; margin-top:20px;}
-.eyebrow--invert{color:var(--paper); opacity:.75;}
-.contact-actions{
-  margin-top:36px;
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:22px;
+.contact-list li{ display:flex; flex-direction:column; align-items:flex-start; gap:6px; padding:20px 0; border-bottom:1px solid rgba(255,255,255,.15); }
+/* Desktop : une ligne, colonnes à la largeur de leur contenu (l'e-mail ne se coupe pas) */
+@media (min-width: 901px){
+  .contact-list{ display:flex; flex-wrap:wrap; column-gap:clamp(32px, 5vw, 72px); padding-top:24px; }
+  .contact-list li{ border-bottom:0; padding:0 0 24px; }
 }
-.contact .btn-primary{
-  background:var(--paper); color:var(--ink); margin-top:0;
-}
-.contact .btn-primary:hover{background:var(--accent); color:var(--paper);}
+.contact-label{ font-size:11px; font-weight:700; letter-spacing:.25em; text-transform:uppercase; color:#a0a0a0; }
+.contact-list a{ color:#fff; overflow-wrap:anywhere; }
+.contact-list a:hover{ text-decoration:underline; }
+.contact-list .contact-secondary{ color:#a0a0a0; font-size:14px; }
 .copy-email{
-  background:none;
-  border:none;
-  border-bottom:1px solid currentColor;
-  color:var(--paper);
-  opacity:.7;
-  font-family:var(--font-body);
-  font-size:0.85rem;
-  cursor:pointer;
-  padding:4px 0;
-  transition:opacity .25s ease;
+  background:none; border:0; border-bottom:1px solid currentColor; border-radius:0;
+  padding:2px 0; color:#a0a0a0; font:inherit; font-size:13px; cursor:pointer;
 }
-.copy-email:hover{opacity:1;}
-.contact .contact-email{overflow-wrap:anywhere;}
-
-/* ============================================================
-   12. FOOTER
-   ============================================================ */
-.site-footer{padding:64px 0 36px;}
-.footer-top{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-between;
-  gap:32px;
-  padding-bottom:36px;
-  border-bottom:1px solid var(--border);
-}
-.footer-cols{
-  display:flex;
-  gap:clamp(32px, 6vw, 80px);
-  flex-wrap:wrap;
-}
-.footer-col h4{
-  font-size:0.78rem;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:var(--grey);
-  margin:0 0 14px;
-  font-weight:600;
-}
-.footer-col ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
-.footer-col a{font-size:0.92rem;}
-.footer-bottom{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-between;
-  gap:12px;
-  margin-top:28px;
-  font-size:0.8rem;
-  color:var(--grey);
-}
+.copy-email:hover{ color:#fff; }
+.contact-callback{ margin-top:32px; }
+.contact-callback a{ color:#c8c8c8; border-bottom:1px solid currentColor; }
+.contact-callback a:hover{ color:#fff; }
