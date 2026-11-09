@@ -228,3 +228,64 @@ p{ margin:0; }
 .footer-wordmark{ display:block; width:100%; height:auto; color:#fff; margin-top:8px; }
 .footer-wordmark.reveal{ transform:translateY(24px); transition-duration:.6s; }
 .footer-wordmark.reveal.is-visible{ transform:none; }
+
+/* ---------- 8. Modale de prise de RDV (booking.js) ---------- */
+html.modal-open{ overflow:hidden; }
+.booking{
+  position:fixed; inset:0; z-index:500;
+  display:flex; align-items:center; justify-content:center; padding:24px;
+  background:rgba(10,10,10,.6);
+}
+.booking-panel{
+  display:flex; flex-direction:column;
+  width:100%; max-width:960px; max-height:calc(100vh - 48px);
+  background:#fff; border:1px solid var(--line); outline:none;
+}
+/* Mobile : plein écran */
+@media (max-width: 640px){
+  .booking{ padding:0; }
+  .booking-panel{ max-width:none; height:100%; height:100dvh; max-height:none; border:0; }
+}
+.booking-head{ display:flex; align-items:flex-start; gap:14px; padding:20px 24px; border-bottom:1px solid var(--line); }
+.booking-m{ width:22px; height:22px; flex:none; margin-top:2px; }
+.booking-titles{ flex:1; min-width:0; }
+.booking-title{ font-size:clamp(20px, 2.4vw, 28px); font-weight:700; text-transform:uppercase; letter-spacing:-0.03em; line-height:.95; }
+.booking-title .light{ display:block; font-weight:300; color:var(--grey-display); }
+.booking-pack{ margin-top:12px; }
+.booking-close{
+  flex:none; width:44px; height:44px; border:1px solid var(--ink); border-radius:0;
+  background:#fff; color:var(--ink); font-size:22px; line-height:1; cursor:pointer;
+}
+.booking-close:hover{ background:var(--ink); color:#fff; }
+.booking-body{ flex:1; overflow:auto; -webkit-overflow-scrolling:touch; min-height:320px; }
+.booking-loading{ padding:24px; color:var(--grey); }
+.booking-fallback{ padding:32px 24px; }
+.booking-fallback-title{ font-size:18px; font-weight:700; margin-bottom:20px; }
+.booking-fallback-actions{ display:flex; flex-wrap:wrap; gap:12px; }
+
+/* ---------- 9. Bouton contact flottant (contact-fab.js) ---------- */
+.contact-fab{
+  position:fixed; right:16px; bottom:calc(16px + env(safe-area-inset-bottom)); z-index:150;
+  display:flex; flex-direction:column; align-items:flex-end; gap:12px;
+  transition:opacity .25s ease, transform .25s ease, visibility 0s linear 0s;
+}
+.contact-fab.is-hidden, html.menu-open .contact-fab, html.modal-open .contact-fab{
+  opacity:0; visibility:hidden; transform:translateY(12px); pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease, visibility 0s linear .25s;
+}
+/* Seule exception aux angles droits : le bouton rond */
+.fab-toggle{
+  width:56px; height:56px; border-radius:50%; border:1px solid rgba(255,255,255,.25);
+  background:var(--ink); color:#fff; display:grid; place-items:center; cursor:pointer;
+  box-shadow:0 6px 20px rgba(0,0,0,.2);
+}
+.fab-toggle:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+.fab-panel{ min-width:250px; background:#fff; border:1px solid var(--line); box-shadow:0 10px 30px rgba(0,0,0,.15); }
+.fab-title{ padding:16px 20px 10px; font-size:11px; font-weight:700; letter-spacing:.25em; text-transform:uppercase; color:var(--grey); }
+.fab-panel ul{ list-style:none; margin:0; padding:0; }
+.fab-panel a, .fab-panel button{
+  display:block; width:100%; padding:14px 20px; text-align:left;
+  background:none; border:0; border-top:1px solid var(--border); border-radius:0;
+  font:inherit; font-size:15px; font-weight:600; color:var(--ink); cursor:pointer;
+}
+.fab-panel a:hover, .fab-panel button:hover{ background:var(--paper-deep); }

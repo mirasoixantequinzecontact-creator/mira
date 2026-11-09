@@ -4,6 +4,10 @@
 //  Module ES : chargé avec <script type="module">, donc après le HTML.
 // ============================================================
 import { SITE } from './config.js';
+// Ordre voulu : les sections sont rendues (et les vides retirées) avant le scrollspy
+import './common.js';
+import './sections.js';
+import './contact-fab.js';
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -101,6 +105,7 @@ if (ambianceVideo) {
   fetch('/videos/showreel.mp4', { method: 'HEAD' }).then((res) => {
     if (!res.ok) return;
     const video = ambianceVideo.querySelector('video');
+    video.poster = video.dataset.poster; // poster obligatoire, chargé seulement si le showreel existe
     document.querySelector('.ambiance-photos').hidden = true;
     ambianceVideo.hidden = false;
     // Chargé seulement à l'approche de l'écran ; immobile si l'utilisateur réduit les animations
@@ -113,9 +118,5 @@ if (ambianceVideo) {
     io.observe(ambianceVideo);
   }).catch(() => {});
 }
-
-// ---- Année courante dans le footer ----
-const yearEl = document.getElementById('year');
-if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 initScrollspy();
