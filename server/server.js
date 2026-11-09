@@ -47,16 +47,24 @@ if (IS_PROD) app.set('trust proxy', 1);            // derrière un proxy HTTPS (
 // ------------------------------------------------------------
 //  En-têtes de sécurité
 // ------------------------------------------------------------
+// Agenda de prise de RDV (modale) : seule ressource tierce autorisée, et elle
+// n'est chargée qu'au clic sur « Réserver un appel » (voir assets/js/booking.js).
+// BOOKING_PROVIDER doit correspondre à SITE.booking.provider dans assets/js/config.js.
+const BOOKING_DOMAINS = {
+  cal:      { script: ['https://app.cal.com'], frame: ['https://app.cal.com', 'https://cal.com'], connect: ['https://app.cal.com'], style: [] },
+  calendly: { script: ['https://assets.calendly.com'], frame: ['https://calendly.com'], connect: [], style: ['https://assets.calendly.com'] }
+}[process.env.BOOKING_PROVIDER || 'cal'] || { script: [], frame: [], connect: [], style: [] };
+
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
-  // RGPD : aucune ressource tierce (polices hébergées dans /fonts) —
-  // le navigateur du visiteur ne contacte aucun autre serveur que le nôtre.
-  "style-src 'self' 'unsafe-inline'",
+  ["script-src 'self' 'unsafe-inline'", ...BOOKING_DOMAINS.script].join(' '),
+  // RGPD : aucune ressource tierce au chargement (polices hébergées dans /fonts) —
+  // le navigateur du visiteur ne contacte que notre serveur, sauf s'il ouvre l'agenda.
+  ["style-src 'self' 'unsafe-inline'", ...BOOKING_DOMAINS.style].join(' '),
   "font-src 'self'",
   "img-src 'self' data:",
-  "connect-src 'self'",
-  "frame-src 'none'",
+  ["connect-src 'self'", ...BOOKING_DOMAINS.connect].join(' '),
+  BOOKING_DOMAINS.frame.length ? ['frame-src', ...BOOKING_DOMAINS.frame].join(' ') : "frame-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
   "base-uri 'self'",
@@ -302,6 +310,12 @@ const PUBLIC_PAGES = new Set([
   'mentions-legales', 'confidentialite'
 ]);
 app.use('/fonts', express.static(path.join(ROOT, 'fonts'), { maxAge: '30d', index: false }));
+app.use('/assets', express.static(path.join(ROOT, 'assets'), { maxAge: '7d', index: false }));
+// Vidéos : express.static gère les requêtes Range (lecture progressive, avance rapide)
+app.use('/videos', express.static(path.join(ROOT, 'videos'), { maxAge: '7d', index: false }));
+// SEO : fichiers racine (jamais connexion, suivi ni espace-equipe dans le sitemap)
+app.get('/robots.txt', (req, res) => res.type('text/plain').sendFile(path.join(ROOT, 'robots.txt')));
+app.get('/sitemap.xml', (req, res) => res.type('application/xml').sendFile(path.join(ROOT, 'sitemap.xml')));
 app.get('/', (req, res) => res.sendFile(path.join(ROOT, 'index.html')));
 app.get('/:page', (req, res, next) => {
   const name = req.params.page.replace(/\.html$/, '');
@@ -309,7 +323,8 @@ app.get('/:page', (req, res, next) => {
   res.sendFile(path.join(ROOT, name + '.html'));
 });
 
-app.use((req, res) => res.status(404).send('Page introuvable.'));
+// Page 404 à l'image de la marque (statut 404 conservé)
+app.use((req, res) => res.status(404).sendFile(path.join(ROOT, '404.html')));
 
 app.listen(PORT, () => {
   console.log(`\n  Mira — serveur démarré sur http://localhost:${PORT}\n`);

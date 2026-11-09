@@ -7,23 +7,19 @@
      ============================================================ -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
 <title>Espace équipe — Mira Agency</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23121212'/%3E%3Crect x='40' y='40' width='22' height='22' fill='%23F6F3EE'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="icon" href="/assets/img/brand/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/img/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/brand/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/img/brand/icon-512.png">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/css/tokens.css">
 <style>
-  :root{
-    --ink:#121212; --paper:#F6F3EE; --paper-deep:#ECE7DD;
-    --accent:#5A1A2C; --grey:#6B6660; --border:rgba(18,18,18,0.12);
-    --tint-sand:#F1ECE2; --tint-slate:#ECEEF1; --ok:#3B7A57; --warn:#9A6B1E;
-    --font-display:'Archivo', sans-serif; --font-body:'Inter', sans-serif;
-    --max-w:1180px; --gutter:5vw;
-  }
-  [data-theme="dark"]{
-    --ink:#F2EDE6; --paper:#121212; --paper-deep:#1B1B1B;
-    --accent:#C9536C; --grey:#9B958C; --border:rgba(242,237,230,0.14);
-    --tint-sand:#191712; --tint-slate:#13161A; --ok:#5DAe82; --warn:#C9A14E;
-  }
+  /* Mise en page propre à cette page (la palette est dans /assets/css/tokens.css) */
+  body{ --ok:#3B7A57; --warn:#9A6B1E; --max-w:1180px; --gutter:5vw; }
+
   *{box-sizing:border-box;}
   @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;}}
   body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.5; -webkit-font-smoothing:antialiased; transition:background-color .4s ease, color .4s ease;}
@@ -33,24 +29,24 @@
   .eyebrow{font-weight:600; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:.8rem;}
 
   /* Header */
-  .site-header{position:sticky; top:0; z-index:50; background:rgba(246,243,238,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--border);}
-  [data-theme="dark"] .site-header{background:rgba(18,18,18,0.85);}
+  .site-header{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--border);}
+
   .site-header .container{display:flex; align-items:center; justify-content:space-between; padding:14px var(--gutter);}
   .logo{display:inline-flex; align-items:center; gap:12px; font-family:var(--font-display); font-weight:900; font-size:1.2rem; color:var(--ink);}
-  .logo .dot{display:inline-block; width:.16em; height:.16em; background:var(--ink); transform:translateY(-.02em);}
+
   .logo .tag{font-family:var(--font-body); font-weight:600; font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--grey); border:1px solid var(--border); padding:3px 8px;}
   .header-actions{display:flex; align-items:center; gap:16px; font-size:.88rem;}
   .header-actions .who{color:var(--grey);} .header-actions a:hover{color:var(--accent);}
-  .theme-toggle{width:34px; height:34px; border:1px solid var(--border); background:none; color:var(--ink); cursor:pointer; display:inline-flex; align-items:center; justify-content:center;}
-  .theme-toggle svg{width:15px; height:15px;} .theme-toggle .icon-moon{display:none;}
-  [data-theme="dark"] .theme-toggle .icon-sun{display:none;} [data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+
+
 
   /* Titre + KPI */
   .dash-head{padding:clamp(32px,5vw,56px) 0 24px;}
   .dash-head h1{font-size:clamp(1.7rem,3.4vw,2.6rem);}
   .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:28px;}
   @media (max-width:760px){ .kpis{grid-template-columns:repeat(2,1fr);} }
-  .kpi{border:1px solid var(--border); padding:20px; background:var(--tint-slate);}
+  .kpi{border:1px solid var(--border); padding:20px; background:var(--paper-deep);}
   .kpi .num{font-family:var(--font-display); font-weight:900; font-size:1.9rem; line-height:1;}
   .kpi .lbl{font-size:.8rem; color:var(--grey); margin-top:8px;}
 
@@ -66,9 +62,9 @@
   .table-wrap{border:1px solid var(--border); overflow-x:auto; margin-bottom:40px;}
   table{width:100%; border-collapse:collapse; min-width:720px;}
   th, td{text-align:left; padding:15px 18px; font-size:.9rem; border-bottom:1px solid var(--border);}
-  th{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--grey); font-weight:600; background:var(--tint-sand);}
+  th{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--grey); font-weight:600; background:var(--paper-deep);}
   tbody tr{transition:background-color .15s ease; cursor:pointer;}
-  tbody tr:hover{background:var(--tint-slate);}
+  tbody tr:hover{background:var(--paper-deep);}
   tbody tr:last-child td{border-bottom:none;}
   .client{font-weight:600;}
   .ref{color:var(--grey); font-size:.82rem;}
@@ -82,7 +78,7 @@
   .pct{font-size:.8rem; color:var(--grey); margin-left:8px;}
   .row-link{color:var(--accent); font-size:.82rem; font-weight:600; white-space:nowrap;}
 
-  .demo-note{margin:0 0 40px; padding:14px 16px; background:var(--tint-sand); border:1px solid var(--border); font-size:.78rem; color:var(--grey);}
+  .demo-note{margin:0 0 40px; padding:14px 16px; background:var(--paper-deep); border:1px solid var(--border); font-size:.78rem; color:var(--grey);}
   .demo-note strong{color:var(--ink);}
   .site-footer{padding:32px 0; border-top:1px solid var(--border);}
   .site-footer .container{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; font-size:.8rem; color:var(--grey);}
@@ -101,14 +97,10 @@
 
 <header class="site-header">
   <div class="container">
-    <a href="index.html" class="logo">mira<span class="dot" aria-hidden="true"></span> <span class="tag">Équipe</span></a>
+    <a href="/" class="logo" aria-label="mira. — accueil"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="16 16 1144 334"><path fill="currentColor" fill-rule="evenodd" d="M1086.17 272.50 L1086.50 340.67 L1156.00 340.33 L1155.83 272.33ZM449.67 109.00 L449.00 109.83 L449.00 340.00 L449.83 340.83 L511.50 340.83 L512.50 340.00 L512.50 109.83 L510.50 108.83ZM701.83 105.17 L690.67 103.00 L676.00 104.00 L663.17 107.33 L650.33 113.00 L638.50 120.83 L630.17 128.50 L623.17 137.00 L614.83 151.50 L613.67 150.83 L613.17 109.33 L553.50 109.67 L553.83 340.67 L616.67 340.33 L616.83 229.67 L619.00 210.83 L622.33 198.83 L626.83 189.17 L634.00 179.33 L642.67 171.83 L651.33 167.00 L659.83 164.00 L671.50 162.00 L684.83 161.83 L701.00 163.83 L702.33 163.33 L702.50 106.00ZM403.33 135.67 L398.00 127.33 L392.33 121.17 L385.00 115.50 L376.17 110.67 L366.50 107.00 L358.67 105.00 L344.83 103.17 L336.17 103.00 L325.33 104.00 L315.67 106.00 L305.67 109.17 L294.00 114.33 L284.67 119.83 L275.50 126.50 L260.33 142.00 L256.67 131.33 L253.33 124.83 L249.67 119.83 L241.83 113.00 L233.00 108.33 L222.67 105.00 L209.67 103.17 L200.50 103.00 L187.67 104.00 L176.67 106.00 L165.83 109.17 L156.50 113.00 L147.50 118.00 L138.67 124.50 L131.00 131.83 L122.67 141.33 L122.17 139.33 L128.67 110.50 L128.33 109.17 L68.50 109.17 L20.50 340.33 L82.17 340.83 L83.17 340.17 L109.17 216.17 L112.33 204.83 L117.83 191.33 L123.17 181.83 L129.50 173.17 L134.67 167.67 L142.17 161.50 L150.00 156.83 L157.17 154.17 L163.17 153.00 L172.00 152.83 L179.17 154.17 L183.50 156.00 L188.00 159.00 L191.83 162.83 L194.33 166.50 L196.50 172.17 L197.00 181.17 L194.67 197.50 L165.00 340.17 L165.83 340.83 L228.33 340.67 L255.17 214.00 L259.17 201.00 L262.83 192.33 L268.00 182.83 L273.50 175.00 L280.67 167.17 L287.17 161.83 L295.83 156.67 L302.67 154.17 L308.67 153.00 L317.50 152.83 L326.83 155.00 L332.17 158.00 L337.00 162.50 L339.50 166.00 L341.83 171.50 L342.50 181.33 L340.67 195.00 L310.50 340.17 L311.50 340.83 L373.33 340.67 L407.83 178.67 L409.00 167.67 L408.83 154.17 L406.83 144.33ZM739.83 128.83 L730.33 139.33 L723.00 151.67 L720.17 159.17 L718.00 168.00 L716.83 176.67 L717.33 179.83 L779.00 180.00 L780.17 179.00 L782.17 168.83 L785.17 161.83 L788.83 156.67 L792.83 153.00 L799.83 149.00 L808.83 146.17 L818.00 145.00 L827.83 145.00 L843.50 147.17 L849.50 149.50 L855.33 153.50 L859.67 158.67 L862.67 165.33 L863.83 172.00 L863.83 180.83 L862.67 185.33 L859.50 190.33 L855.17 193.83 L847.00 197.83 L830.83 201.83 L782.83 208.00 L756.67 214.00 L748.33 217.00 L739.83 221.17 L731.17 227.00 L724.83 233.00 L716.67 244.50 L712.17 255.33 L710.00 266.00 L709.50 280.83 L711.00 295.00 L714.17 305.67 L719.83 316.50 L726.00 324.33 L736.00 332.83 L746.83 338.83 L758.00 342.83 L775.17 346.00 L790.00 346.67 L804.50 345.83 L817.00 343.83 L829.00 340.83 L840.50 336.67 L849.67 331.83 L858.00 326.00 L865.50 319.33 L866.83 320.17 L869.00 334.00 L870.83 340.00 L871.83 340.83 L934.50 340.67 L934.67 339.50 L931.17 330.67 L929.17 320.50 L927.33 296.67 L926.83 158.17 L924.83 148.67 L922.00 141.33 L918.00 134.67 L913.00 128.67 L905.83 122.17 L896.67 116.17 L885.17 111.00 L875.83 108.00 L853.00 104.00 L821.83 102.67 L811.67 103.00 L794.67 105.00 L773.33 110.00 L764.83 113.17 L753.17 119.00ZM863.83 228.67 L863.83 256.00 L861.67 271.50 L859.00 278.83 L854.67 286.50 L849.67 292.17 L845.00 296.00 L837.67 300.33 L830.33 302.83 L817.67 304.67 L807.17 304.67 L797.67 303.50 L788.83 300.83 L782.33 297.00 L777.67 292.00 L775.00 287.17 L773.17 280.50 L773.17 269.00 L774.33 264.00 L776.50 259.17 L780.00 254.33 L784.33 250.33 L791.83 246.00 L800.33 243.00 L813.00 240.17 L842.67 235.83 L854.17 232.67 L862.67 228.17ZM449.17 20.50 L449.50 72.67 L512.33 72.33 L512.17 20.33Z"/></svg> <span class="tag">Équipe</span></a>
     <div class="header-actions">
       <span class="who" id="who"></span>
       <a href="connexion.html" id="logout">Déconnexion</a>
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer le thème">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
-      </button>
     </div>
   </div>
 </header>
@@ -170,13 +162,6 @@
 </footer>
 
 <script>
-  // ---- Thème ----
-  const root = document.documentElement;
-  let theme = localStorage.getItem('mira-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  applyTheme(theme);
-  function applyTheme(t){ t === 'dark' ? root.setAttribute('data-theme','dark') : root.removeAttribute('data-theme'); }
-  document.getElementById('theme-toggle').addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('mira-theme', theme); applyTheme(theme); });
-
   // ---- Déconnexion ----
   document.getElementById('logout').addEventListener('click', async (e) => {
     e.preventDefault();

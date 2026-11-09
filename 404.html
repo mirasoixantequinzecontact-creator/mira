@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex">
+<title>Page introuvable — Mira</title>
+<link rel="icon" href="/assets/img/brand/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/img/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/brand/apple-touch-icon.png">
+<!-- Chemins absolus : cette page est servie à n'importe quelle URL inconnue -->
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<style>
+  body{ margin:0; min-height:100vh; display:grid; place-items:center; text-align:center;
+    background:var(--paper); color:var(--ink); font-family:var(--font-body); padding:48px 24px; }
+  h1{ font-weight:700; text-transform:uppercase; letter-spacing:-0.04em; line-height:.92; font-size:clamp(2.6rem, 9vw, 6rem); margin:24px 0 0; }
+  h1 .light{ display:block; font-weight:300; color:var(--grey-display); }
+  p{ color:var(--text); margin:20px 0 32px; }
+  a.btn{ display:inline-block; background:var(--ink); color:#fff; text-decoration:none; text-transform:uppercase;
+    font-size:12px; font-weight:700; letter-spacing:.15em; padding:16px 28px; }
+  img{ display:block; margin:0 auto; width:140px; height:auto; }
+</style>
+</head>
+<body>
+<main>
+  <picture>
+    <source type="image/webp" srcset="/assets/img/brand/oeil-noir.webp 1x, /assets/img/brand/oeil-noir@2x.webp 2x">
+    <img src="/assets/img/brand/oeil-noir.png" width="235" height="211" alt="">
+  </picture>
+  <h1>Cette page <span class="light">n'existe pas.</span></h1>
+  <p>Vous, si.</p>
+  <a class="btn" href="/">Retour à l'accueil</a>
+</main>
+</body>
+</html>

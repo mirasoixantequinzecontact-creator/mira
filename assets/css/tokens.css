@@ -1,0 +1,31 @@
+/* ============================================================
+   TOKENS — chargé par toutes les pages.
+   Les noms de variables sont ceux déjà utilisés par les pages :
+   seules les valeurs changent (DA noir / blanc de la brochure).
+   ============================================================ */
+:root{
+  color-scheme: light;
+  --ink:#0a0a0a;          /* était #121212 */
+  --paper:#ffffff;        /* était #F6F3EE */
+  --paper-deep:#f5f5f3;   /* était #ECE7DD — = --off de la brochure */
+  --accent:#0a0a0a;       /* plus de couleur d'accent */
+  --grey:#6b6b6b;         /* labels et textes secondaires (contraste AA) */
+  --grey-display:#8c8c8c; /* 2e ligne "light" des grands titres */
+  --text:#555555;         /* texte courant */
+  --border:#e0e0e0;       /* filets fins */
+  --line:#0a0a0a;         /* filets forts entre sections */
+  --font-display:'Inter', sans-serif;
+  --font-body:'Inter', sans-serif;
+}
+
+/* ---- Socle de marque, commun à toutes les pages ---- */
+::selection{ background:#0a0a0a; color:#fff; }
+
+/* Le nom en texte : « mira », m en vraie italique Inter, le reste hérite du contexte */
+.brand{ font:inherit; white-space:nowrap; }
+.brand em{ font-style:italic; }
+
+/* Logo : wordmark SVG inline (fill="currentColor") — noir sur fond clair, blanc sur fond noir */
+.logo{ display:inline-flex; align-items:center; color:inherit; line-height:0; }
+.logo svg{ display:block; height:28px; width:auto; }
+@media (max-width: 640px){ .logo svg{ height:24px; } }

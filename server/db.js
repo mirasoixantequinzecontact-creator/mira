@@ -4,8 +4,11 @@
 // ============================================================
 const path = require('path');
 const Database = require('better-sqlite3');
+// .env chargé ici aussi : seed.js et password.js utilisent la base sans passer par server.js
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
-const db = new Database(path.join(__dirname, 'mira.db'));
+// DB_PATH : chemin configurable (ex. disque persistant monté en production)
+const db = new Database(process.env.DB_PATH || path.join(__dirname, 'mira.db'));
 db.pragma('journal_mode = WAL');
 
 db.exec(`

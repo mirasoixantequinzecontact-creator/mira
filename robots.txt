@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /connexion
+Disallow: /suivi
+Disallow: /espace-equipe
+Disallow: /api/
+
+Sitemap: https://mira.agency/sitemap.xml
