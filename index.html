@@ -53,6 +53,18 @@
 <link rel="stylesheet" href="/assets/css/tokens.css">
 <link rel="stylesheet" href="/assets/css/components.css">
 <link rel="stylesheet" href="/assets/css/site.css">
+<!-- Modules JS téléchargés en parallèle (évite la cascade site.js → sections.js → données) -->
+<link rel="modulepreload" href="/assets/js/site.js">
+<link rel="modulepreload" href="/assets/js/config.js">
+<link rel="modulepreload" href="/assets/js/common.js">
+<link rel="modulepreload" href="/assets/js/booking.js">
+<link rel="modulepreload" href="/assets/js/sections.js">
+<link rel="modulepreload" href="/assets/js/contact-fab.js">
+<link rel="modulepreload" href="/assets/data/realisations.js">
+<link rel="modulepreload" href="/assets/data/avantApres.js">
+<link rel="modulepreload" href="/assets/data/clients.js">
+<link rel="modulepreload" href="/assets/data/resultats.js">
+<link rel="modulepreload" href="/assets/data/temoignages.js">
 <!-- Sans JavaScript, tout le contenu reste visible -->
 <noscript><style>.reveal, .hero h1 .word, .hero-eye{ opacity:1 !important; transform:none !important; }</style></noscript>
 </head>

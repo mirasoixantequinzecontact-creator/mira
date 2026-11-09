@@ -47,16 +47,66 @@ document.addEventListener('keydown', (e) => {
 });
 document.addEventListener('click', (e) => { if (!panel.hidden && !root.contains(e.target)) setOpen(false); });
 
-// Caché quand le contact final ou le footer est à l'écran (ils proposent déjà tout)
+// ---- Visibilité ----
+// Le bouton se retire (fondu) quand :
+//  1. le contact final ou le footer est à l'écran (ils proposent déjà tout) ;
+//  2. à l'arrêt du défilement, il recouvrirait du texte ou un élément cliquable.
+// Il réapparaît dès que la zone sous lui est libre : il ne masque jamais de contenu.
+let nearEnd = false;
+let covering = false;
+function render() {
+  const hide = nearEnd || (covering && panel.hidden);
+  root.classList.toggle('is-hidden', hide);
+  toggle.tabIndex = hide ? -1 : 0;
+  if (nearEnd) setOpen(false);
+}
+
 const targets = [document.getElementById('contact'), document.querySelector('.site-footer')].filter(Boolean);
 if ('IntersectionObserver' in window && targets.length) {
   const onScreen = new Set();
   const io = new IntersectionObserver((entries) => {
     entries.forEach(en => (en.isIntersecting ? onScreen.add(en.target) : onScreen.delete(en.target)));
-    const hide = onScreen.size > 0;
-    root.classList.toggle('is-hidden', hide);
-    toggle.tabIndex = hide ? -1 : 0;
-    if (hide) setOpen(false);
+    nearEnd = onScreen.size > 0;
+    render();
   });
   targets.forEach(t => io.observe(t));
 }
+
+// Y a-t-il du texte ou un élément cliquable sous le disque du bouton ?
+const caretAt = document.caretPositionFromPoint
+  ? (x, y) => { const c = document.caretPositionFromPoint(x, y); return c && { node: c.offsetNode, offset: c.offset }; }
+  : document.caretRangeFromPoint
+    ? (x, y) => { const r = document.caretRangeFromPoint(x, y); return r && { node: r.startContainer, offset: r.startOffset }; }
+    : () => null;
+function somethingUnder() {
+  const r = toggle.getBoundingClientRect();
+  if (!r.width) return false;
+  root.style.pointerEvents = 'none';               // le hit-test « traverse » le bouton, sans repeindre
+  try {
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2, rad = r.width / 2 + 4;
+    for (let i = -2; i <= 2; i++) for (let j = -2; j <= 2; j++) {
+      const x = cx + (rad * i) / 2, y = cy + (rad * j) / 2;
+      if (Math.hypot(x - cx, y - cy) > rad) continue;
+      const el = document.elementFromPoint(x, y);
+      if (!el) continue;
+      if (el.closest('a, button, input, select, textarea, summary, label, [tabindex]')) return true;
+      const c = caretAt(x, y);
+      if (c && c.node && c.node.nodeType === 3 && c.node.textContent.trim()) {
+        const range = document.createRange();
+        const o = Math.min(c.offset, c.node.length - 1);
+        if (o < 0) continue;
+        range.setStart(c.node, o); range.setEnd(c.node, o + 1);
+        const b = range.getBoundingClientRect();
+        if (/\S/.test(range.toString()) && x >= b.left - 2 && x <= b.right + 2 && y >= b.top - 2 && y <= b.bottom + 2) return true;
+      }
+    }
+    return false;
+  } finally {
+    root.style.pointerEvents = '';
+  }
+}
+let scrollTimer;
+function checkCover() { covering = somethingUnder(); render(); }
+window.addEventListener('scroll', () => { clearTimeout(scrollTimer); scrollTimer = setTimeout(checkCover, 120); }, { passive: true });
+window.addEventListener('resize', () => { clearTimeout(scrollTimer); scrollTimer = setTimeout(checkCover, 120); });
+checkCover();
