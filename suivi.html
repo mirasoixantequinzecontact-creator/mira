@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- ============================================================
+     SUIVI DE PROJET CLIENT — prototype d'interface
+     ⚠ Données factices. À alimenter depuis votre back-end/base de données.
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suivi de projet — Mira Agency</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23121212'/%3E%3Crect x='40' y='40' width='22' height='22' fill='%23F6F3EE'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  :root{
+    --ink:#121212; --paper:#F6F3EE; --paper-deep:#ECE7DD;
+    --accent:#5A1A2C; --grey:#6B6660; --border:rgba(18,18,18,0.12);
+    --tint-rose:#F3EBEC; --tint-sand:#F1ECE2; --tint-slate:#ECEEF1; --tint-mist:#EBEFEC;
+    --ok:#3B7A57; --glow-accent:rgba(90,26,44,0.10);
+    --font-display:'Archivo', sans-serif; --font-body:'Inter', sans-serif;
+    --max-w:980px; --gutter:6vw;
+  }
+  [data-theme="dark"]{
+    --ink:#F2EDE6; --paper:#121212; --paper-deep:#1B1B1B;
+    --accent:#C9536C; --grey:#9B958C; --border:rgba(242,237,230,0.14);
+    --tint-rose:#1A1416; --tint-sand:#191712; --tint-slate:#13161A; --tint-mist:#121613;
+    --ok:#5DAe82; --glow-accent:rgba(201,83,108,0.16);
+  }
+  *{box-sizing:border-box;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;}}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.55; -webkit-font-smoothing:antialiased; transition:background-color .4s ease, color .4s ease;}
+  a{color:inherit; text-decoration:none;}
+  h1,h2,h3{font-family:var(--font-display); font-weight:900; letter-spacing:-0.02em; line-height:1.1; margin:0;}
+  .container{max-width:var(--max-w); margin:0 auto; padding:0 var(--gutter);}
+  .eyebrow{font-weight:600; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:1rem;}
+
+  /* Header */
+  .site-header{position:sticky; top:0; z-index:50; background:rgba(246,243,238,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--border);}
+  [data-theme="dark"] .site-header{background:rgba(18,18,18,0.85);}
+  .site-header .container{display:flex; align-items:center; justify-content:space-between; padding:16px var(--gutter);}
+  .logo{display:inline-flex; align-items:center; font-family:var(--font-display); font-weight:900; font-size:1.3rem; color:var(--ink);}
+  .logo .dot{display:inline-block; width:.16em; height:.16em; background:var(--ink); margin-left:.08em; transform:translateY(-.02em);}
+  .header-actions{display:flex; align-items:center; gap:16px; font-size:.88rem;}
+  .header-actions a{color:var(--grey);} .header-actions a:hover{color:var(--ink);}
+  .theme-toggle{width:34px; height:34px; border:1px solid var(--border); background:none; color:var(--ink); cursor:pointer; display:inline-flex; align-items:center; justify-content:center;}
+  .theme-toggle svg{width:15px; height:15px;} .theme-toggle .icon-moon{display:none;}
+  [data-theme="dark"] .theme-toggle .icon-sun{display:none;} [data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+  /* En-tête projet */
+  .project-head{padding:clamp(40px,7vw,72px) 0 clamp(24px,4vw,40px);}
+  .project-head h1{font-size:clamp(1.8rem,4vw,3rem);}
+  .project-meta{display:flex; flex-wrap:wrap; gap:10px 28px; margin-top:18px; font-size:.92rem; color:var(--grey);}
+  .project-meta strong{color:var(--ink); font-weight:600;}
+  .badge{display:inline-flex; align-items:center; gap:7px; padding:5px 12px; border:1px solid var(--border); background:var(--tint-sand); font-size:.78rem; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--ink);}
+  .badge .dot{width:7px; height:7px; border-radius:50%; background:var(--accent);}
+
+  /* Barre de progression globale */
+  .progress-wrap{padding-bottom:8px;}
+  .progress-line{display:flex; justify-content:space-between; font-size:.82rem; color:var(--grey); margin-bottom:8px;}
+  .progress-bar{height:6px; background:var(--paper-deep); border:1px solid var(--border); overflow:hidden;}
+  .progress-bar span{display:block; height:100%; width:0; background:var(--accent); transition:width 1.2s cubic-bezier(.2,.8,.2,1);}
+
+  /* Sections */
+  section{padding:clamp(32px,5vw,56px) 0;}
+  .layout{display:grid; grid-template-columns:1.6fr 1fr; gap:48px;}
+  @media (max-width:760px){ .layout{grid-template-columns:1fr; gap:36px;} }
+
+  h2.section-title{font-size:1.4rem; margin-bottom:24px;}
+
+  /* Timeline étapes */
+  .timeline{list-style:none; margin:0; padding:0; position:relative;}
+  .timeline::before{content:""; position:absolute; left:13px; top:6px; bottom:6px; width:2px; background:var(--border);}
+  .step{position:relative; padding:0 0 28px 44px;}
+  .step:last-child{padding-bottom:0;}
+  .step .marker{position:absolute; left:4px; top:1px; width:20px; height:20px; border-radius:50%; border:2px solid var(--border); background:var(--paper); z-index:1; display:flex; align-items:center; justify-content:center; font-size:.7rem; color:var(--paper);}
+  .step.done .marker{background:var(--ok); border-color:var(--ok);}
+  .step.current .marker{background:var(--accent); border-color:var(--accent); box-shadow:0 0 0 4px var(--glow-accent);}
+  .step h3{font-size:1.02rem; font-weight:700; font-family:var(--font-body);}
+  .step.todo h3{color:var(--grey);}
+  .step p{margin:4px 0 0; font-size:.9rem; color:var(--grey);}
+  .step .when{font-size:.78rem; color:var(--grey); margin-top:6px; display:block;}
+  .step.current h3::after{content:"En cours"; margin-left:10px; font-size:.7rem; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--accent); vertical-align:middle;}
+
+  /* Colonne latérale : infos + activité */
+  .side-card{border:1px solid var(--border); padding:24px; background:var(--tint-slate);}
+  .side-card + .side-card{margin-top:24px;}
+  .side-card h3{font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--grey); font-family:var(--font-body); font-weight:600; margin-bottom:16px;}
+  .kv{display:flex; justify-content:space-between; gap:14px; font-size:.9rem; padding:8px 0; border-bottom:1px solid var(--border);}
+  .kv:last-child{border-bottom:none;}
+  .kv span:first-child{color:var(--grey);} .kv span:last-child{font-weight:500; text-align:right;}
+  .contact-btn{display:block; text-align:center; margin-top:16px; background:var(--ink); color:var(--paper); padding:13px; font-size:.9rem; font-weight:600; transition:background .25s ease;}
+  .contact-btn:hover{background:var(--accent);}
+
+  /* Fil d'activité */
+  .activity{list-style:none; margin:0; padding:0;}
+  .activity li{display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); font-size:.88rem;}
+  .activity li:last-child{border-bottom:none;}
+  .activity .time{color:var(--grey); white-space:nowrap; font-size:.78rem; min-width:64px;}
+
+  /* État « référence introuvable » */
+  .empty-state{display:none; text-align:center; padding:clamp(48px,8vw,90px) 0;}
+  .empty-state.is-shown{display:block;}
+  .empty-state h2{font-size:1.6rem; margin-bottom:12px;}
+  .empty-state p{color:var(--grey); max-width:44ch; margin:0 auto 24px;}
+  .empty-state .btn{display:inline-block; border:1px solid var(--ink); padding:13px 26px; font-size:.9rem; font-weight:600;}
+  .empty-state .btn:hover{background:var(--ink); color:var(--paper);}
+
+  .demo-note{margin-top:8px; padding:14px 16px; background:var(--tint-rose); border:1px solid var(--border); font-size:.78rem; color:var(--grey);}
+  .demo-note strong{color:var(--ink);}
+  .site-footer{padding:40px 0; border-top:1px solid var(--border);}
+  .site-footer .container{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; font-size:.8rem; color:var(--grey);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">mira<span class="dot" aria-hidden="true"></span></a>
+    <div class="header-actions">
+      <span id="user-email"></span>
+      <a href="connexion.html" id="logout">Déconnexion</a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer le thème">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="container" id="project-view">
+
+  <!-- En-tête projet -->
+  <div class="project-head">
+    <span class="eyebrow">Suivi de projet</span>
+    <h1 id="project-name">—</h1>
+    <div class="project-meta">
+      <span>Référence : <strong id="project-ref">—</strong></span>
+      <span>Démarré le <strong id="project-start">—</strong></span>
+      <span class="badge"><span class="dot"></span><span id="project-status">En cours</span></span>
+    </div>
+  </div>
+
+  <!-- Progression globale -->
+  <div class="progress-wrap">
+    <div class="progress-line"><span>Avancement global</span><span id="progress-pct">0 %</span></div>
+    <div class="progress-bar"><span id="progress-fill"></span></div>
+  </div>
+
+  <section>
+    <div class="layout">
+      <!-- Étapes -->
+      <div>
+        <h2 class="section-title">Étapes</h2>
+        <ul class="timeline" id="timeline"></ul>
+      </div>
+
+      <!-- Colonne latérale -->
+      <aside>
+        <div class="side-card">
+          <h3>Informations</h3>
+          <div class="kv"><span>Chef de projet</span><span id="pm-name">—</span></div>
+          <div class="kv"><span>Type de prestation</span><span id="project-type">—</span></div>
+          <div class="kv"><span>Livraison estimée</span><span id="project-eta">—</span></div>
+          <a href="mailto:mira.soixantequinze.contact@gmail.com" class="contact-btn">Contacter l'équipe</a>
+        </div>
+
+        <div class="side-card">
+          <h3>Activité récente</h3>
+          <ul class="activity" id="activity"></ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<!-- État référence inconnue -->
+<div class="container empty-state" id="empty-state">
+  <span class="eyebrow">Référence introuvable</span>
+  <h2>Aucun projet pour cette référence.</h2>
+  <p>Vérifiez la référence reçue par email, ou contactez votre interlocuteur Mira.</p>
+  <a href="connexion.html" class="btn">Réessayer</a>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>© <span id="year"></span> Mira Agency.</span>
+    <span><a href="confidentialite.html">Confidentialité</a> · <a href="mentions-legales.html">Mentions légales</a></span>
+  </div>
+</footer>
+
+<script>
+  // ---- Thème ----
+  const root = document.documentElement;
+  let theme = localStorage.getItem('mira-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(theme);
+  function applyTheme(t){ t === 'dark' ? root.setAttribute('data-theme','dark') : root.removeAttribute('data-theme'); }
+  document.getElementById('theme-toggle').addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('mira-theme', theme); applyTheme(theme); });
+
+  // ---- Déconnexion ----
+  document.getElementById('logout').addEventListener('click', async (e) => {
+    e.preventDefault();
+    try { await fetch('/api/logout', { method:'POST', credentials:'same-origin' }); } catch (_) {}
+    location.href = 'connexion.html';
+  });
+
+  // ---- Échappement (les données viennent du serveur mais on reste prudent) ----
+  function esc(s){ const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; }
+
+  function showEmpty(){
+    document.getElementById('project-view').style.display = 'none';
+    document.getElementById('empty-state').classList.add('is-shown');
+  }
+
+  // ---- Rendu d'un projet renvoyé par l'API ----
+  function renderProject(project){
+    document.getElementById('project-name').textContent = project.name;
+    document.getElementById('project-ref').textContent = project.ref;
+    document.getElementById('project-start').textContent = project.start;
+    document.getElementById('project-status').textContent = project.status;
+    document.getElementById('pm-name').textContent = project.pm;
+    document.getElementById('project-type').textContent = project.type;
+    document.getElementById('project-eta').textContent = project.eta;
+
+    document.getElementById('progress-pct').textContent = project.progress + ' %';
+    requestAnimationFrame(() => { document.getElementById('progress-fill').style.width = project.progress + '%'; });
+
+    const timeline = document.getElementById('timeline');
+    (project.steps || []).forEach(step => {
+      const li = document.createElement('li');
+      li.className = 'step ' + step.state;
+      li.innerHTML = `
+        <span class="marker" aria-hidden="true">${step.state === 'done' ? '✓' : ''}</span>
+        <h3>${esc(step.title)}</h3>
+        <p>${esc(step.desc)}</p>
+        <span class="when">${esc(step.when)}</span>`;
+      timeline.appendChild(li);
+    });
+
+    const activity = document.getElementById('activity');
+    (project.activity || []).forEach(a => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="time">${esc(a.time)}</span><span>${esc(a.text)}</span>`;
+      activity.appendChild(li);
+    });
+  }
+
+  // ---- Chargement depuis le back-end ----
+  (async () => {
+    let me;
+    try {
+      const meRes = await fetch('/api/me', { credentials:'same-origin' });
+      if (!meRes.ok) { location.href = 'connexion.html'; return; }
+      me = (await meRes.json()).user;
+    } catch (e) { location.href = 'connexion.html'; return; }
+
+    document.getElementById('user-email').textContent = me.email || '';
+
+    // Référence : depuis l'URL (?ref=), sinon premier projet du client
+    let ref = (new URLSearchParams(location.search).get('ref') || '').trim();
+    if (!ref) {
+      try {
+        const mine = await (await fetch('/api/my-projects', { credentials:'same-origin' })).json();
+        if (Array.isArray(mine) && mine.length) ref = mine[0].ref;
+      } catch (e) {}
+    }
+    if (!ref) { showEmpty(); return; }
+
+    try {
+      const res = await fetch('/api/projects/' + encodeURIComponent(ref), { credentials:'same-origin' });
+      if (!res.ok) { showEmpty(); return; }
+      renderProject(await res.json());
+    } catch (e) { showEmpty(); }
+  })();
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

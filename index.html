@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- ============================================================
+     META / SEO
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mira Agency — Agence de communication</title>
+<meta name="description" content="Mira Agency accompagne les marques sur leur stratégie, leurs contenus et leur communication, avec une approche précise et sans superflu.">
+<meta name="theme-color" content="#121212">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Mira Agency">
+<meta property="og:title" content="Mira Agency — Agence de communication">
+<meta property="og:description" content="Stratégie de marque, réseaux sociaux, contenus, publicité, influence, vidéo et sites web — pensés comme un seul geste.">
+<meta name="twitter:card" content="summary">
+<!-- Ajoutez une image de partage (1200×630) une fois le domaine en ligne :
+<meta property="og:image" content="https://VOTRE-DOMAINE/partage.jpg">
+<meta property="og:url" content="https://VOTRE-DOMAINE/">
+<link rel="canonical" href="https://VOTRE-DOMAINE/"> -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Mira Agency",
+  "description": "Agence de communication : stratégie de marque, réseaux sociaux, création de contenu, publicité payante, marketing d'influence, production vidéo, création de site web et conseil en croissance.",
+  "email": "mira.soixantequinze.contact@gmail.com",
+  "address": { "@type": "PostalAddress", "addressLocality": "Paris", "addressCountry": "FR" },
+  "areaServed": "FR",
+  "knowsAbout": ["Stratégie de marque","Réseaux sociaux","Création de contenu","Publicité payante","Marketing d'influence","Production vidéo","Création de site web","Conseil en croissance"]
+}
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23121212'/%3E%3Crect x='40' y='40' width='22' height='22' fill='%23F6F3EE'/%3E%3C/svg%3E">
+
+<!-- Polices : Archivo (titres) + Inter (corps) — hébergées localement, aucune requête vers Google (RGPD) -->
+<link rel="stylesheet" href="fonts/fonts.css">
+
+<style>
+  /* ============================================================
+     1. RACINE / VARIABLES — palette : 3 couleurs hors gris (encre, papier, bordeaux)
+     ============================================================ */
+  :root{
+    --ink:#121212;
+    --paper:#F6F3EE;
+    --paper-deep:#ECE7DD;
+    --accent:#5A1A2C;
+    --grey:#6B6660;
+    --border:rgba(18,18,18,0.12);
+
+    /* Teintes douces façon Apple — lavées, jamais saturées.
+       Utilisées en fonds de section et halos diffus. */
+    --tint-rose:#F3EBEC;   /* écho du bordeaux d'accent */
+    --tint-sand:#F1ECE2;   /* sable chaud */
+    --tint-slate:#ECEEF1;  /* gris bleuté froid */
+    --tint-mist:#EBEFEC;   /* vert grisé très pâle */
+    --glow-accent:rgba(90,26,44,0.10);
+    --glow-cool:rgba(60,80,110,0.08);
+
+    --font-display:'Archivo', sans-serif;
+    --font-body:'Inter', sans-serif;
+
+    --max-w:1180px;
+    --gutter:6vw;
+    --section-pad: clamp(64px, 10vw, 140px);
+  }
+
+  /* Mode sombre — bascule via [data-theme="dark"] sur <html>, persistée en localStorage */
+  [data-theme="dark"]{
+    --ink:#F2EDE6;
+    --paper:#121212;
+    --paper-deep:#1B1B1B;
+    --accent:#C9536C;
+    --grey:#9B958C;
+    --border:rgba(242,237,230,0.14);
+
+    /* Teintes sombres — même logique, déclinée en nuances profondes */
+    --tint-rose:#1A1416;
+    --tint-sand:#191712;
+    --tint-slate:#13161A;
+    --tint-mist:#121613;
+    --glow-accent:rgba(201,83,108,0.14);
+    --glow-cool:rgba(120,150,190,0.10);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html{transition:background-color .4s ease;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation:none !important; transition:none !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-weight:400;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    transition:background-color .4s ease, color .4s ease;
+  }
+
+  /* Grain discret — texture papier, jamais au-dessus de 5% d'opacité */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:.05;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* Barre de progression de lecture */
+  .scroll-progress{
+    position:fixed; top:0; left:0;
+    height:2px; width:0%;
+    background:var(--accent);
+    z-index:200;
+  }
+
+  /* Curseur personnalisé — desktop uniquement, purement décoratif */
+  .cursor-ring{
+    position:fixed; top:0; left:0;
+    width:26px; height:26px;
+    border:1px solid var(--accent);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:250;
+    transform:translate(-50%,-50%);
+    opacity:0;
+    transition:width .25s ease, height .25s ease, background-color .25s ease, opacity .25s ease;
+    mix-blend-mode:difference;
+  }
+  .cursor-ring.is-active{opacity:1;}
+  .cursor-ring.is-hovering{width:52px; height:52px; background:var(--accent); opacity:.16;}
+  @media (hover:none), (pointer:coarse){
+    .cursor-ring{display:none;}
+  }
+
+  /* Bouton retour en haut */
+  .back-to-top{
+    position:fixed; right:24px; bottom:24px;
+    width:46px; height:46px;
+    border-radius:50%;
+    border:none;
+    background:var(--ink); color:var(--paper);
+    font-size:1.1rem;
+    cursor:pointer;
+    opacity:0; transform:translateY(12px);
+    pointer-events:none;
+    transition:opacity .3s ease, transform .3s ease, background-color .25s ease;
+    z-index:150;
+  }
+  .back-to-top.is-visible{opacity:1; transform:none; pointer-events:auto;}
+  .back-to-top:hover{background:var(--accent);}
+
+  /* Notification toast */
+  .toast{
+    position:fixed; left:50%; bottom:32px;
+    transform:translate(-50%, 16px);
+    background:var(--ink); color:var(--paper);
+    padding:12px 22px;
+    font-size:0.85rem;
+    opacity:0; pointer-events:none;
+    transition:opacity .3s ease, transform .3s ease;
+    z-index:300;
+  }
+  .toast.is-shown{opacity:1; transform:translate(-50%,0);}
+
+  img,svg{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+
+  h1,h2,h3{
+    font-family:var(--font-display);
+    font-weight:900;
+    letter-spacing:-0.02em;
+    line-height:1.05;
+    margin:0;
+  }
+
+  .container{
+    max-width:var(--max-w);
+    margin:0 auto;
+    padding-left:var(--gutter);
+    padding-right:var(--gutter);
+  }
+
+  .eyebrow{
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:0.75rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:block;
+    margin-bottom:1.2rem;
+  }
+
+  .skip-link{
+    position:absolute; left:-9999px; top:0;
+    background:var(--ink); color:var(--paper); padding:10px 16px; z-index:999;
+  }
+  .skip-link:focus{left:12px; top:12px;}
+
+  /* ============================================================
+     2. LOGO — recréé en typographie (CSS) à partir du fichier fourni.
+        Le fichier source officiel (SVG/PNG) n'a pas encore été livré ;
+        remplacer .logo par <img src="logo.svg" alt="Mira Agency"> si disponible.
+     ============================================================ */
+  .logo{
+    display:inline-flex;
+    align-items:center;
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:1.3rem;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+  }
+  .logo-dot{
+    display:inline-block;
+    width:0.16em;
+    height:0.16em;
+    background:var(--ink);
+    margin-left:0.08em;
+    transform:translateY(-0.02em);
+  }
+  .logo-tagline{
+    font-family:var(--font-body);
+    font-style:italic;
+    font-weight:400;
+    font-size:0.95rem;
+    color:var(--grey);
+  }
+
+  /* ============================================================
+     3. HEADER
+     ============================================================ */
+  .site-header{
+    position:fixed; top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(246,243,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border);
+    transition:background-color .3s ease, box-shadow .3s ease;
+  }
+  [data-theme="dark"] .site-header{background:rgba(18,18,18,0.85);}
+  .site-header.is-scrolled{box-shadow:0 1px 0 var(--border);}
+  .site-header .container{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:18px;
+    padding-bottom:18px;
+    transition:padding .3s ease;
+  }
+  .site-header.is-scrolled .container{padding-top:12px; padding-bottom:12px;}
+  .main-nav ul{
+    list-style:none;
+    display:flex;
+    gap:clamp(20px, 3vw, 40px);
+    margin:0; padding:0;
+  }
+  .main-nav a{
+    font-size:0.92rem;
+    font-weight:500;
+    position:relative;
+  }
+  .main-nav a::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:-6px;
+    height:1px; background:var(--ink);
+    transform:scaleX(0); transform-origin:left;
+    transition:transform .3s ease, background-color .3s ease;
+  }
+  .main-nav a:hover::after{transform:scaleX(1);}
+  .main-nav a.is-active{color:var(--accent);}
+  .main-nav a.is-active::after{transform:scaleX(1); background:var(--accent);}
+
+  .theme-toggle{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:38px; height:38px;
+    border:1px solid var(--border);
+    background:none;
+    color:var(--ink);
+    cursor:pointer;
+    margin-left:16px;
+    transition:border-color .25s ease;
+  }
+  .theme-toggle:hover{border-color:var(--ink);}
+  .theme-toggle svg{width:16px; height:16px;}
+  .theme-toggle .icon-moon{display:none;}
+  [data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+  [data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+  .nav-cta{
+    border:1px solid var(--ink);
+    padding:10px 20px;
+    font-size:0.85rem;
+    font-weight:600;
+    white-space:nowrap;
+    transition:background .25s ease, color .25s ease, transform .25s ease;
+    will-change:transform;
+  }
+  .nav-cta:hover{background:var(--ink); color:var(--paper);}
+
+  .nav-toggle{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    background:none; border:none; cursor:pointer;
+    padding:8px;
+  }
+  .nav-toggle span{width:22px; height:1.5px; background:var(--ink); display:block;}
+
+  @media (max-width: 860px){
+    .main-nav{
+      position:fixed; inset:0; top:64px;
+      background:var(--paper);
+      flex-direction:column;
+      padding:40px var(--gutter);
+      transform:translateY(-110%);
+      transition:transform .35s ease;
+    }
+    .main-nav.open{transform:translateY(0);}
+    .main-nav ul{flex-direction:column; gap:28px;}
+    .main-nav a{font-size:1.4rem;}
+    .nav-toggle{display:flex;}
+    .nav-cta-wrap{display:none;}
+  }
+
+  /* ============================================================
+     4. HERO
+     Accroche placeholder — à valider avec le client avant mise en ligne.
+     ============================================================ */
+  .hero{
+    position:relative;
+    padding-top:calc(var(--section-pad) + 70px);
+    padding-bottom:var(--section-pad);
+    overflow:hidden;
+  }
+  /* Halo coloré diffus derrière le hero — façon Apple, très doux */
+  .hero::before{
+    content:"";
+    position:absolute;
+    top:-20%; right:-10%;
+    width:min(70vw, 720px);
+    aspect-ratio:1;
+    background:
+      radial-gradient(circle at 30% 30%, var(--glow-accent), transparent 60%),
+      radial-gradient(circle at 70% 70%, var(--glow-cool), transparent 60%);
+    filter:blur(20px);
+    z-index:-1;
+    pointer-events:none;
+    animation:glow-drift 18s ease-in-out infinite alternate;
+  }
+  @keyframes glow-drift{
+    from{transform:translate(0,0) scale(1);}
+    to{transform:translate(-4%,4%) scale(1.08);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero::before{animation:none;}
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 6vw, 5rem);
+    max-width:14ch;
+    overflow:hidden;
+  }
+  .hero h1 .word{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(100%);
+    transition:opacity .6s ease, transform .6s ease;
+    transition-delay:calc(var(--i) * 60ms);
+  }
+  body.is-loaded .hero h1 .word{opacity:1; transform:none;}
+  .hero-sub{
+    margin-top:28px;
+    max-width:46ch;
+    font-size:1.1rem;
+    color:var(--grey);
+  }
+  .hero-actions{margin-top:40px;}
+  .btn-primary{
+    display:inline-block;
+    background:var(--ink);
+    color:var(--paper);
+    padding:16px 32px;
+    font-size:0.95rem;
+    font-weight:600;
+    transition:background .25s ease, transform .25s ease;
+    will-change:transform;
+  }
+  .btn-primary:hover{background:var(--accent);}
+
+  /* Bandeau défilant des prestations, entre le hero et la liste détaillée */
+  .marquee{
+    overflow:hidden;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    padding:18px 0;
+  }
+  .marquee-track{
+    display:flex;
+    gap:14px;
+    white-space:nowrap;
+    width:max-content;
+    animation:marquee-scroll 36s linear infinite;
+  }
+  .marquee:hover .marquee-track{animation-play-state:paused;}
+  .marquee-track span{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:0.95rem;
+    color:var(--grey);
+  }
+  @keyframes marquee-scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .marquee-track{animation:none;}
+    .marquee{overflow-x:auto;}
+  }
+
+  /* ============================================================
+     5. SECTION GÉNÉRIQUE
+     ============================================================ */
+  section{padding:var(--section-pad) 0; transition:background-color .4s ease;}
+
+  /* Teintes de section façon Apple — fonds lavés qui alternent en douceur.
+     Transition fondue entre chaque teinte via un léger dégradé vertical. */
+  .tint-rose{background:linear-gradient(180deg, transparent, var(--tint-rose) 18%, var(--tint-rose) 82%, transparent);}
+  .tint-sand{background:linear-gradient(180deg, transparent, var(--tint-sand) 18%, var(--tint-sand) 82%, transparent);}
+  .tint-slate{background:linear-gradient(180deg, transparent, var(--tint-slate) 18%, var(--tint-slate) 82%, transparent);}
+  .tint-mist{background:linear-gradient(180deg, transparent, var(--tint-mist) 18%, var(--tint-mist) 82%, transparent);}
+
+  .section-head{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    margin-bottom:clamp(40px, 6vw, 80px);
+  }
+  .section-head h2{font-size:clamp(1.8rem, 3.4vw, 2.8rem);}
+  .section-head p{max-width:36ch; color:var(--grey); margin:0;}
+
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.is-visible{opacity:1; transform:none;}
+
+  /* ============================================================
+     6. SERVICES — liste éditoriale (pas de cartes/icônes stock)
+     Descriptions courtes = brouillon, à valider avec le client.
+     ============================================================ */
+  .services-list{border-top:1px solid var(--border);}
+  .service-row{
+    display:grid;
+    grid-template-columns:64px 1fr auto;
+    align-items:center;
+    gap:24px;
+    padding:28px 0;
+    border-bottom:1px solid var(--border);
+    opacity:0;
+    transform:translateY(14px);
+    transition:padding-left .3s ease, opacity .5s ease, transform .5s ease;
+  }
+  .services-list.is-visible .service-row{opacity:1; transform:none;}
+  .services-list.is-visible .service-row:nth-child(1){transition-delay:.02s;}
+  .services-list.is-visible .service-row:nth-child(2){transition-delay:.08s;}
+  .services-list.is-visible .service-row:nth-child(3){transition-delay:.14s;}
+  .services-list.is-visible .service-row:nth-child(4){transition-delay:.20s;}
+  .services-list.is-visible .service-row:nth-child(5){transition-delay:.26s;}
+  .services-list.is-visible .service-row:nth-child(6){transition-delay:.32s;}
+  .services-list.is-visible .service-row:nth-child(7){transition-delay:.38s;}
+  .services-list.is-visible .service-row:nth-child(8){transition-delay:.44s;}
+  .service-row:hover{padding-left:12px;}
+  .service-index{
+    font-family:var(--font-display);
+    font-weight:700;
+    color:var(--grey);
+    font-size:0.95rem;
+  }
+  .service-title{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(1.1rem, 2.4vw, 1.5rem);
+  }
+  .service-desc{
+    display:block;
+    font-family:var(--font-body);
+    font-weight:400;
+    font-size:0.95rem;
+    color:var(--grey);
+    margin-top:6px;
+  }
+  .service-arrow{
+    font-size:1.4rem;
+    transition:transform .3s ease, color .3s ease;
+  }
+  .service-row:hover .service-arrow{transform:translate(4px,-4px); color:var(--accent);}
+
+  /* ============================================================
+     7. MÉTHODE / PROCESS
+     Étapes en brouillon — structure sobre, à valider avec le client.
+     ============================================================ */
+  .process-grid{
+    display:grid;
+    gap:48px;
+    grid-template-columns:1fr;
+  }
+  @media (min-width: 720px){
+    .process-grid{grid-template-columns:repeat(2, 1fr);}
+  }
+  @media (min-width: 1080px){
+    .process-grid{grid-template-columns:repeat(4, 1fr);}
+  }
+  .process-step{border-top:1px solid var(--ink); padding-top:20px;}
+  .process-num{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:0.95rem;
+    color:var(--accent);
+    display:block;
+    margin-bottom:14px;
+  }
+  .process-step h3{font-size:1.15rem; margin-bottom:10px;}
+  .process-step p{color:var(--grey); font-size:0.95rem; margin:0;}
+
+  /* ============================================================
+     8. RÉALISATIONS — grille avec emplacements réservés.
+     Remplacer .placeholder-visual par <img src="..." alt="...">
+     quand les visuels réels seront disponibles.
+     ============================================================ */
+  .work-grid{
+    display:grid;
+    gap:32px;
+    grid-template-columns:1fr;
+  }
+  @media (min-width: 720px){
+    .work-grid{grid-template-columns:repeat(2, 1fr);}
+  }
+  @media (min-width: 1080px){
+    .work-grid{grid-template-columns:repeat(3, 1fr);}
+  }
+  .work-filters{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:32px;
+  }
+  .filter-btn{
+    border:1px solid var(--border);
+    background:none;
+    color:var(--grey);
+    font-family:var(--font-body);
+    font-size:0.85rem;
+    padding:8px 16px;
+    cursor:pointer;
+    transition:border-color .25s ease, color .25s ease;
+  }
+  .filter-btn:hover, .filter-btn.is-active{border-color:var(--ink); color:var(--ink);}
+
+  .work-card{
+    display:block;
+    transition:opacity .3s ease, transform .3s ease;
+  }
+  .work-card.is-hidden{display:none;}
+  .placeholder-visual{
+    position:relative;
+    aspect-ratio:4/3;
+    width:100%;
+    background:
+      repeating-linear-gradient(135deg, var(--paper-deep) 0 2px, transparent 2px 14px);
+    border:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
+    overflow:hidden;
+  }
+  /* Halo de teinte douce par catégorie — façon Apple, derrière la trame */
+  .placeholder-visual::after{
+    content:"";
+    position:absolute; inset:0;
+    z-index:0;
+    opacity:.7;
+    background:radial-gradient(circle at 50% 40%, var(--card-glow, transparent), transparent 70%);
+  }
+  .placeholder-visual > *{position:relative; z-index:1;}
+  .work-card[data-category="branding"] .placeholder-visual{--card-glow:var(--glow-accent);}
+  .work-card[data-category="social"]   .placeholder-visual{--card-glow:var(--glow-cool);}
+  .work-card[data-category="video"]    .placeholder-visual{--card-glow:rgba(120,90,60,0.12);}
+  .work-card[data-category="web"]      .placeholder-visual{--card-glow:rgba(70,110,90,0.12);}
+  .visual-label{
+    font-size:0.78rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--grey);
+    transition:opacity .3s ease;
+  }
+  .work-overlay{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(18,18,18,0.85);
+    color:#F6F3EE;
+    font-size:0.78rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    opacity:0;
+    transition:opacity .3s ease;
+  }
+  .work-card:hover .work-overlay{opacity:1;}
+  .work-card:hover .visual-label{opacity:0;}
+  .work-meta{
+    display:flex;
+    justify-content:space-between;
+    margin-top:14px;
+    font-size:0.92rem;
+  }
+  .work-meta .cat{color:var(--grey);}
+
+  /* ============================================================
+     9. À PROPOS
+     Texte de positionnement en brouillon — à valider avec le client.
+     ============================================================ */
+  .about{
+    display:grid;
+    gap:48px;
+    grid-template-columns:1fr;
+  }
+  @media (min-width: 880px){
+    .about{grid-template-columns:0.9fr 1.1fr; align-items:start;}
+  }
+  .about p{font-size:1.05rem; max-width:54ch;}
+  .about p + p{margin-top:20px; color:var(--grey);}
+
+  /* ============================================================
+     10. TÉMOIGNAGES — emplacement réservé, aucun faux témoignage.
+     ============================================================ */
+  .testimonial-placeholder{
+    border:1px solid var(--border);
+    padding:48px var(--gutter);
+    text-align:center;
+  }
+  .testimonial-placeholder p{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(1.2rem, 2.6vw, 1.7rem);
+    color:var(--grey);
+    margin:0 0 8px;
+  }
+  .testimonial-placeholder span{font-size:0.85rem; color:var(--grey);}
+
+  /* Avis clients — cartes prêtes à recevoir de VRAIS avis (voir HTML) */
+  .reviews-grid{
+    display:grid;
+    gap:20px;
+    grid-template-columns:1fr;
+  }
+  .reviews-grid:not(:empty){margin-bottom:28px;}
+  @media (min-width: 720px){ .reviews-grid{grid-template-columns:repeat(2, 1fr);} }
+  @media (min-width: 1080px){ .reviews-grid{grid-template-columns:repeat(3, 1fr);} }
+  .review-card{
+    border:1px solid var(--border);
+    background:var(--paper);
+    padding:28px;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  .review-source{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--grey);
+  }
+  .review-source svg{width:16px; height:16px;}
+  .review-stars{color:var(--accent); letter-spacing:2px; font-size:0.95rem;}
+  .review-card blockquote{margin:0; font-size:1rem; line-height:1.6;}
+  .review-author{display:flex; align-items:center; gap:12px; margin-top:auto;}
+  .review-avatar{
+    width:40px; height:40px; border-radius:50%;
+    background:var(--paper-deep); object-fit:cover; flex:none;
+  }
+  .review-author strong{display:block; font-size:0.92rem;}
+  .review-author a, .review-author span{font-size:0.82rem; color:var(--grey);}
+  .reviews-cta{margin-top:28px; text-align:center; font-size:0.9rem; color:var(--grey);}
+  .reviews-cta a{color:var(--ink); border-bottom:1px solid currentColor;}
+
+  /* Espace projet en ligne */
+  .portal{
+    display:grid; gap:48px; grid-template-columns:1fr; align-items:center;
+  }
+  @media (min-width: 880px){ .portal{grid-template-columns:1fr 1fr;} }
+  .portal h2{font-size:clamp(1.8rem, 3.4vw, 2.8rem);}
+  .portal p{color:var(--grey); max-width:48ch;}
+  .portal ul{list-style:none; margin:24px 0 8px; padding:0; display:flex; flex-direction:column; gap:14px;}
+  .portal li{display:flex; gap:12px; color:var(--grey);}
+  .portal li::before{content:"—"; color:var(--accent);}
+  .portal-mock{
+    border:1px solid var(--border); background:var(--paper); padding:28px;
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .portal-mock .row{display:flex; justify-content:space-between; font-size:0.85rem; color:var(--grey);}
+  .portal-mock .bar{height:4px; background:var(--paper-deep);}
+  .portal-mock .bar span{display:block; height:100%; width:60%; background:var(--accent);}
+  .portal-mock .step{display:flex; align-items:center; gap:10px; font-size:0.9rem;}
+  .portal-mock .dot{width:8px; height:8px; border-radius:50%; background:var(--border); flex:none;}
+  .portal-mock .step.done .dot{background:var(--ink);}
+  .portal-mock .step.current .dot{background:var(--accent);}
+  .portal-mock .step.todo{color:var(--grey);}
+
+  /* FAQ */
+  .faq-list{border-top:1px solid var(--border);}
+  .faq-list details{border-bottom:1px solid var(--border); padding:22px 0;}
+  .faq-list summary{
+    cursor:pointer; list-style:none;
+    display:flex; justify-content:space-between; gap:24px;
+    font-family:var(--font-display); font-weight:700; font-size:1.05rem;
+  }
+  .faq-list summary::-webkit-details-marker{display:none;}
+  .faq-list summary::after{content:"+"; color:var(--accent); font-weight:500; transition:transform .25s ease;}
+  .faq-list details[open] summary::after{transform:rotate(45deg);}
+  .faq-list details p{margin:14px 0 0; color:var(--grey); max-width:70ch;}
+
+  /* ============================================================
+     11. CONTACT — adresse de contact à confirmer avec le client.
+     ============================================================ */
+  .contact{
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .contact h2{color:var(--paper); font-size:clamp(2rem, 5vw, 3.4rem); max-width:16ch;}
+  .contact-sub{color:var(--paper); opacity:.68; max-width:42ch; margin-top:20px;}
+  .eyebrow--invert{color:var(--paper); opacity:.75;}
+  .contact-actions{
+    margin-top:36px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:22px;
+  }
+  .contact .btn-primary{
+    background:var(--paper); color:var(--ink); margin-top:0;
+  }
+  .contact .btn-primary:hover{background:var(--accent); color:var(--paper);}
+  .copy-email{
+    background:none;
+    border:none;
+    border-bottom:1px solid currentColor;
+    color:var(--paper);
+    opacity:.7;
+    font-family:var(--font-body);
+    font-size:0.85rem;
+    cursor:pointer;
+    padding:4px 0;
+    transition:opacity .25s ease;
+  }
+  .copy-email:hover{opacity:1;}
+  .contact .contact-email{overflow-wrap:anywhere;}
+
+  /* ============================================================
+     12. FOOTER
+     ============================================================ */
+  .site-footer{padding:64px 0 36px;}
+  .footer-top{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:32px;
+    padding-bottom:36px;
+    border-bottom:1px solid var(--border);
+  }
+  .footer-cols{
+    display:flex;
+    gap:clamp(32px, 6vw, 80px);
+    flex-wrap:wrap;
+  }
+  .footer-col h4{
+    font-size:0.78rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--grey);
+    margin:0 0 14px;
+    font-weight:600;
+  }
+  .footer-col ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .footer-col a{font-size:0.92rem;}
+  .footer-bottom{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:28px;
+    font-size:0.8rem;
+    color:var(--grey);
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Aller au contenu principal</a>
+
+<!-- Barre de progression de lecture -->
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+<!-- Curseur personnalisé (décoratif, désactivé sur tactile / reduced-motion) -->
+<div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header" id="site-header">
+  <div class="container">
+    <a href="#" class="logo" aria-label="Mira Agency — accueil">mira<span class="logo-dot" aria-hidden="true"></span></a>
+
+    <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
+      <ul>
+        <li><a href="#services">Prestations</a></li>
+        <li><a href="#methode">Méthode</a></li>
+        <li><a href="#realisations">Réalisations</a></li>
+        <li><a href="#apropos">Agence</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-cta-wrap">
+      <a href="rendez-vous.html" class="nav-cta magnetic">Démarrer un projet</a>
+    </div>
+
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Activer le mode sombre">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>
+      </svg>
+    </button>
+
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================================================
+       HERO — accroche en brouillon, à valider avant mise en ligne.
+       ============================================================ -->
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow">Mira Agency</span>
+      <h1>
+        <span class="word" style="--i:0">Une</span> <span class="word" style="--i:1">communication</span> <span class="word" style="--i:2">qui</span> <span class="word" style="--i:3">ne</span> <span class="word" style="--i:4">crie</span> <span class="word" style="--i:5">pas.</span> <span class="word" style="--i:6">Elle</span> <span class="word" style="--i:7">porte.</span>
+      </h1>
+      <p class="hero-sub">Stratégie de marque, contenus, médias et production — pensés comme un seul geste, du positionnement jusqu'à la mesure des résultats.</p>
+      <div class="hero-actions">
+        <a href="rendez-vous.html" class="btn-primary magnetic">Démarrer un projet</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bandeau défilant — purement décoratif, dupliqué pour la boucle, masqué aux lecteurs d'écran -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Stratégie de marque</span><span>—</span><span>Réseaux sociaux</span><span>—</span><span>Création de contenu</span><span>—</span><span>Publicité payante</span><span>—</span><span>Marketing d'influence</span><span>—</span><span>Production vidéo</span><span>—</span><span>Création de site web</span><span>—</span><span>Conseil en croissance</span><span>—</span>
+      <span>Stratégie de marque</span><span>—</span><span>Réseaux sociaux</span><span>—</span><span>Création de contenu</span><span>—</span><span>Publicité payante</span><span>—</span><span>Marketing d'influence</span><span>—</span><span>Production vidéo</span><span>—</span><span>Création de site web</span><span>—</span><span>Conseil en croissance</span><span>—</span>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SERVICES — liste réelle fournie par le client.
+       ============================================================ -->
+  <section id="services" class="tint-sand">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2>Prestations</h2>
+        <p>Huit champs d'intervention, traités avec la même exigence.</p>
+      </div>
+
+      <div class="services-list reveal">
+        <a class="service-row" href="#contact">
+          <span class="service-index">01</span>
+          <span>
+            <span class="service-title">Stratégie de marque</span>
+            <span class="service-desc">Positionnement, territoire de marque et plan d'action.</span>
+          </span>
+          <span class="service-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="service-row" href="#contact">
+          <span class="service-index">02</span>
+          <span>
+            <span class="service-title">Réseaux sociaux</span>
+            <span class="service-desc">Pilotage éditorial et animation des comptes de marque.</span>
+          </span>
+          <span class="service-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="service-row" href="#contact">
+          <span class="service-index">03</span>
+          <span>
+            <span class="service-title">Création de contenu</span>
+            <span class="service-desc">Formats visuels et éditoriaux pensés pour chaque canal.</span>
+          </span>
+          <span class="service-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="service-row" href="#contact">
+          <span class="service-index">04</span>
+          <span>
+            <span class="service-title">Publicité payante</span>
+            <span class="service-desc">Campagnes médias, ciblage et optimisation continue.</span>
+          </span>
+          <span class="service-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="service-row" href="#contact">
+          <span class="service-index">05</span>
+          <span>
+            <span class="service-title">Marketing d'influence</span>
+            <span class="service-desc">Sélection de profils et pilotage de collaborations.</span>
+          </span>
+          <span class="service-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="service-row" href="#contact">
+          <span class="service-index">06</span>
+          <span>
+            <span class="service-title">Production vidéo</span>
+            <span class="service-desc">Écriture, tournage et montage de contenus de marque.</span>
+          </span>
+          <span class="service-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="service-row" href="#contact">
+          <span class="service-index">07</span>
+          <span>
+            <span class="service-title">Création de site web</span>
+            <span class="service-desc">Sites vitrines et plateformes, du design au développement.</span>
+          </span>
+          <span class="service-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="service-row" href="#contact">
+          <span class="service-index">08</span>
+          <span>
+            <span class="service-title">Conseil en croissance</span>
+            <span class="service-desc">Diagnostic et recommandations pour accélérer le développement.</span>
+          </span>
+          <span class="service-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MÉTHODE — étapes en brouillon, à valider avec le client.
+       ============================================================ -->
+  <section id="methode" class="tint-slate">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2>Méthode</h2>
+        <p>Quatre étapes, sans détour.</p>
+      </div>
+
+      <div class="process-grid reveal">
+        <div class="process-step">
+          <span class="process-num">01</span>
+          <h3>Écoute</h3>
+          <p>Comprendre le contexte, les enjeux et l'audience avant toute proposition.</p>
+        </div>
+        <div class="process-step">
+          <span class="process-num">02</span>
+          <h3>Stratégie</h3>
+          <p>Définir un territoire de marque clair et un plan d'action priorisé.</p>
+        </div>
+        <div class="process-step">
+          <span class="process-num">03</span>
+          <h3>Création</h3>
+          <p>Concevoir les contenus, visuels et dispositifs qui portent la stratégie.</p>
+        </div>
+        <div class="process-step">
+          <span class="process-num">04</span>
+          <h3>Déploiement</h3>
+          <p>Diffuser, ajuster et mesurer, dans un cycle d'amélioration continue.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RÉALISATIONS — emplacements réservés, aucun visuel inventé.
+       Remplacer chaque .placeholder-visual par une image réelle :
+       <img src="projet-1.jpg" alt="Description du projet" loading="lazy">
+       ============================================================ -->
+  <section id="realisations" class="tint-mist">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2>Réalisations</h2>
+        <p>Une sélection de projets sera publiée ici.</p>
+      </div>
+
+      <!-- Filtres fonctionnels, prêts à trier de vrais projets dès leur ajout -->
+      <div class="work-filters reveal" role="group" aria-label="Filtrer les réalisations par catégorie">
+        <button class="filter-btn is-active" data-filter="tous" type="button">Tous</button>
+        <button class="filter-btn" data-filter="branding" type="button">Branding</button>
+        <button class="filter-btn" data-filter="social" type="button">Social</button>
+        <button class="filter-btn" data-filter="video" type="button">Vidéo</button>
+        <button class="filter-btn" data-filter="web" type="button">Web</button>
+      </div>
+
+      <div class="work-grid reveal">
+        <div class="work-card" data-category="branding">
+          <div class="placeholder-visual">
+            <span class="visual-label">Visuel à venir</span>
+            <span class="work-overlay">Bientôt en ligne ↗</span>
+          </div>
+          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Branding</span></div>
+        </div>
+        <div class="work-card" data-category="social">
+          <div class="placeholder-visual">
+            <span class="visual-label">Visuel à venir</span>
+            <span class="work-overlay">Bientôt en ligne ↗</span>
+          </div>
+          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Social</span></div>
+        </div>
+        <div class="work-card" data-category="video">
+          <div class="placeholder-visual">
+            <span class="visual-label">Visuel à venir</span>
+            <span class="work-overlay">Bientôt en ligne ↗</span>
+          </div>
+          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Vidéo</span></div>
+        </div>
+        <div class="work-card" data-category="web">
+          <div class="placeholder-visual">
+            <span class="visual-label">Visuel à venir</span>
+            <span class="work-overlay">Bientôt en ligne ↗</span>
+          </div>
+          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Web</span></div>
+        </div>
+        <div class="work-card" data-category="branding">
+          <div class="placeholder-visual">
+            <span class="visual-label">Visuel à venir</span>
+            <span class="work-overlay">Bientôt en ligne ↗</span>
+          </div>
+          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Branding</span></div>
+        </div>
+        <div class="work-card" data-category="social">
+          <div class="placeholder-visual">
+            <span class="visual-label">Visuel à venir</span>
+            <span class="work-overlay">Bientôt en ligne ↗</span>
+          </div>
+          <div class="work-meta"><span class="name">Projet — à ajouter</span><span class="cat">Social</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       À PROPOS — texte de positionnement en brouillon.
+       ============================================================ -->
+  <section id="apropos" class="tint-rose">
+    <div class="container about">
+      <div class="reveal">
+        <span class="eyebrow">L'agence</span>
+        <h2>Peu de prestations. Beaucoup d'exigence.</h2>
+      </div>
+      <div class="reveal">
+        <p>Mira est une agence de communication qui pense la marque comme un langage : précis, cohérent, sans bruit inutile.</p>
+        <p>Nous intervenons sur la stratégie, le contenu et les médias, avec la même attention portée à chaque détail, du premier brief à la mise en ligne.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ESPACE PROJET — fonctionnalité réelle (connexion.html → suivi.html).
+       ============================================================ -->
+  <section id="espace" class="tint-sand">
+    <div class="container portal">
+      <div class="reveal">
+        <span class="eyebrow">Votre espace projet</span>
+        <h2>Votre projet, visible à chaque étape.</h2>
+        <p>Chaque client reçoit un accès personnel pour suivre l'avancement de son projet en ligne, sans relance ni tableau partagé.</p>
+        <ul>
+          <li>Étapes du projet et pourcentage d'avancement</li>
+          <li>Date de livraison prévue</li>
+          <li>Historique des dernières actions de l'équipe</li>
+          <li>Accès privé : chaque client ne voit que son propre projet</li>
+        </ul>
+        <a href="connexion.html" class="btn-primary magnetic">Accéder à mon espace</a>
+      </div>
+      <div class="portal-mock reveal" aria-hidden="true">
+        <div class="row"><span>Exemple de suivi</span><span>Avancement 60 %</span></div>
+        <div class="bar"><span></span></div>
+        <div class="step done"><span class="dot"></span>Brief &amp; cadrage</div>
+        <div class="step done"><span class="dot"></span>Stratégie de marque</div>
+        <div class="step current"><span class="dot"></span>Création &amp; design — en cours</div>
+        <div class="step todo"><span class="dot"></span>Production &amp; intégration</div>
+        <div class="step todo"><span class="dot"></span>Livraison</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       AVIS CLIENTS — uniquement de VRAIS avis.
+       Pour publier un avis reçu (Instagram, TikTok, Google, e-mail…) :
+         1. Demandez l'accord écrit du client pour le citer.
+         2. Copiez un des modèles <article class="review-card"> ci-dessous
+            HORS du commentaire et remplissez-le avec SES mots exacts.
+         3. Mettez le lien vers la publication d'origine (preuve publique).
+         4. Supprimez le bloc .testimonial-placeholder dès le premier avis.
+       Les faux avis sont une pratique commerciale trompeuse
+       (Code de la consommation, art. L121-2 et L121-4).
+       ============================================================ -->
+  <section id="temoignages">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2>Ils en parlent</h2>
+        <p>Les retours de nos clients, publiés avec leur accord.</p>
+      </div>
+
+      <div class="reviews-grid reveal"><!--
+        MODÈLE — avis Instagram
+        <article class="review-card">
+          <span class="review-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg> Instagram</span>
+          <span class="review-stars" aria-label="5 sur 5">★★★★★</span>
+          <blockquote>« Texte exact de l'avis du client. »</blockquote>
+          <div class="review-author">
+            <img class="review-avatar" src="avatar-client.jpg" alt="" loading="lazy">
+            <div>
+              <strong>Prénom N.</strong>
+              <a href="https://www.instagram.com/p/IDENTIFIANT/" target="_blank" rel="noopener noreferrer">@compte_client</a>
+            </div>
+          </div>
+        </article>
+
+        MODÈLE — avis TikTok
+        <article class="review-card">
+          <span class="review-source"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 3c.4 2.3 1.9 3.8 4.2 4v3.1a7.4 7.4 0 0 1-4.1-1.3v6.4A5.8 5.8 0 1 1 10.8 9.5v3.2a2.7 2.7 0 1 0 2.6 2.7V3h3.1z"/></svg> TikTok</span>
+          <blockquote>« Texte exact du commentaire. »</blockquote>
+          <div class="review-author">
+            <span class="review-avatar" aria-hidden="true"></span>
+            <div>
+              <strong>Prénom N.</strong>
+              <a href="https://www.tiktok.com/@compte/video/IDENTIFIANT" target="_blank" rel="noopener noreferrer">@compte_client</a>
+            </div>
+          </div>
+        </article>
+
+        MODÈLE — avis Google
+        <article class="review-card">
+          <span class="review-source"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 12h8.3"/></svg> Avis Google</span>
+          <span class="review-stars" aria-label="5 sur 5">★★★★★</span>
+          <blockquote>« Texte exact de l'avis. »</blockquote>
+          <div class="review-author">
+            <span class="review-avatar" aria-hidden="true"></span>
+            <div><strong>Prénom N.</strong><span>Entreprise — mois année</span></div>
+          </div>
+        </article>
+      --></div>
+
+      <div class="testimonial-placeholder reveal">
+        <p>Premiers avis à venir</p>
+        <span>Les retours de nos clients seront publiés ici, avec leur accord et un lien vers la publication d'origine.</span>
+      </div>
+      <p class="reviews-cta">Vous avez travaillé avec Mira ? <a href="mailto:mira.soixantequinze.contact@gmail.com?subject=Mon%20avis%20sur%20Mira%20Agency">Partagez votre avis</a></p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FAQ — réponses en brouillon, à valider avant mise en ligne.
+       ============================================================ -->
+  <section id="faq" class="tint-slate">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2>Questions fréquentes</h2>
+        <p>Ce qu'on nous demande le plus souvent avant de démarrer.</p>
+      </div>
+      <div class="faq-list reveal">
+        <details>
+          <summary>Comment se déroule le premier contact ?</summary>
+          <p>Vous remplissez le formulaire « Démarrer un projet » en proposant un créneau. Nous vous rappelons pour comprendre votre contexte, vos objectifs et vos contraintes, puis nous revenons vers vous avec une proposition adaptée.</p>
+        </details>
+        <details>
+          <summary>Combien coûte un projet ?</summary>
+          <p>Chaque projet fait l'objet d'un devis sur mesure, établi après le premier échange. Le budget dépend du périmètre (stratégie, contenus, médias, site…), des délais et du volume de livrables.</p>
+        </details>
+        <details>
+          <summary>Quels sont les délais ?</summary>
+          <p>Ils dépendent de la prestation. Un calendrier précis, étape par étape, est fixé au lancement et reste consultable à tout moment dans votre espace projet.</p>
+        </details>
+        <details>
+          <summary>Travaillez-vous avec des entreprises hors de Paris ?</summary>
+          <p>Oui. L'agence est basée à Paris, et les échanges peuvent se faire à distance : réunions en visio, validations et suivi en ligne.</p>
+        </details>
+        <details>
+          <summary>Puis-je ne prendre qu'une seule prestation ?</summary>
+          <p>Oui. Vous pouvez faire appel à nous pour un besoin précis — un site, une campagne, une série vidéo — ou pour un accompagnement global sur plusieurs leviers.</p>
+        </details>
+        <details>
+          <summary>Comment suivre l'avancement de mon projet ?</summary>
+          <p>Vous recevez un accès personnel à votre espace projet : étapes, avancement, date de livraison prévue et dernières actions de l'équipe, mis à jour en continu.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT — adresse à confirmer avec le client avant publication.
+       ============================================================ -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <span class="eyebrow eyebrow--invert">Contact</span>
+      <h2>Un projet à poser sur la table ?</h2>
+      <p class="contact-sub">Présentez-nous votre contexte, nous reviendrons vers vous avec une lecture claire de la suite.</p>
+      <div class="contact-actions">
+        <a href="mailto:mira.soixantequinze.contact@gmail.com" class="btn-primary magnetic contact-email">mira.soixantequinze.contact@gmail.com</a>
+        <button class="copy-email" id="copy-email" type="button">Copier l'adresse</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<button class="back-to-top" id="back-to-top" type="button" aria-label="Revenir en haut de page">↑</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ============================================================
+     FOOTER — liens légaux et réseaux à compléter.
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <a href="#" class="logo" aria-label="Mira Agency">mira<span class="logo-dot" aria-hidden="true"></span></a>
+        <div class="logo-tagline" style="margin-top:6px;">mira.agency</div>
+      </div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#services">Prestations</a></li>
+            <li><a href="#methode">Méthode</a></li>
+            <li><a href="#realisations">Réalisations</a></li>
+            <li><a href="#apropos">Agence</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:mira.soixantequinze.contact@gmail.com">Écrire à l'agence</a></li>
+            <li><a href="rendez-vous.html">Prendre rendez-vous</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Réseaux</h4>
+          <!-- Remplacez les # par les vraies adresses des comptes -->
+          <ul>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+            <li><a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Légal</h4>
+          <ul>
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
+            <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Espace</h4>
+          <ul>
+            <li><a href="connexion.html">Suivre mon projet</a></li>
+            <li><a href="connexion.html">Connexion équipe</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Mira Agency. Tous droits réservés.</span>
+      <span>Paris, France</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JS — menu mobile, thème, scroll reveal, curseur, filtres, contact.
+     ============================================================ -->
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fineHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // ---- Menu mobile ----
+  const navToggle = document.getElementById('nav-toggle');
+  const mainNav = document.getElementById('main-nav');
+  navToggle.addEventListener('click', () => {
+    const isOpen = mainNav.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  mainNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mainNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // ---- Thème clair / sombre, persisté ----
+  const themeToggle = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+  const storedTheme = localStorage.getItem('mira-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  let currentTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+  applyTheme(currentTheme);
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+    themeToggle.setAttribute('aria-pressed', theme === 'dark');
+    themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre');
+  }
+
+  themeToggle.addEventListener('click', () => {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('mira-theme', currentTheme);
+    applyTheme(currentTheme);
+  });
+
+  // ---- Révélation discrète au scroll ----
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => revealObserver.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('is-visible'));
+  }
+
+  // ---- Entrée animée du titre du hero ----
+  requestAnimationFrame(() => document.body.classList.add('is-loaded'));
+
+  // ---- Barre de progression, header compact, bouton retour en haut ----
+  const progressBar = document.getElementById('scroll-progress');
+  const siteHeader = document.getElementById('site-header');
+  const backToTop = document.getElementById('back-to-top');
+  let ticking = false;
+
+  function onScroll() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = docHeight > 0 ? (scrollTop / docHeight) * 100 + '%' : '0%';
+    siteHeader.classList.toggle('is-scrolled', scrollTop > 40);
+    backToTop.classList.toggle('is-visible', scrollTop > window.innerHeight * 0.6);
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  });
+  onScroll();
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }));
+
+  // ---- Mise en avant de la section active dans la nav (scrollspy) ----
+  const navLinks = Array.from(mainNav.querySelectorAll('a[href^="#"]'));
+  const spySections = navLinks
+    .map(link => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
+  if ('IntersectionObserver' in window && spySections.length) {
+    const spyObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const link = navLinks.find(l => l.getAttribute('href') === '#' + entry.target.id);
+        if (!link) return;
+        if (entry.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('is-active'));
+          link.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    spySections.forEach(section => spyObserver.observe(section));
+  }
+
+  // ---- Bandeau de prestations défilant : pause au survol gérée en CSS ----
+
+  // ---- Filtres des réalisations ----
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const workCards = document.querySelectorAll('.work-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const filter = btn.dataset.filter;
+      workCards.forEach(card => {
+        const match = filter === 'tous' || card.dataset.category === filter;
+        card.classList.toggle('is-hidden', !match);
+      });
+    });
+  });
+
+  // ---- Copier l'adresse e-mail ----
+  const copyBtn = document.getElementById('copy-email');
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText('mira.soixantequinze.contact@gmail.com');
+      showToast('Adresse copiée');
+    } catch (err) {
+      showToast('Copie indisponible — utilisez le lien');
+    }
+  });
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.add('is-shown');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('is-shown'), 2200);
+  }
+
+  // ---- Curseur personnalisé + effet magnétique (desktop, mouvement fin uniquement) ----
+  if (fineHover && !reduceMotion) {
+    const cursorRing = document.getElementById('cursor-ring');
+    let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+    window.addEventListener('mousemove', (e) => {
+      cx = e.clientX; cy = e.clientY;
+      cursorRing.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+      cursorRing.classList.add('is-active');
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursorRing.classList.add('is-hovering'));
+      el.addEventListener('mouseleave', () => cursorRing.classList.remove('is-hovering'));
+    });
+
+    document.querySelectorAll('.magnetic').forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const relX = e.clientX - rect.left - rect.width / 2;
+        const relY = e.clientY - rect.top - rect.height / 2;
+        el.style.transform = `translate(${relX * 0.25}px, ${relY * 0.35}px)`;
+      });
+      el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+    });
+  }
+
+  // ---- Année courante dans le footer ----
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

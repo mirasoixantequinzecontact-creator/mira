@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- ============================================================
+     ESPACE ÉQUIPE — tableau de bord interne (prototype)
+     ⚠ Accès à protéger côté serveur. Données factices.
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace équipe — Mira Agency</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23121212'/%3E%3Crect x='40' y='40' width='22' height='22' fill='%23F6F3EE'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  :root{
+    --ink:#121212; --paper:#F6F3EE; --paper-deep:#ECE7DD;
+    --accent:#5A1A2C; --grey:#6B6660; --border:rgba(18,18,18,0.12);
+    --tint-sand:#F1ECE2; --tint-slate:#ECEEF1; --ok:#3B7A57; --warn:#9A6B1E;
+    --font-display:'Archivo', sans-serif; --font-body:'Inter', sans-serif;
+    --max-w:1180px; --gutter:5vw;
+  }
+  [data-theme="dark"]{
+    --ink:#F2EDE6; --paper:#121212; --paper-deep:#1B1B1B;
+    --accent:#C9536C; --grey:#9B958C; --border:rgba(242,237,230,0.14);
+    --tint-sand:#191712; --tint-slate:#13161A; --ok:#5DAe82; --warn:#C9A14E;
+  }
+  *{box-sizing:border-box;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;}}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.5; -webkit-font-smoothing:antialiased; transition:background-color .4s ease, color .4s ease;}
+  a{color:inherit; text-decoration:none;}
+  h1,h2,h3{font-family:var(--font-display); font-weight:900; letter-spacing:-0.02em; margin:0;}
+  .container{max-width:var(--max-w); margin:0 auto; padding:0 var(--gutter);}
+  .eyebrow{font-weight:600; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:.8rem;}
+
+  /* Header */
+  .site-header{position:sticky; top:0; z-index:50; background:rgba(246,243,238,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--border);}
+  [data-theme="dark"] .site-header{background:rgba(18,18,18,0.85);}
+  .site-header .container{display:flex; align-items:center; justify-content:space-between; padding:14px var(--gutter);}
+  .logo{display:inline-flex; align-items:center; gap:12px; font-family:var(--font-display); font-weight:900; font-size:1.2rem; color:var(--ink);}
+  .logo .dot{display:inline-block; width:.16em; height:.16em; background:var(--ink); transform:translateY(-.02em);}
+  .logo .tag{font-family:var(--font-body); font-weight:600; font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--grey); border:1px solid var(--border); padding:3px 8px;}
+  .header-actions{display:flex; align-items:center; gap:16px; font-size:.88rem;}
+  .header-actions .who{color:var(--grey);} .header-actions a:hover{color:var(--accent);}
+  .theme-toggle{width:34px; height:34px; border:1px solid var(--border); background:none; color:var(--ink); cursor:pointer; display:inline-flex; align-items:center; justify-content:center;}
+  .theme-toggle svg{width:15px; height:15px;} .theme-toggle .icon-moon{display:none;}
+  [data-theme="dark"] .theme-toggle .icon-sun{display:none;} [data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+  /* Titre + KPI */
+  .dash-head{padding:clamp(32px,5vw,56px) 0 24px;}
+  .dash-head h1{font-size:clamp(1.7rem,3.4vw,2.6rem);}
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:28px;}
+  @media (max-width:760px){ .kpis{grid-template-columns:repeat(2,1fr);} }
+  .kpi{border:1px solid var(--border); padding:20px; background:var(--tint-slate);}
+  .kpi .num{font-family:var(--font-display); font-weight:900; font-size:1.9rem; line-height:1;}
+  .kpi .lbl{font-size:.8rem; color:var(--grey); margin-top:8px;}
+
+  /* Barre d'outils */
+  .toolbar{display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; padding:24px 0 16px;}
+  .filters{display:flex; gap:8px; flex-wrap:wrap;}
+  .filter-btn{border:1px solid var(--border); background:none; color:var(--grey); font-family:var(--font-body); font-size:.82rem; padding:7px 14px; cursor:pointer; transition:border-color .2s ease, color .2s ease;}
+  .filter-btn:hover, .filter-btn.is-active{border-color:var(--ink); color:var(--ink);}
+  .search{border:1px solid var(--border); background:var(--paper); color:var(--ink); padding:8px 12px; font-family:var(--font-body); font-size:.88rem; min-width:200px;}
+  .search:focus{outline:none; border-color:var(--accent);}
+
+  /* Tableau projets */
+  .table-wrap{border:1px solid var(--border); overflow-x:auto; margin-bottom:40px;}
+  table{width:100%; border-collapse:collapse; min-width:720px;}
+  th, td{text-align:left; padding:15px 18px; font-size:.9rem; border-bottom:1px solid var(--border);}
+  th{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--grey); font-weight:600; background:var(--tint-sand);}
+  tbody tr{transition:background-color .15s ease; cursor:pointer;}
+  tbody tr:hover{background:var(--tint-slate);}
+  tbody tr:last-child td{border-bottom:none;}
+  .client{font-weight:600;}
+  .ref{color:var(--grey); font-size:.82rem;}
+  .status{display:inline-flex; align-items:center; gap:7px; font-size:.8rem; font-weight:600;}
+  .status .dot{width:8px; height:8px; border-radius:50%;}
+  .status.encours .dot{background:var(--accent);} .status.encours{color:var(--accent);}
+  .status.attente .dot{background:var(--warn);} .status.attente{color:var(--warn);}
+  .status.livre .dot{background:var(--ok);} .status.livre{color:var(--ok);}
+  .mini-bar{width:90px; height:6px; background:var(--paper-deep); border:1px solid var(--border); display:inline-block; vertical-align:middle; overflow:hidden;}
+  .mini-bar span{display:block; height:100%; background:var(--accent);}
+  .pct{font-size:.8rem; color:var(--grey); margin-left:8px;}
+  .row-link{color:var(--accent); font-size:.82rem; font-weight:600; white-space:nowrap;}
+
+  .demo-note{margin:0 0 40px; padding:14px 16px; background:var(--tint-sand); border:1px solid var(--border); font-size:.78rem; color:var(--grey);}
+  .demo-note strong{color:var(--ink);}
+  .site-footer{padding:32px 0; border-top:1px solid var(--border);}
+  .site-footer .container{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; font-size:.8rem; color:var(--grey);}
+  .requests-head{margin-top:64px;}
+  .requests-head h2{margin:8px 0 0;}
+  .requests-head .count{color:var(--grey); font-weight:500;}
+  #requests-body tr{cursor:default;}
+  #requests-body .msg{max-width:42ch; white-space:pre-wrap; color:var(--grey); font-size:0.88rem;}
+  #requests-body a{border-bottom:1px solid currentColor;}
+  .del-btn{background:none; border:1px solid var(--border); color:var(--grey); font:inherit; font-size:0.8rem; padding:6px 10px; cursor:pointer;}
+  .del-btn:hover{border-color:var(--accent); color:var(--accent);}
+  .empty-row td{color:var(--grey); text-align:center; padding:28px;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">mira<span class="dot" aria-hidden="true"></span> <span class="tag">Équipe</span></a>
+    <div class="header-actions">
+      <span class="who" id="who"></span>
+      <a href="connexion.html" id="logout">Déconnexion</a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer le thème">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="dash-head">
+    <span class="eyebrow">Tableau de bord</span>
+    <h1>Projets en cours</h1>
+    <div class="kpis">
+      <div class="kpi"><div class="num" id="kpi-active">0</div><div class="lbl">Projets actifs</div></div>
+      <div class="kpi"><div class="num" id="kpi-wait">0</div><div class="lbl">En attente client</div></div>
+      <div class="kpi"><div class="num" id="kpi-done">0</div><div class="lbl">Livrés ce mois</div></div>
+      <div class="kpi"><div class="num" id="kpi-avg">0%</div><div class="lbl">Avancement moyen</div></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="filters" id="filters">
+      <button class="filter-btn is-active" data-filter="tous" type="button">Tous</button>
+      <button class="filter-btn" data-filter="encours" type="button">En cours</button>
+      <button class="filter-btn" data-filter="attente" type="button">En attente</button>
+      <button class="filter-btn" data-filter="livre" type="button">Livrés</button>
+    </div>
+    <input type="search" class="search" id="search" placeholder="Rechercher un client, une référence…" aria-label="Rechercher">
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Client</th><th>Prestation</th><th>Statut</th><th>Avancement</th><th>Livraison</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="projects-body"></tbody>
+    </table>
+  </div>
+
+  <div class="dash-head requests-head">
+    <span class="eyebrow">Formulaire « Démarrer un projet »</span>
+    <h2>Demandes reçues <span class="count" id="req-count"></span></h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Reçue le</th><th>Contact</th><th>Entreprise</th><th>Situation</th><th>Rappel souhaité</th><th>Message</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="requests-body"></tbody>
+    </table>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>© <span id="year"></span> Mira Agency — interne.</span>
+    <span>Accès réservé aux équipes</span>
+  </div>
+</footer>
+
+<script>
+  // ---- Thème ----
+  const root = document.documentElement;
+  let theme = localStorage.getItem('mira-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(theme);
+  function applyTheme(t){ t === 'dark' ? root.setAttribute('data-theme','dark') : root.removeAttribute('data-theme'); }
+  document.getElementById('theme-toggle').addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('mira-theme', theme); applyTheme(theme); });
+
+  // ---- Déconnexion ----
+  document.getElementById('logout').addEventListener('click', async (e) => {
+    e.preventDefault();
+    try { await fetch('/api/logout', { method:'POST', credentials:'same-origin' }); } catch (_) {}
+    location.href = 'connexion.html';
+  });
+
+  // ---- Échappement ----
+  function esc(s){ const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; }
+
+  const body = document.getElementById('projects-body');
+  let PROJECTS = [];
+  let activeFilter = 'tous';
+  let query = '';
+
+  function render(list){
+    body.innerHTML = '';
+    list.forEach(p => {
+      const tr = document.createElement('tr');
+      tr.addEventListener('click', () => location.href = 'suivi.html?ref=' + encodeURIComponent(p.ref));
+      tr.innerHTML = `
+        <td><div class="client">${esc(p.client)}</div><div class="ref">${esc(p.ref)}</div></td>
+        <td>${esc(p.type)}</td>
+        <td><span class="status ${esc(p.status)}"><span class="dot"></span>${esc(p.label)}</span></td>
+        <td><span class="mini-bar"><span style="width:${Number(p.progress)||0}%"></span></span><span class="pct">${Number(p.progress)||0}%</span></td>
+        <td>${esc(p.eta)}</td>
+        <td><span class="row-link">Ouvrir →</span></td>`;
+      body.appendChild(tr);
+    });
+  }
+
+  function apply(){
+    render(PROJECTS.filter(p => {
+      const okFilter = activeFilter === 'tous' || p.status === activeFilter;
+      const okQuery = !query || (p.client + ' ' + p.ref + ' ' + p.type).toLowerCase().includes(query);
+      return okFilter && okQuery;
+    }));
+  }
+
+  function refreshKpis(){
+    document.getElementById('kpi-active').textContent = PROJECTS.filter(p => p.status === 'encours').length;
+    document.getElementById('kpi-wait').textContent   = PROJECTS.filter(p => p.status === 'attente').length;
+    document.getElementById('kpi-done').textContent   = PROJECTS.filter(p => p.status === 'livre').length;
+    document.getElementById('kpi-avg').textContent    = PROJECTS.length
+      ? Math.round(PROJECTS.reduce((s,p) => s + p.progress, 0) / PROJECTS.length) + '%' : '0%';
+  }
+
+  // ---- Filtres + recherche ----
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active'); activeFilter = btn.dataset.filter; apply();
+  }));
+  document.getElementById('search').addEventListener('input', e => { query = e.target.value.toLowerCase().trim(); apply(); });
+
+  // ---- Chargement depuis le back-end (équipe uniquement) ----
+  (async () => {
+    let me;
+    try {
+      const meRes = await fetch('/api/me', { credentials:'same-origin' });
+      if (!meRes.ok) { location.href = 'connexion.html'; return; }
+      me = (await meRes.json()).user;
+    } catch (e) { location.href = 'connexion.html'; return; }
+
+    if (me.role !== 'equipe') { location.href = 'connexion.html'; return; }
+    document.getElementById('who').textContent = me.email || '';
+
+    try {
+      const res = await fetch('/api/projects', { credentials:'same-origin' });
+      if (!res.ok) { location.href = 'connexion.html'; return; }
+      PROJECTS = await res.json();
+    } catch (e) { PROJECTS = []; }
+
+    refreshKpis();
+    apply();
+    loadRequests();
+  })();
+
+  // ---- Demandes de rendez-vous ----
+  // Suppression définitive — à utiliser quand une personne demande l'effacement
+  // de ses données, ou quand la demande n'a plus d'utilité.
+  async function deleteRequest(r){
+    if (!confirm('Supprimer définitivement la demande de ' + r.prenom + ' ' + r.nom + ' ?')) return;
+    try {
+      const res = await fetch('/api/requests/' + encodeURIComponent(r.id), {
+        method:'DELETE', credentials:'same-origin', headers:{ 'Content-Type':'application/json' }
+      });
+      if (!res.ok) throw new Error();
+    } catch (e) { alert('Suppression impossible pour le moment.'); return; }
+    loadRequests();
+  }
+
+  async function loadRequests(){
+    const rb = document.getElementById('requests-body');
+    let list = [];
+    try {
+      const res = await fetch('/api/requests', { credentials:'same-origin' });
+      if (res.ok) list = await res.json();
+    } catch (e) {}
+    document.getElementById('req-count').textContent = '(' + list.length + ')';
+    rb.innerHTML = '';
+    if (!list.length) {
+      rb.innerHTML = '<tr class="empty-row"><td colspan="7">Aucune demande pour le moment.</td></tr>';
+      return;
+    }
+    list.forEach(r => {
+      const tr = document.createElement('tr');
+      const when = [r.date_dispo, r.heure_dispo].filter(Boolean).join(' à ') || '—';
+      tr.innerHTML = `
+        <td>${esc(r.created_at)}</td>
+        <td><div class="client">${esc(r.prenom)} ${esc(r.nom)}</div>
+            <div class="ref"><a href="mailto:${encodeURIComponent(r.email).replace(/%40/g,'@')}">${esc(r.email)}</a><br>${esc(r.telephone)}</div></td>
+        <td>${esc(r.entreprise)}</td>
+        <td>${esc(r.situation)}</td>
+        <td>${esc(when)}</td>
+        <td><div class="msg">${esc(r.raison)}</div></td>
+        <td><button type="button" class="del-btn" title="Supprimer définitivement (droit à l'effacement RGPD)">Supprimer</button></td>`;
+      tr.querySelector('.del-btn').addEventListener('click', () => deleteRequest(r));
+      rb.appendChild(tr);
+    });
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

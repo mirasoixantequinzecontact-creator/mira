@@ -1,0 +1,2 @@
+Dépose ici les vidéos brutes de vos réalisations (MP4/MOV).
+Puis lance : npm run videos

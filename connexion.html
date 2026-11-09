@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- ============================================================
+     CONNEXION — Espace Mira (prototype d'interface)
+     ⚠ Authentification réelle à brancher sur un back-end (Supabase/Firebase).
+        Voir le bloc « AUTH » dans le <script>.
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexion — Mira Agency</title>
+<meta name="description" content="Espace réservé Mira Agency — équipes et suivi de projet client.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23121212'/%3E%3Crect x='40' y='40' width='22' height='22' fill='%23F6F3EE'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  :root{
+    --ink:#121212; --paper:#F6F3EE; --paper-deep:#ECE7DD;
+    --accent:#5A1A2C; --grey:#6B6660; --border:rgba(18,18,18,0.12);
+    --tint-rose:#F3EBEC; --tint-slate:#ECEEF1;
+    --glow-accent:rgba(90,26,44,0.10); --glow-cool:rgba(60,80,110,0.08);
+    --font-display:'Archivo', sans-serif; --font-body:'Inter', sans-serif;
+  }
+  [data-theme="dark"]{
+    --ink:#F2EDE6; --paper:#121212; --paper-deep:#1B1B1B;
+    --accent:#C9536C; --grey:#9B958C; --border:rgba(242,237,230,0.14);
+    --tint-rose:#1A1416; --tint-slate:#13161A;
+    --glow-accent:rgba(201,83,108,0.16); --glow-cool:rgba(120,150,190,0.12);
+  }
+  *{box-sizing:border-box;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;}}
+  body{
+    margin:0; min-height:100vh; background:var(--paper); color:var(--ink);
+    font-family:var(--font-body); line-height:1.55; -webkit-font-smoothing:antialiased;
+    display:grid; grid-template-columns:1.05fr 1fr;
+    transition:background-color .4s ease, color .4s ease;
+  }
+  @media (max-width:880px){ body{grid-template-columns:1fr;} }
+  a{color:inherit; text-decoration:none;}
+  h1,h2{font-family:var(--font-display); font-weight:900; letter-spacing:-0.02em; line-height:1.05; margin:0;}
+
+  /* ---- Panneau gauche : signature de marque ---- */
+  .brand-panel{
+    position:relative; overflow:hidden;
+    background:var(--ink); color:var(--paper);
+    padding:48px clamp(32px,5vw,72px);
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .brand-panel::before{
+    content:""; position:absolute; top:-15%; left:-10%;
+    width:min(70%,520px); aspect-ratio:1; pointer-events:none;
+    background:
+      radial-gradient(circle at 30% 30%, var(--glow-accent), transparent 60%),
+      radial-gradient(circle at 70% 70%, var(--glow-cool), transparent 60%);
+    filter:blur(10px); opacity:.9;
+    animation:drift 16s ease-in-out infinite alternate;
+  }
+  @keyframes drift{ from{transform:translate(0,0) scale(1);} to{transform:translate(6%,4%) scale(1.1);} }
+  .brand-logo{
+    position:relative; display:inline-flex; align-items:center;
+    font-family:var(--font-display); font-weight:900; font-size:1.4rem; color:var(--paper);
+  }
+  .brand-logo .dot{display:inline-block; width:.16em; height:.16em; background:var(--paper); margin-left:.08em; transform:translateY(-.02em);}
+  .brand-copy{position:relative; max-width:24ch;}
+  .brand-copy h1{font-size:clamp(1.8rem,3.4vw,2.8rem);}
+  .brand-copy p{color:#C9C4BC; margin-top:16px;}
+  .brand-foot{position:relative; font-size:.8rem; color:#8E8980;}
+
+  /* ---- Panneau droit : connexion ---- */
+  .auth-panel{
+    padding:48px clamp(28px,5vw,72px);
+    display:flex; flex-direction:column; justify-content:center;
+    position:relative;
+  }
+  .auth-top{position:absolute; top:24px; right:clamp(28px,5vw,72px); display:flex; gap:14px; align-items:center;}
+  .auth-top a{font-size:.85rem; color:var(--grey);}
+  .auth-top a:hover{color:var(--ink);}
+  .theme-toggle{
+    width:36px; height:36px; border:1px solid var(--border); background:none; color:var(--ink);
+    cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
+  }
+  .theme-toggle svg{width:15px; height:15px;}
+  .theme-toggle .icon-moon{display:none;}
+  [data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+  [data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+  .auth-card{width:100%; max-width:400px; margin:0 auto;}
+  .eyebrow{font-weight:600; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:1rem;}
+  .auth-card h2{font-size:1.7rem; margin-bottom:8px;}
+  .auth-card .lede{color:var(--grey); font-size:.95rem; margin:0 0 28px;}
+
+  /* Onglets Équipe / Client */
+  .role-tabs{display:flex; border:1px solid var(--border); margin-bottom:24px;}
+  .role-tab{
+    flex:1; background:none; border:none; cursor:pointer;
+    font-family:var(--font-body); font-size:.85rem; font-weight:600; color:var(--grey);
+    padding:11px 8px; transition:background .2s ease, color .2s ease;
+  }
+  .role-tab.is-active{background:var(--ink); color:var(--paper);}
+
+  label{display:block; font-size:.8rem; font-weight:600; margin-bottom:7px;}
+  input{
+    width:100%; font-family:var(--font-body); font-size:.98rem; color:var(--ink);
+    background:var(--paper); border:1px solid var(--border); padding:13px 14px;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--glow-accent);}
+  .field{margin-bottom:18px;}
+  .field-row{display:flex; justify-content:space-between; align-items:baseline; gap:10px;}
+  .field-row a{font-size:.78rem; color:var(--accent);}
+
+  .btn-primary{
+    width:100%; background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+    font-family:var(--font-body); font-size:.95rem; font-weight:600; padding:15px;
+    transition:background .25s ease;
+  }
+  .btn-primary:hover{background:var(--accent);}
+  .form-error{color:#B23B3B; font-size:.82rem; margin:0 0 16px; min-height:1em;}
+
+  .auth-note{
+    margin-top:26px; padding:14px 16px; background:var(--tint-slate); border:1px solid var(--border);
+    font-size:.78rem; color:var(--grey);
+  }
+  .auth-note strong{color:var(--ink); font-weight:600;}
+  .client-hint{font-size:.8rem; color:var(--grey); margin-top:18px; text-align:center;}
+  .client-hint a{color:var(--accent); font-weight:500;}
+</style>
+</head>
+<body>
+
+  <!-- ---- Panneau de marque ---- -->
+  <aside class="brand-panel">
+    <a href="index.html" class="brand-logo">mira<span class="dot" aria-hidden="true"></span></a>
+    <div class="brand-copy">
+      <h1>Votre espace Mira.</h1>
+      <p>Le suivi de vos projets, au même endroit. Réservé aux équipes et aux clients accompagnés.</p>
+    </div>
+    <div class="brand-foot">Accès sécurisé — mira.agency</div>
+  </aside>
+
+  <!-- ---- Panneau de connexion ---- -->
+  <main class="auth-panel">
+    <div class="auth-top">
+      <a href="index.html">← Site</a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer le thème">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+
+    <div class="auth-card">
+      <span class="eyebrow">Connexion</span>
+      <h2 id="auth-title">Espace équipe</h2>
+      <p class="lede" id="auth-lede">Réservé au fondateur et aux collaborateurs Mira.</p>
+
+      <!-- Onglets de rôle -->
+      <div class="role-tabs" role="tablist">
+        <button class="role-tab is-active" id="tab-equipe" data-role="equipe" role="tab" aria-selected="true" type="button">Équipe</button>
+        <button class="role-tab" id="tab-client" data-role="client" role="tab" aria-selected="false" type="button">Client</button>
+      </div>
+
+      <form id="login-form" novalidate>
+        <p class="form-error" id="form-error" role="alert"></p>
+
+        <div class="field">
+          <label for="email">Adresse email</label>
+          <input type="email" id="email" name="email" autocomplete="email" placeholder="vous@mira.agency" required>
+        </div>
+
+        <!-- Référence projet : visible uniquement pour les clients -->
+        <div class="field" id="ref-field" hidden>
+          <label for="ref">Référence de projet</label>
+          <input type="text" id="ref" name="ref" placeholder="ex. MIRA-2026-014" autocomplete="off">
+        </div>
+
+        <!-- Mot de passe : visible uniquement pour l'équipe -->
+        <div class="field" id="pwd-field">
+          <div class="field-row">
+            <label for="password">Mot de passe</label>
+            <a href="#" id="forgot">Oublié ?</a>
+          </div>
+          <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••">
+        </div>
+
+        <button type="submit" class="btn-primary" id="submit-btn">Se connecter</button>
+      </form>
+
+      <!-- Aide contextuelle client -->
+      <p class="client-hint" id="client-hint" hidden>
+        Pas encore de référence ? <a href="rendez-vous.html">Démarrez un projet →</a>
+      </p>
+
+      <!-- Authentification réelle via le back-end Node (server/) -->
+      <div class="auth-note">
+        <strong>Connexion sécurisée.</strong> Votre mot de passe est chiffré et un seul cookie, strictement nécessaire,
+        maintient votre session. <a href="confidentialite.html">Données personnelles</a> · <a href="mentions-legales.html">Mentions légales</a>
+      </div>
+    </div>
+  </main>
+
+<script>
+  // ---- Thème partagé ----
+  const themeToggle = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+  let theme = localStorage.getItem('mira-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(theme);
+  function applyTheme(t){ t === 'dark' ? root.setAttribute('data-theme','dark') : root.removeAttribute('data-theme'); }
+  themeToggle.addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('mira-theme', theme); applyTheme(theme); });
+
+  // ---- Bascule des onglets Équipe / Client ----
+  const tabs = document.querySelectorAll('.role-tab');
+  const refField = document.getElementById('ref-field');
+  const pwdField = document.getElementById('pwd-field');
+  const clientHint = document.getElementById('client-hint');
+  const authTitle = document.getElementById('auth-title');
+  const authLede = document.getElementById('auth-lede');
+  const emailInput = document.getElementById('email');
+  let role = 'equipe';
+
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    tabs.forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-selected','false'); });
+    tab.classList.add('is-active'); tab.setAttribute('aria-selected','true');
+    role = tab.dataset.role;
+    document.getElementById('form-error').textContent = '';
+
+    if (role === 'client') {
+      authTitle.textContent = 'Suivi de projet';
+      authLede.textContent = 'Suivez l’avancement de votre commande en temps réel.';
+      refField.hidden = true; pwdField.hidden = false; clientHint.hidden = false;
+      emailInput.placeholder = 'vous@entreprise.com';
+    } else {
+      authTitle.textContent = 'Espace équipe';
+      authLede.textContent = 'Réservé au fondateur et aux collaborateurs Mira.';
+      refField.hidden = true; pwdField.hidden = false; clientHint.hidden = true;
+      emailInput.placeholder = 'vous@mira.agency';
+    }
+  }));
+
+  // ---- Connexion (appel au back-end Node) ----
+  const form = document.getElementById('login-form');
+  const errorEl = document.getElementById('form-error');
+  const submitBtn = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorEl.textContent = '';
+    const email = emailInput.value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      errorEl.textContent = 'Veuillez saisir une adresse email valide.'; emailInput.focus(); return;
+    }
+    if (!password) { errorEl.textContent = 'Mot de passe requis.'; return; }
+
+    submitBtn.disabled = true; submitBtn.textContent = 'Connexion…';
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ email, password, role })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        errorEl.textContent = data.error || 'Échec de la connexion.';
+        submitBtn.disabled = false; submitBtn.textContent = 'Se connecter';
+        return;
+      }
+      // Le serveur décide la destination selon le rôle réel du compte
+      window.location.href = data.user.role === 'equipe' ? 'espace-equipe.html' : 'suivi.html';
+    } catch (err) {
+      errorEl.textContent = 'Connexion impossible pour le moment. Réessayez dans quelques instants.';
+      submitBtn.disabled = false; submitBtn.textContent = 'Se connecter';
+    }
+  });
+
+  document.getElementById('forgot').addEventListener('click', (e) => {
+    e.preventDefault();
+    errorEl.textContent = 'Mot de passe oublié ? Écrivez-nous à mira.soixantequinze.contact@gmail.com, nous vous enverrons un nouvel accès.';
+  });
+</script>
+</body>
+</html>

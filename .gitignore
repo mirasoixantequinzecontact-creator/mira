@@ -1,0 +1,14 @@
+node_modules/
+server/node_modules/
+server/.env
+server/mira.db
+server/mira.db-shm
+server/mira.db-wal
+brief/videos/*
+!brief/videos/LISEZMOI.txt
+# Captures de comparaison avant/après (générées, volumineuses)
+brief/captures-avant/
+brief/captures-apres/
+# Réglages locaux de Claude Code (contiennent des identifiants de test en clair)
+.claude/settings.local.json
+.claude/scheduled_tasks.lock

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- ============================================================
+     META / SEO
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Démarrer un projet — Mira Agency</title>
+<meta name="description" content="Présentez votre projet à Mira Agency et proposez un créneau pour être rappelé.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23121212'/%3E%3Crect x='40' y='40' width='22' height='22' fill='%23F6F3EE'/%3E%3C/svg%3E">
+
+<link rel="stylesheet" href="fonts/fonts.css">
+
+<style>
+  /* ============================================================
+     1. VARIABLES — identiques à la page d'accueil pour cohérence
+     ============================================================ */
+  :root{
+    --ink:#121212;
+    --paper:#F6F3EE;
+    --paper-deep:#ECE7DD;
+    --accent:#5A1A2C;
+    --grey:#6B6660;
+    --border:rgba(18,18,18,0.12);
+
+    --tint-rose:#F3EBEC;
+    --tint-sand:#F1ECE2;
+    --tint-slate:#ECEEF1;
+    --glow-accent:rgba(90,26,44,0.10);
+    --glow-cool:rgba(60,80,110,0.08);
+
+    --font-display:'Archivo', sans-serif;
+    --font-body:'Inter', sans-serif;
+
+    --max-w:1180px;
+    --form-w:720px;
+    --gutter:6vw;
+    --section-pad: clamp(64px, 10vw, 140px);
+  }
+
+  [data-theme="dark"]{
+    --ink:#F2EDE6;
+    --paper:#121212;
+    --paper-deep:#1B1B1B;
+    --accent:#C9536C;
+    --grey:#9B958C;
+    --border:rgba(242,237,230,0.14);
+    --tint-rose:#1A1416;
+    --tint-sand:#191712;
+    --tint-slate:#13161A;
+    --glow-accent:rgba(201,83,108,0.14);
+    --glow-cool:rgba(120,150,190,0.10);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth; transition:background-color .4s ease;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation:none !important; transition:none !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    transition:background-color .4s ease, color .4s ease;
+  }
+
+  a{color:inherit; text-decoration:none;}
+  h1,h2{font-family:var(--font-display); font-weight:900; letter-spacing:-0.02em; line-height:1.05; margin:0;}
+
+  .container{max-width:var(--max-w); margin:0 auto; padding:0 var(--gutter);}
+
+  .eyebrow{
+    font-family:var(--font-body); font-weight:600; font-size:0.75rem;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--accent);
+    display:block; margin-bottom:1.2rem;
+  }
+
+  /* ============================================================
+     2. LOGO + HEADER (repris de l'accueil)
+     ============================================================ */
+  .logo{
+    display:inline-flex; align-items:center;
+    font-family:var(--font-display); font-weight:900;
+    font-size:1.3rem; letter-spacing:-0.02em; color:var(--ink);
+  }
+  .logo-dot{
+    display:inline-block; width:0.16em; height:0.16em;
+    background:var(--ink); margin-left:0.08em; transform:translateY(-0.02em);
+  }
+
+  .site-header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(246,243,238,0.92); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border);
+  }
+  [data-theme="dark"] .site-header{background:rgba(18,18,18,0.85);}
+  .site-header .container{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:16px; padding-bottom:16px;
+  }
+  .header-actions{display:flex; align-items:center; gap:16px;}
+  .back-link{font-size:0.9rem; font-weight:500;}
+  .back-link:hover{color:var(--accent);}
+
+  .theme-toggle{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:38px; height:38px; border:1px solid var(--border);
+    background:none; color:var(--ink); cursor:pointer;
+    transition:border-color .25s ease;
+  }
+  .theme-toggle:hover{border-color:var(--ink);}
+  .theme-toggle svg{width:16px; height:16px;}
+  .theme-toggle .icon-moon{display:none;}
+  [data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+  [data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+  /* ============================================================
+     3. EN-TÊTE DE PAGE
+     ============================================================ */
+  .form-hero{
+    position:relative;
+    padding-top:calc(var(--section-pad) + 50px);
+    padding-bottom:clamp(32px, 5vw, 56px);
+    overflow:hidden;
+  }
+  .form-hero::before{
+    content:""; position:absolute; top:-30%; right:-10%;
+    width:min(60vw, 560px); aspect-ratio:1; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(circle at 30% 30%, var(--glow-accent), transparent 60%),
+      radial-gradient(circle at 70% 70%, var(--glow-cool), transparent 60%);
+    filter:blur(20px);
+  }
+  .form-hero h1{font-size:clamp(2rem, 5vw, 3.4rem); max-width:18ch;}
+  .form-hero p{margin-top:20px; max-width:52ch; color:var(--grey); font-size:1.05rem;}
+
+  /* ============================================================
+     4. FORMULAIRE
+     ============================================================ */
+  .form-section{padding-bottom:var(--section-pad);}
+  .form-card{max-width:var(--form-w);}
+
+  form{display:block;}
+  .form-grid{
+    display:grid; gap:24px 28px;
+    grid-template-columns:1fr 1fr;
+  }
+  .field{display:flex; flex-direction:column;}
+  .hp{position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden;}
+  .consent label{display:flex; gap:10px; align-items:flex-start; font-size:0.88rem; font-weight:400; line-height:1.5;}
+  .consent input{margin-top:4px; accent-color:var(--accent);}
+  .consent a{border-bottom:1px solid currentColor;}
+  .rgpd-note{grid-column:1 / -1; margin:0; font-size:0.78rem; line-height:1.55; color:var(--grey);}
+  .rgpd-note a{border-bottom:1px solid currentColor;}
+  .form-error{grid-column:1 / -1; margin:0; padding:14px 16px; border:1px solid var(--accent); color:var(--accent); font-size:0.9rem;}
+  .form-error a{border-bottom:1px solid currentColor;}
+  .field.full{grid-column:1 / -1;}
+
+  @media (max-width: 640px){
+    .form-grid{grid-template-columns:1fr;}
+  }
+
+  label{
+    font-size:0.82rem; font-weight:600; letter-spacing:0.02em;
+    margin-bottom:8px; color:var(--ink);
+  }
+  label .req{color:var(--accent);}
+  .hint{font-size:0.78rem; color:var(--grey); margin-top:6px;}
+
+  input, select, textarea{
+    font-family:var(--font-body); font-size:0.98rem; color:var(--ink);
+    background:var(--paper); border:1px solid var(--border);
+    padding:13px 14px; width:100%;
+    transition:border-color .2s ease, box-shadow .2s ease, background-color .4s ease;
+  }
+  input:hover, select:hover, textarea:hover{border-color:var(--grey);}
+  input:focus, select:focus, textarea:focus{
+    outline:none; border-color:var(--accent);
+    box-shadow:0 0 0 3px var(--glow-accent);
+  }
+  textarea{resize:vertical; min-height:120px;}
+  select{appearance:none; cursor:pointer;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%236B6660' stroke-width='1.5'/></svg>");
+    background-repeat:no-repeat; background-position:right 14px center;
+    padding-right:38px;
+  }
+  /* Champ invalide signalé seulement après tentative d'envoi */
+  form.submitted :invalid{border-color:#B23B3B;}
+  form.submitted :invalid:focus{box-shadow:0 0 0 3px rgba(178,59,59,0.18);}
+
+  .callout{
+    grid-column:1 / -1;
+    border:1px solid var(--border);
+    background:var(--tint-slate);
+    padding:18px 20px;
+    font-size:0.88rem; color:var(--grey);
+    display:flex; gap:12px; align-items:flex-start;
+  }
+  .callout strong{color:var(--ink); font-weight:600;}
+
+  .form-foot{
+    grid-column:1 / -1;
+    display:flex; flex-wrap:wrap; align-items:center; gap:18px;
+    margin-top:6px;
+  }
+  .btn-primary{
+    display:inline-block; background:var(--ink); color:var(--paper);
+    padding:16px 34px; font-size:0.95rem; font-weight:600;
+    border:none; cursor:pointer; font-family:var(--font-body);
+    transition:background .25s ease, transform .25s ease;
+  }
+  .btn-primary:hover{background:var(--accent); transform:translateY(-2px);}
+  .form-foot small{font-size:0.78rem; color:var(--grey); max-width:34ch;}
+
+  /* Message de confirmation après envoi */
+  .form-success{
+    display:none;
+    border:1px solid var(--border);
+    background:var(--tint-rose);
+    padding:clamp(28px, 5vw, 48px);
+    max-width:var(--form-w);
+  }
+  .form-success.is-shown{display:block;}
+  .form-success h2{font-size:clamp(1.4rem, 3vw, 2rem); margin-bottom:14px;}
+  .form-success p{color:var(--grey); margin:0 0 8px;}
+  .form-success .recap{
+    margin-top:20px; padding-top:20px; border-top:1px solid var(--border);
+    font-size:0.92rem;
+  }
+  .form-success .recap dt{font-weight:600; color:var(--ink);}
+  .form-success .recap dd{margin:2px 0 12px; color:var(--grey);}
+
+  /* ============================================================
+     5. FOOTER (allégé)
+     ============================================================ */
+  .site-footer{padding:40px 0; border-top:1px solid var(--border);}
+  .site-footer .container{
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px;
+    font-size:0.8rem; color:var(--grey);
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo" aria-label="Mira Agency — retour à l'accueil">mira<span class="logo-dot" aria-hidden="true"></span></a>
+    <div class="header-actions">
+      <a href="index.html" class="back-link">← Retour</a>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Activer le mode sombre">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============================================================
+       EN-TÊTE DE PAGE
+       ============================================================ -->
+  <section class="form-hero">
+    <div class="container">
+      <span class="eyebrow">Démarrer un projet</span>
+      <h1>Parlons de votre projet.</h1>
+      <p>Renseignez vos coordonnées et le contexte de votre entreprise. Indiquez un créneau qui vous convient : nous vous rappellerons pour en discuter.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FORMULAIRE
+       Soumission : envoyée à /api/rendez-vous (server/server.js),
+       enregistrée en base et listée dans l'espace équipe.
+       ============================================================ -->
+  <section class="form-section">
+    <div class="container">
+
+      <form id="rdv-form" class="form-card" novalidate>
+        <div class="form-grid">
+
+          <!-- Identité -->
+          <div class="field">
+            <label for="prenom">Prénom <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="prenom" name="prenom" maxlength="80" autocomplete="given-name" required>
+          </div>
+          <div class="field">
+            <label for="nom">Nom <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="nom" name="nom" maxlength="80" autocomplete="family-name" required>
+          </div>
+
+          <!-- Entreprise -->
+          <div class="field full">
+            <label for="entreprise">Nom de l'entreprise <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="entreprise" name="entreprise" maxlength="120" autocomplete="organization" required>
+          </div>
+
+          <!-- Contact -->
+          <div class="field">
+            <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+            <input type="email" id="email" name="email" maxlength="254" autocomplete="email" placeholder="vous@entreprise.com" required>
+          </div>
+          <div class="field">
+            <label for="telephone">Numéro de téléphone <span class="req" aria-hidden="true">*</span></label>
+            <input type="tel" id="telephone" name="telephone" maxlength="30" autocomplete="tel" placeholder="+33 6 00 00 00 00" required>
+          </div>
+
+          <!-- Situation de l'entreprise -->
+          <div class="field full">
+            <label for="situation">Situation de l'entreprise <span class="req" aria-hidden="true">*</span></label>
+            <select id="situation" name="situation" required>
+              <option value="" disabled selected>Sélectionnez une option</option>
+              <option>Projet de création / lancement</option>
+              <option>Activité récente (moins de 2 ans)</option>
+              <option>Entreprise établie en croissance</option>
+              <option>Entreprise établie en repositionnement</option>
+              <option>Autre situation</option>
+            </select>
+          </div>
+
+          <!-- Raison du rendez-vous -->
+          <div class="field full">
+            <label for="raison">Raison du rendez-vous <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="raison" name="raison" maxlength="3000" placeholder="Décrivez en quelques lignes votre besoin, vos objectifs ou le contexte de votre demande." required></textarea>
+          </div>
+
+          <!-- Disponibilité pour rappel -->
+          <div class="callout">
+            <span aria-hidden="true">↺</span>
+            <span><strong>Créneau de rappel.</strong> Indiquez la date et l'heure auxquelles vous serez disponible pour être éventuellement recontacté.</span>
+          </div>
+          <div class="field">
+            <label for="date-dispo">Date de disponibilité</label>
+            <input type="date" id="date-dispo" name="date_dispo">
+            <span class="hint">Optionnel — votre préférence de jour.</span>
+          </div>
+          <div class="field">
+            <label for="heure-dispo">Heure de disponibilité</label>
+            <input type="time" id="heure-dispo" name="heure_dispo">
+            <span class="hint">Optionnel — votre préférence d'horaire.</span>
+          </div>
+
+          <!-- Champ piège anti-robots : invisible pour les humains, laissez-le vide -->
+          <div class="hp" aria-hidden="true">
+            <label for="site-web">Site web</label>
+            <input type="text" id="site-web" name="site_web" tabindex="-1" autocomplete="off">
+          </div>
+
+          <!-- Consentement RGPD -->
+          <div class="field full consent">
+            <label><input type="checkbox" name="consent" required> J'accepte que mes informations soient utilisées pour être recontacté au sujet de ma demande. <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a> <span class="req" aria-hidden="true">*</span></label>
+          </div>
+
+          <p class="form-error" id="form-error" role="alert" hidden></p>
+
+          <!-- Envoi -->
+          <div class="form-foot">
+            <button type="submit" class="btn-primary">Envoyer ma demande</button>
+            <small>Les champs marqués d'un <span class="req" aria-hidden="true">*</span> sont obligatoires.</small>
+          </div>
+
+          <!-- Information RGPD à la collecte (art. 13) -->
+          <p class="rgpd-note">
+            Les informations saisies sont utilisées par Mira Agency uniquement pour traiter votre demande et vous recontacter.
+            Elles sont conservées 3 ans au maximum après notre dernier échange, ne sont jamais vendues ni cédées.
+            Vous pouvez y accéder, les rectifier ou les faire supprimer à tout moment en écrivant à
+            <a href="mailto:mira.soixantequinze.contact@gmail.com">mira.soixantequinze.contact@gmail.com</a>.
+            En savoir plus : <a href="confidentialite.html">politique de confidentialité</a>.
+          </p>
+
+        </div>
+      </form>
+
+      <!-- Confirmation après envoi -->
+      <div class="form-success" id="form-success" role="status" aria-live="polite">
+        <span class="eyebrow">Demande envoyée</span>
+        <h2>Merci, votre demande est bien notée.</h2>
+        <p>Nous revenons vers vous rapidement, au créneau indiqué si vous en avez précisé un.</p>
+        <dl class="recap" id="recap"></dl>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="container">
+    <span>© <span id="year"></span> Mira Agency. Tous droits réservés.</span>
+    <span><a href="mentions-legales.html">Mentions légales</a> · <a href="confidentialite.html">Confidentialité</a></span>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JS — thème, validation, envoi vers /api/rendez-vous.
+     ============================================================ -->
+<script>
+  // ---- Thème clair / sombre, partagé avec l'accueil via la même clé ----
+  const themeToggle = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+  const stored = localStorage.getItem('mira-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  let theme = stored || (prefersDark ? 'dark' : 'light');
+  apply(theme);
+  function apply(t){
+    if (t === 'dark') root.setAttribute('data-theme','dark');
+    else root.removeAttribute('data-theme');
+    themeToggle.setAttribute('aria-pressed', t === 'dark');
+    themeToggle.setAttribute('aria-label', t === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre');
+  }
+  themeToggle.addEventListener('click', () => {
+    theme = theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('mira-theme', theme);
+    apply(theme);
+  });
+
+  // ---- Date minimale = aujourd'hui (pas de rappel dans le passé) ----
+  const dateInput = document.getElementById('date-dispo');
+  dateInput.min = new Date().toISOString().split('T')[0];
+
+  // ---- Validation + soumission ----
+  const form = document.getElementById('rdv-form');
+  const success = document.getElementById('form-success');
+  const recap = document.getElementById('recap');
+
+  const errorBox = document.getElementById('form-error');
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    form.classList.add('submitted'); // active le style des champs invalides
+
+    if (!form.checkValidity()) {
+      const firstInvalid = form.querySelector(':invalid');
+      if (firstInvalid) firstInvalid.focus();
+      return;
+    }
+
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    // ---- Envoi au serveur (enregistré en base, visible dans l'espace équipe) ----
+    errorBox.hidden = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi…';
+    try {
+      const res = await fetch('/api/rendez-vous', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        credentials:'same-origin',
+        body:JSON.stringify(data)
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw { fromServer: err.error };
+      }
+    } catch (err) {
+      errorBox.textContent = (err.fromServer || 'Envoi impossible pour le moment.') + ' Vous pouvez aussi nous écrire à ';
+      const a = document.createElement('a');
+      a.href = 'mailto:mira.soixantequinze.contact@gmail.com';
+      a.textContent = 'mira.soixantequinze.contact@gmail.com';
+      errorBox.append(a, '.');
+      errorBox.hidden = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Envoyer ma demande';
+      return;
+    }
+
+    // ---- Confirmation avec récapitulatif ----
+    const labels = {
+      prenom:'Prénom', nom:'Nom', entreprise:'Entreprise', email:'Email',
+      telephone:'Téléphone', situation:'Situation', raison:'Raison du rendez-vous',
+      date_dispo:'Date souhaitée', heure_dispo:'Heure souhaitée'
+    };
+    recap.innerHTML = '';
+    Object.keys(labels).forEach(key => {
+      if (!data[key]) return;
+      const dt = document.createElement('dt');
+      dt.textContent = labels[key];
+      const dd = document.createElement('dd');
+      dd.textContent = data[key];
+      recap.append(dt, dd);
+    });
+
+    form.style.display = 'none';
+    success.classList.add('is-shown');
+    success.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
