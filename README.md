@@ -5,14 +5,16 @@ mira/
 ├── site/      le site : pages, styles, scripts, images, polices, vidéos
 ├── server/    le serveur : connexion, agenda, espaces équipe et client, base de données
 ├── outils/    préparation des vidéos (+ dossier où déposer les vidéos brutes)
-└── README.md  ce mode d'emploi
+├── index.html          double-clic : ouvre la vitrine (aperçu)
+├── lancer-le-site.bat  double-clic : lance le site complet (Windows)
+└── README.md           ce mode d'emploi
 ```
 
 ## 1. Voir le site
 
-**Aperçu rapide** : double-cliquez sur `site/index.html`. La vitrine s'affiche comme en ligne, avec les contenus de démonstration. L'agenda est en aperçu : la réservation, la connexion et les formulaires demandent le serveur.
+**Aperçu rapide** : double-cliquez sur `index.html`. La vitrine s'affiche comme en ligne, avec les contenus de démonstration. L'agenda est en aperçu : la réservation, la connexion et les formulaires demandent le serveur.
 
-**Site complet** (réservation, formulaires, espaces équipe et client) — prérequis : [Node.js](https://nodejs.org) 20 ou plus :
+**Site complet** (réservation, formulaires, espaces équipe et client) — prérequis : [Node.js](https://nodejs.org) 20 ou plus. Sous Windows, double-cliquez sur `lancer-le-site.bat` : il installe ce qu'il faut la première fois, démarre le serveur et ouvre le navigateur (fermez sa fenêtre pour arrêter le site). Ou, dans un terminal :
 
 ```bash
 cd server
