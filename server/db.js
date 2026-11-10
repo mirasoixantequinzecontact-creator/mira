@@ -10,6 +10,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 // DB_PATH : chemin configurable (ex. disque persistant monté en production)
 const db = new Database(process.env.DB_PATH || path.join(__dirname, 'mira.db'));
 db.pragma('journal_mode = WAL');
+db.pragma('foreign_keys = ON');                  // suppression en cascade (projet → étapes, publications…)
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
@@ -88,10 +89,66 @@ db.exec(`
   );
   -- Un créneau ne peut être réservé qu'une fois (les annulés le libèrent)
   CREATE UNIQUE INDEX IF NOT EXISTS appointments_slot ON appointments(date, heure) WHERE statut = 'confirme';
+
+  -- ---------- Tableau de bord client (saisi par l'équipe, visible par le client) ----------
+  -- Publications et livrables : tout ce qui est produit, à valider, publié ou livré
+  CREATE TABLE IF NOT EXISTS publications (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id   INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    date         TEXT NOT NULL,                       -- AAAA-MM-JJ (publication ou livraison)
+    titre        TEXT NOT NULL,
+    format       TEXT,                                -- Reel, Post, Story, TikTok, Vidéo, Photo…
+    plateforme   TEXT,                                -- Instagram, TikTok, Facebook, YouTube, Fichier
+    statut       TEXT NOT NULL DEFAULT 'prevu',       -- prevu | a_valider | valide | publie
+    lien         TEXT,
+    vues         INTEGER,
+    likes        INTEGER,
+    commentaires INTEGER,
+    partages     INTEGER,
+    note         TEXT
+  );
+
+  -- Statistiques mensuelles des comptes du client
+  CREATE TABLE IF NOT EXISTS social_stats (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id   INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    mois         TEXT NOT NULL,                       -- AAAA-MM
+    plateforme   TEXT NOT NULL,
+    abonnes      INTEGER,
+    portee       INTEGER,                             -- comptes touchés
+    vues         INTEGER,
+    interactions INTEGER,
+    UNIQUE (project_id, mois, plateforme)
+  );
+
+  -- Publicité payante : budget et résultats par campagne et par mois
+  CREATE TABLE IF NOT EXISTS ads (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id   INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    mois         TEXT NOT NULL,                       -- AAAA-MM
+    plateforme   TEXT,                                -- Meta, TikTok, Google
+    campagne     TEXT NOT NULL,
+    objectif     TEXT,                                -- Notoriété, Trafic, Messages, Réservations…
+    budget       REAL,                                -- € prévus
+    depense      REAL,                                -- € dépensés
+    impressions  INTEGER,
+    clics        INTEGER,
+    resultats    INTEGER                              -- selon l'objectif (messages, réservations…)
+  );
 `);
 
 // Migration : ajoute consent_at aux bases créées avant cette colonne
 const reqCols = db.prepare('PRAGMA table_info(requests)').all().map(c => c.name);
 if (!reqCols.includes('consent_at')) db.exec('ALTER TABLE requests ADD COLUMN consent_at TEXT');
+
+// Migrations : fiche client et suivi des conversions (prospect → client)
+const addCol = (table, col, type) => {
+  if (!db.prepare(`PRAGMA table_info(${table})`).all().some(c => c.name === col)) db.exec(`ALTER TABLE ${table} ADD COLUMN ${col} ${type}`);
+};
+addCol('users', 'contact', 'TEXT');                 // personne à contacter
+addCol('users', 'telephone', 'TEXT');
+addCol('users', 'notes', 'TEXT');                   // interne, jamais montré au client
+addCol('requests', 'client_id', 'INTEGER');         // client créé à partir de cette demande
+addCol('appointments', 'client_id', 'INTEGER');
 
 module.exports = { db };

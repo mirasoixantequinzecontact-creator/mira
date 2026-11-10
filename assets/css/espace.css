@@ -1,0 +1,97 @@
+/* ============================================================
+   ESPACES ÉQUIPE ET CLIENT — composants communs :
+   boutons, formulaires, fenêtres (dialog), onglets, indicateurs, graphiques.
+   Chargé après tokens.css par espace-equipe, gestion-projet et suivi.
+   ============================================================ */
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; white-space:nowrap; min-height:40px; padding:9px 16px; border:1px solid var(--ink); background:var(--ink); color:#fff; font:inherit; font-size:.85rem; font-weight:600; cursor:pointer; text-decoration:none; }
+.btn:hover{ background:#fff; color:var(--ink); }
+.btn.ghost{ background:#fff; color:var(--ink); }
+.btn.ghost:hover{ background:var(--ink); color:#fff; }
+.btn.danger{ background:#fff; color:#b3261e; border-color:#e8b4b0; }
+.btn.danger:hover{ background:#b3261e; color:#fff; border-color:#b3261e; }
+.btn.small{ min-height:32px; padding:5px 10px; font-size:.78rem; }
+.btn:disabled{ opacity:.5; cursor:default; }
+.actions{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+
+.section-head{ display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px 20px; margin:56px 0 18px; }
+.section-head h2{ font-size:clamp(1.3rem, 2.4vw, 1.8rem); }
+.section-head p{ margin:6px 0 0; color:var(--grey); font-size:.9rem; max-width:60ch; }
+.count{ color:var(--grey); font-weight:500; }
+.muted{ color:var(--grey); }
+.tag-ok{ display:inline-block; font-size:.75rem; font-weight:600; padding:3px 8px; border:1px solid var(--border); background:var(--paper-deep); white-space:nowrap; }
+
+/* ---- Formulaires ---- */
+.fgrid{ display:grid; gap:14px 18px; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); }
+.fgrid .wide{ grid-column:1 / -1; }
+.f{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+.f > span{ font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+.f input, .f select, .f textarea{ font:inherit; font-size:15px; color:var(--ink); background:#fff; border:1px solid var(--border); border-radius:0; padding:9px 11px; width:100%; }
+.f input:focus, .f select:focus, .f textarea:focus{ outline:none; border-color:var(--ink); box-shadow:0 0 0 1px var(--ink); }
+.f textarea{ min-height:76px; resize:vertical; }
+.form-actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px; }
+.form-msg{ font-size:.88rem; }
+.form-msg.err{ color:#b3261e; }
+
+/* ---- Fenêtres ---- */
+dialog.dlg{ border:1px solid var(--ink); padding:0; width:min(640px, calc(100vw - 24px)); max-height:calc(100dvh - 24px); color:var(--ink); background:#fff; }
+dialog.dlg::backdrop{ background:rgba(10,10,10,.55); }
+.dlg-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; padding:20px 22px; border-bottom:1px solid var(--border); position:sticky; top:0; background:#fff; z-index:1; }
+.dlg-head h2{ font-size:1.25rem; }
+.dlg-head p{ margin:4px 0 0; color:var(--grey); font-size:.85rem; }
+.dlg-close{ width:36px; height:36px; flex:none; border:1px solid var(--border); background:#fff; font-size:20px; cursor:pointer; }
+.dlg-body{ padding:20px 22px 22px; }
+.secret{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:14px; background:var(--paper-deep); border:1px solid var(--border); font-family:ui-monospace, Consolas, monospace; font-size:.95rem; word-break:break-all; }
+.secret strong{ font-family:var(--font-body); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--grey); min-width:110px; }
+
+/* ---- Onglets / navigation interne ---- */
+.subnav{ position:sticky; top:var(--subnav-top, 57px); z-index:40; background:rgba(255,255,255,.95); border-bottom:1px solid var(--border); }
+.subnav ul{ display:flex; gap:4px; list-style:none; margin:0; padding:0; overflow-x:auto; scrollbar-width:none; }
+.subnav a{ display:block; padding:14px 12px; font-size:.82rem; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--grey); white-space:nowrap; border-bottom:2px solid transparent; }
+.subnav a:hover, .subnav a.is-active{ color:var(--ink); border-bottom-color:var(--ink); }
+
+/* ---- Indicateurs ---- */
+.stats{ display:grid; gap:12px; grid-template-columns:repeat(auto-fill, minmax(170px, 1fr)); }
+.stat{ border:1px solid var(--border); padding:18px; background:#fff; }
+.stat .lbl{ font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--grey); }
+.stat .val{ font-size:1.9rem; font-weight:700; letter-spacing:-.03em; line-height:1.1; margin-top:8px; }
+.stat .sub{ font-size:.82rem; color:var(--grey); margin-top:4px; }
+.delta{ font-weight:600; color:var(--ink); }
+
+/* Jauge budget (dépensé / prévu) */
+.meter{ height:8px; background:var(--paper-deep); border:1px solid var(--border); margin-top:10px; }
+.meter span{ display:block; height:100%; background:var(--ink); }
+
+/* ---- Graphique d'évolution (une série, un graphique par réseau) ---- */
+.charts{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); }
+.chart{ border:1px solid var(--border); padding:18px 18px 12px; background:#fff; position:relative; }
+.chart h3{ font-size:.95rem; font-family:var(--font-body); font-weight:700; letter-spacing:0; }
+.chart .now{ font-size:1.6rem; font-weight:700; letter-spacing:-.03em; margin:4px 0 0; }
+.chart svg{ display:block; width:100%; height:150px; margin-top:12px; overflow:visible; }
+.chart .grid line{ stroke:var(--border); stroke-width:1; }
+.chart .axis text{ fill:var(--grey); font-size:11px; }
+.chart .line{ fill:none; stroke:var(--ink); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
+.chart .area{ fill:var(--ink); opacity:.06; }
+.chart .dot{ fill:var(--ink); stroke:#fff; stroke-width:2; }
+.chart .hit{ fill:transparent; cursor:crosshair; }
+.chart .cross{ stroke:var(--grey); stroke-width:1; stroke-dasharray:3 3; }
+.chart-tip{ position:absolute; pointer-events:none; background:var(--ink); color:#fff; font-size:.78rem; padding:6px 9px; white-space:nowrap; transform:translate(-50%, -100%); z-index:2; }
+.chart-tip[hidden]{ display:none; }
+details.as-table{ margin-top:14px; }
+details.as-table summary{ cursor:pointer; font-size:.85rem; color:var(--grey); }
+
+/* ---- Cartes de contenus ---- */
+.cards{ display:grid; gap:12px; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); }
+.card{ border:1px solid var(--border); padding:16px; background:#fff; display:flex; flex-direction:column; gap:6px; }
+.card.todo-client{ border-color:var(--ink); box-shadow:inset 3px 0 0 var(--ink); }
+.card .meta{ font-size:.78rem; color:var(--grey); text-transform:uppercase; letter-spacing:.06em; font-weight:600; }
+.card h4{ margin:0; font-size:1rem; }
+.card .note{ font-size:.85rem; color:var(--text); }
+.card .nums{ display:flex; flex-wrap:wrap; gap:4px 14px; font-size:.82rem; color:var(--grey); }
+.card .nums b{ color:var(--ink); }
+.card a.lnk{ font-size:.85rem; border-bottom:1px solid currentColor; align-self:flex-start; }
+.card .actions{ margin-top:6px; }
+
+.empty{ padding:24px; border:1px dashed var(--border); color:var(--grey); text-align:center; font-size:.9rem; }
+
+/* Un élément masqué le reste, même s'il a un display propre (.btn, .f…) */
+.btn[hidden], .f[hidden], .stat[hidden]{ display:none !important; }

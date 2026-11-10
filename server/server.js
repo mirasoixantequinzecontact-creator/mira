@@ -150,7 +150,10 @@ app.use(session({
 //  Middlewares d'accès
 // ------------------------------------------------------------
 function requireAuth(req, res, next) {
-  if (!req.session.user) return res.status(401).json({ error: 'Non authentifié.' });
+  // Le compte doit toujours exister (un client supprimé perd l'accès immédiatement)
+  if (!req.session.user || !db.prepare('SELECT 1 FROM users WHERE id = ?').get(req.session.user.id)) {
+    return res.status(401).json({ error: 'Non authentifié.' });
+  }
   next();
 }
 function requireTeam(req, res, next) {
@@ -226,7 +229,8 @@ app.get('/api/projects/:ref', requireAuth, (req, res) => {
     name: p.name, ref: p.ref, start: p.start_date, status: p.status_label,
     pm: p.pm, type: p.type, eta: p.eta, progress: p.progress,
     steps: steps.map(s => ({ state: s.state, title: s.title, when: s.when_label, desc: s.descr })),
-    activity: activity.map(a => ({ time: a.time_label, text: a.text }))
+    activity: activity.map(a => ({ id: a.id, time: a.time_label, text: a.text })),
+    ...(u.role === 'equipe' ? { statusCode: p.status, clientId: p.client_user_id, clientName: p.client_name } : {})
   });
 });
 
@@ -389,6 +393,9 @@ function purgeOldRequests() {
 purgeOldRequests();
 setInterval(purgeOldRequests, 24 * 60 * 60 * 1000).unref();
 
+// Clients, projets et tableau de bord client (server/gestion.js)
+require('./gestion')(app, { db, requireAuth, requireTeam });
+
 app.use('/api', (req, res) => res.status(404).json({ error: 'Ressource introuvable.' }));
 
 // ------------------------------------------------------------
@@ -396,6 +403,10 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'Ressource introuvab
 //  connexion si la session ne correspond pas, AVANT de servir le HTML.
 // ------------------------------------------------------------
 app.get(['/espace-equipe.html', '/espace-equipe'], (req, res, next) => {
+  if (req.session.user?.role !== 'equipe') return res.redirect('/connexion.html');
+  next();
+});
+app.get(['/gestion-projet.html', '/gestion-projet'], (req, res, next) => {
   if (req.session.user?.role !== 'equipe') return res.redirect('/connexion.html');
   next();
 });
@@ -409,7 +420,7 @@ app.get(['/suivi.html', '/suivi'], (req, res, next) => {
 //  ni server/ (base de données, code, .env), ni fichiers de configuration.
 // ------------------------------------------------------------
 const PUBLIC_PAGES = new Set([
-  'index', 'connexion', 'rendez-vous', 'suivi', 'espace-equipe',
+  'index', 'connexion', 'rendez-vous', 'suivi', 'espace-equipe', 'gestion-projet',
   'mentions-legales', 'confidentialite'
 ]);
 app.use('/fonts', express.static(path.join(ROOT, 'fonts'), { maxAge: '30d', index: false }));

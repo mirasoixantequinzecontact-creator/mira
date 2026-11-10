@@ -38,13 +38,13 @@ Ne pas publier sur le site.
 
 | | |
 |---|---|
-| Finalité | Donner aux clients l'accès au suivi de leur projet |
+| Finalité | Donner aux clients l'accès au suivi de leur projet et à leur tableau de bord (contenus, statistiques de leurs comptes, publicité) ; gérer la relation client |
 | Base légale | Exécution du contrat |
 | Personnes concernées | Clients, membres de l'équipe |
-| Données | E-mail, nom, mot de passe haché (bcrypt), informations du projet |
+| Données | E-mail, nom de l'établissement, personne à contacter, téléphone, notes internes, mot de passe haché (bcrypt), informations du projet, statistiques de leurs comptes et campagnes |
 | Destinataires | Équipe Mira ; le client pour son propre projet uniquement |
 | Transferts hors UE | Aucun |
-| Conservation | Durée du contrat, puis suppression du compte ; archives comptables 10 ans |
+| Conservation | Durée du contrat, puis suppression du compte (bouton « Supprimer » de l'espace équipe : compte, projets et tableau de bord effacés) ; archives comptables 10 ans |
 | Sécurité | Bcrypt, cookie de session httpOnly/secure, rôles vérifiés côté serveur, limitation des connexions |
 
 ## 3. Sécurité du site (limitation de débit)
