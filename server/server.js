@@ -423,8 +423,11 @@ const PUBLIC_PAGES = new Set([
   'index', 'connexion', 'rendez-vous', 'suivi', 'espace-equipe', 'gestion-projet',
   'mentions-legales', 'confidentialite'
 ]);
-app.use('/fonts', express.static(path.join(ROOT, 'fonts'), { maxAge: '30d', index: false }));
-app.use('/assets', express.static(path.join(ROOT, 'assets'), { maxAge: '7d', index: false }));
+// Scripts et styles : revérifiés à chaque visite (304 s'ils n'ont pas changé), pour qu'une mise à jour
+// du site soit vue tout de suite. Images, polices et vidéos : gardées en cache.
+const revalidate = (res, file) => { if (/\.(js|css)$/.test(file)) res.setHeader('Cache-Control', 'no-cache'); };
+app.use('/fonts', express.static(path.join(ROOT, 'fonts'), { maxAge: '30d', index: false, setHeaders: revalidate }));
+app.use('/assets', express.static(path.join(ROOT, 'assets'), { maxAge: '7d', index: false, setHeaders: revalidate }));
 // Vidéos : express.static gère les requêtes Range (lecture progressive, avance rapide)
 app.use('/videos', express.static(path.join(ROOT, 'videos'), { maxAge: '7d', index: false }));
 // SEO : fichiers racine (jamais connexion, suivi ni espace-equipe dans le sitemap)

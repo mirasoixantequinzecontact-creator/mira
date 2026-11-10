@@ -98,7 +98,7 @@ Tout se trouve dans `site/assets/js/config.js`. Les mêmes valeurs sont aussi é
 
 En production, le serveur refuse de démarrer sans `SESSION_SECRET` solide et ne crée jamais de comptes de démonstration.
 
-Les fichiers CSS et JS sont mis en cache 7 jours. Après une mise à jour, demandez aux visiteurs réguliers de recharger la page, ou ajoutez `?v=2` aux liens dans les pages HTML.
+Les fichiers CSS et JS sont revérifiés à chaque visite : une mise à jour est visible immédiatement. Les images, polices et vidéos restent en cache.
 
 ## Sécurité (résumé)
 
