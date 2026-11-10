@@ -69,6 +69,25 @@ db.exec(`
     consent_at  TEXT,                                 -- preuve du consentement RGPD
     created_at  TEXT DEFAULT (datetime('now'))
   );
+
+  -- Appels réservés depuis l'agenda du site (date et heure de Paris)
+  CREATE TABLE IF NOT EXISTS appointments (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    date          TEXT NOT NULL,                      -- AAAA-MM-JJ
+    heure         TEXT NOT NULL,                      -- HH:MM
+    prenom        TEXT NOT NULL,
+    nom           TEXT NOT NULL,
+    etablissement TEXT NOT NULL,
+    email         TEXT NOT NULL,
+    telephone     TEXT NOT NULL,
+    pack          TEXT,
+    message       TEXT,
+    statut        TEXT NOT NULL DEFAULT 'confirme' CHECK (statut IN ('confirme','annule')),
+    consent_at    TEXT,
+    created_at    TEXT DEFAULT (datetime('now'))
+  );
+  -- Un créneau ne peut être réservé qu'une fois (les annulés le libèrent)
+  CREATE UNIQUE INDEX IF NOT EXISTS appointments_slot ON appointments(date, heure) WHERE statut = 'confirme';
 `);
 
 // Migration : ajoute consent_at aux bases créées avant cette colonne

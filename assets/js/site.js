@@ -77,3 +77,22 @@ if (ambianceVideo) {
 }
 
 initScrollspy();
+
+// ---- Agenda de réservation dans la section contact ----
+// Monté à l'approche de la section (aucune requête au chargement de la page).
+// Avec Cal.com ou Calendly (config.js), un bouton ouvre la modale à la place.
+const agendaBox = document.querySelector('[data-agenda]');
+if (agendaBox) {
+  if ((SITE.booking?.provider || 'interne') !== 'interne') {
+    agendaBox.innerHTML = '<button type="button" class="btn-light contact-cta" data-open-booking>Réserver un appel de 20 min</button>';
+    agendaBox.classList.remove('contact-agenda');
+  } else {
+    const mount = () => import('./agenda.js').then(({ mountAgenda }) => mountAgenda(agendaBox));
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some(e => e.isIntersecting)) { io.disconnect(); mount(); }
+      }, { rootMargin: '800px 0px' });
+      io.observe(agendaBox);
+    } else mount();
+  }
+}

@@ -47,13 +47,13 @@ if (IS_PROD) app.set('trust proxy', 1);            // derrière un proxy HTTPS (
 // ------------------------------------------------------------
 //  En-têtes de sécurité
 // ------------------------------------------------------------
-// Agenda de prise de RDV (modale) : seule ressource tierce autorisée, et elle
-// n'est chargée qu'au clic sur « Réserver un appel » (voir assets/js/booking.js).
-// BOOKING_PROVIDER doit correspondre à SITE.booking.provider dans assets/js/config.js.
+// Prise de RDV : par défaut, l'agenda du site lui-même (aucun domaine tiers).
+// Cal.com ou Calendly restent possibles : leurs domaines ne sont autorisés que si
+// BOOKING_PROVIDER le demande (doit correspondre à SITE.booking.provider dans assets/js/config.js).
 const BOOKING_DOMAINS = {
   cal:      { script: ['https://app.cal.com'], frame: ['https://app.cal.com', 'https://cal.com'], connect: ['https://app.cal.com'], style: [] },
   calendly: { script: ['https://assets.calendly.com'], frame: ['https://calendly.com'], connect: [], style: ['https://assets.calendly.com'] }
-}[process.env.BOOKING_PROVIDER || 'cal'] || { script: [], frame: [], connect: [], style: [] };
+}[process.env.BOOKING_PROVIDER || 'interne'] || { script: [], frame: [], connect: [], style: [] };
 
 const CSP = [
   "default-src 'self'",
@@ -126,6 +126,7 @@ function rateLimit({ windowMs, max, message }) {
 }
 const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, message: 'Trop de tentatives. Réessayez dans quelques minutes.' });
 const formLimiter  = rateLimit({ windowMs: 60 * 60 * 1000, max: 5,  message: 'Trop de demandes envoyées. Réessayez plus tard.' });
+const bookLimiter  = rateLimit({ windowMs: 60 * 60 * 1000, max: 5,  message: 'Trop de réservations envoyées. Réessayez plus tard.' });
 
 // --- Sessions persistées dans la même base SQLite ---
 app.use(session({
@@ -277,11 +278,113 @@ app.delete('/api/requests/:id', requireAuth, requireTeam, (req, res) => {
   res.json({ ok: true });
 });
 
-// Durée de conservation (RGPD, art. 5.1.e) : les demandes de plus de 3 ans
-// sont supprimées automatiquement, au démarrage puis chaque jour.
+// ------------------------------------------------------------
+//  API — Agenda de réservation (appel de 20 min)
+//  Horaires : server/disponibilites.js. Tout est calculé à l'heure de Paris,
+//  quel que soit le fuseau du serveur.
+// ------------------------------------------------------------
+const DISPO = require('./disponibilites');
+
+// Date et heure de Paris actuelles, au format « AAAA-MM-JJTHH:MM »
+function parisNow() {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+  }).formatToParts(new Date()).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`;
+}
+// Arithmétique sur des dates « locales » : on les traite comme de l'UTC
+const toMs = (local) => Date.parse(local + 'Z');
+const fromMs = (ms) => new Date(ms).toISOString().slice(0, 16);
+const toMin = (hhmm) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + m; };
+const toHHMM = (min) => `${String(Math.floor(min / 60)).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`;
+
+// Créneaux libres : { 'AAAA-MM-JJ': ['10:00', '10:30', …] } (jours sans créneau omis)
+function freeSlots() {
+  const now = parisNow();
+  const earliest = fromMs(toMs(now) + DISPO.delaiMinHeures * 3600e3).replace('T', ' ');
+  const taken = new Set(db.prepare("SELECT date || ' ' || heure AS k FROM appointments WHERE statut = 'confirme' AND date >= ?")
+    .all(now.slice(0, 10)).map(r => r.k));
+  const fermes = new Set(DISPO.fermetures || []);
+  const step = DISPO.dureeMin + (DISPO.pauseMin || 0);
+  const days = {};
+  for (let i = 0; i <= DISPO.horizonJours; i++) {
+    const date = fromMs(toMs(now.slice(0, 10) + 'T00:00') + i * 864e5).slice(0, 10);
+    if (fermes.has(date)) continue;
+    const plages = (DISPO.plages || {})[new Date(date + 'T00:00Z').getUTCDay()] || [];
+    const slots = [];
+    for (const [debut, fin] of plages) {
+      for (let t = toMin(debut); t + DISPO.dureeMin <= toMin(fin); t += step) {
+        const k = `${date} ${toHHMM(t)}`;
+        if (k >= earliest && !taken.has(k)) slots.push(toHHMM(t));
+      }
+    }
+    if (slots.length) days[date] = slots;
+  }
+  return days;
+}
+
+app.get('/api/creneaux', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.json({ dureeMin: DISPO.dureeMin, jours: freeSlots() });
+});
+
+const APPT_FIELDS = { prenom: 80, nom: 80, etablissement: 120, email: 254, telephone: 30, pack: 60, message: 1000, date: 10, heure: 5 };
+const APPT_REQUIRED = ['prenom', 'nom', 'etablissement', 'email', 'telephone', 'date', 'heure'];
+
+app.post('/api/rdv', bookLimiter, (req, res) => {
+  const b = req.body || {};
+  if (b.site_web) return res.json({ ok: true });     // champ piège : robots
+  const data = {};
+  for (const [k, max] of Object.entries(APPT_FIELDS)) data[k] = String(b[k] ?? '').trim().slice(0, max);
+  if (!b.consent) return res.status(400).json({ error: 'Merci d’accepter l’utilisation de vos informations pour organiser l’appel.' });
+  if (APPT_REQUIRED.some(k => !data[k])) return res.status(400).json({ error: 'Merci de remplir tous les champs obligatoires.' });
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) return res.status(400).json({ error: 'Adresse e-mail invalide.' });
+  if (!/^[+\d][\d\s().-]{5,}$/.test(data.telephone)) return res.status(400).json({ error: 'Numéro de téléphone invalide.' });
+  // Le créneau doit faire partie des créneaux encore libres (horaires, délai, déjà pris)
+  if (!(freeSlots()[data.date] || []).includes(data.heure)) {
+    return res.status(409).json({ error: 'Ce créneau n’est plus disponible. Choisissez-en un autre.' });
+  }
+  try {
+    db.prepare(`
+      INSERT INTO appointments (date, heure, prenom, nom, etablissement, email, telephone, pack, message, consent_at)
+      VALUES (@date, @heure, @prenom, @nom, @etablissement, @email, @telephone, @pack, @message, datetime('now'))
+    `).run(data);
+  } catch (e) {
+    // Index unique : deux personnes ont validé le même créneau au même moment
+    if (/UNIQUE/.test(e.message)) return res.status(409).json({ error: 'Ce créneau vient d’être réservé. Choisissez-en un autre.' });
+    throw e;
+  }
+  res.json({ ok: true, date: data.date, heure: data.heure, dureeMin: DISPO.dureeMin });
+});
+
+// Rendez-vous — équipe uniquement : à venir, puis les 50 derniers passés
+app.get('/api/rdv', requireAuth, requireTeam, (req, res) => {
+  const today = parisNow().slice(0, 10);
+  res.json({
+    aVenir: db.prepare('SELECT * FROM appointments WHERE date >= ? ORDER BY date, heure').all(today),
+    passes: db.prepare('SELECT * FROM appointments WHERE date < ? ORDER BY date DESC, heure DESC LIMIT 50').all(today)
+  });
+});
+
+// Annulation (libère le créneau) ou suppression définitive (droit à l'effacement)
+app.post('/api/rdv/:id/annuler', requireAuth, requireTeam, (req, res) => {
+  const r = db.prepare("UPDATE appointments SET statut = 'annule' WHERE id = ?").run(Number(req.params.id) || 0);
+  if (!r.changes) return res.status(404).json({ error: 'Rendez-vous introuvable.' });
+  res.json({ ok: true });
+});
+app.delete('/api/rdv/:id', requireAuth, requireTeam, (req, res) => {
+  const r = db.prepare('DELETE FROM appointments WHERE id = ?').run(Number(req.params.id) || 0);
+  if (!r.changes) return res.status(404).json({ error: 'Rendez-vous introuvable.' });
+  res.json({ ok: true });
+});
+
+// Durée de conservation (RGPD, art. 5.1.e) : les demandes et rendez-vous de plus
+// de 3 ans sont supprimés automatiquement, au démarrage puis chaque jour.
 function purgeOldRequests() {
   const r = db.prepare("DELETE FROM requests WHERE created_at < datetime('now', '-3 years')").run();
-  if (r.changes) console.log(`  RGPD : ${r.changes} demande(s) de plus de 3 ans supprimée(s).`);
+  const a = db.prepare("DELETE FROM appointments WHERE created_at < datetime('now', '-3 years')").run();
+  if (r.changes + a.changes) console.log(`  RGPD : ${r.changes + a.changes} demande(s) ou rendez-vous de plus de 3 ans supprimé(s).`);
 }
 purgeOldRequests();
 setInterval(purgeOldRequests, 24 * 60 * 60 * 1000).unref();
@@ -303,7 +406,7 @@ app.get(['/suivi.html', '/suivi'], (req, res, next) => {
 
 // ------------------------------------------------------------
 //  Pages publiques — liste blanche. Rien d'autre n'est servi :
-//  ni server/ (base de données, code, .env), ni package-lock, ni .claude/.
+//  ni server/ (base de données, code, .env), ni fichiers de configuration.
 // ------------------------------------------------------------
 const PUBLIC_PAGES = new Set([
   'index', 'connexion', 'rendez-vous', 'suivi', 'espace-equipe',

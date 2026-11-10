@@ -17,7 +17,7 @@ export const SITE = {
   instagram: "mira_soixantequinze",
   tiktok: "",                                // vide = lien masqué
   linkedin: "",                              // vide = lien masqué
-  booking: { provider: "cal", lien: "TODO_LIEN_CAL", dureeMin: 20 }, // provider: "cal" | "calendly"
+  booking: { provider: "interne", lien: "", dureeMin: 20 }, // "interne" = agenda du site (horaires : server/disponibilites.js) · "cal" | "calendly" + lien
   legal: {
     nomCommercial: "Mira",
     editeur: "TODO_PRENOM_NOM",

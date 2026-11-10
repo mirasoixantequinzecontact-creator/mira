@@ -86,17 +86,17 @@ Les données sont dans la base SQLite `server/mira.db` (ou au chemin défini par
 4. **Base de données persistante** : réglez `DB_PATH` vers un disque qui survit aux déploiements
    (ex. volume Railway monté sur `/data` → `DB_PATH=/data/mira.db`). Sans disque persistant,
    la base — comptes, projets, demandes — est effacée à chaque déploiement.
-5. Si l'agenda passe de Cal.com à Calendly, réglez `BOOKING_PROVIDER=calendly` (domaines autorisés dans la CSP).
+5. **Agenda de réservation** : intégré au site, aucun réglage nécessaire. Horaires, durée, délai et
+   jours fermés : `server/disponibilites.js` (redémarrer le serveur après modification).
+   Pour utiliser Cal.com ou Calendly à la place : `SITE.booking` dans `assets/js/config.js` et
+   `BOOKING_PROVIDER=cal` ou `calendly` dans `.env` (domaines autorisés dans la CSP).
 
 ## RGPD
-- **Aucun service tiers au chargement des pages** : polices hébergées dans `/fonts`, CSP qui
-  n'autorise que l'agenda de prise de RDV (Cal.com : `app.cal.com`, `cal.com`).
-  Cet agenda n'est chargé que lorsque le visiteur clique sur « Réserver un appel ».
-  Pas de cookie publicitaire ni de mesure d'audience, donc pas de bandeau cookies nécessaire.
-- **Cal.com** est sous-traitant pour la prise de RDV en ligne (nom, e-mail, téléphone, réponses) :
-  à déclarer dans le registre et à encadrer par son DPA.
+- **Aucun service tiers** : polices hébergées dans `/fonts`, agenda de réservation intégré,
+  CSP limitée au site lui-même. Pas de cookie publicitaire ni de mesure d'audience, donc pas de
+  bandeau cookies nécessaire.
 - **Consentement** obligatoire dans le formulaire, horodaté (`requests.consent_at`).
-- **Conservation** : les demandes de plus de 3 ans sont supprimées automatiquement.
-- **Droit à l'effacement** : bouton « Supprimer » sur chaque demande dans l'espace équipe.
+- **Conservation** : les demandes et rendez-vous de plus de 3 ans sont supprimés automatiquement.
+- **Droit à l'effacement** : bouton « Supprimer » sur chaque demande et chaque rendez-vous dans l'espace équipe.
 - **Registre des traitements** et procédures (accès, effacement, fuite de données) :
   voir [REGISTRE-RGPD.md](REGISTRE-RGPD.md) — document interne, à compléter.

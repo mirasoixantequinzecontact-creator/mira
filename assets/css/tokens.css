@@ -5,9 +5,9 @@
    ============================================================ */
 :root{
   color-scheme: light;
-  --ink:#0a0a0a;          /* était #121212 */
-  --paper:#ffffff;        /* était #F6F3EE */
-  --paper-deep:#f5f5f3;   /* était #ECE7DD — = --off de la brochure */
+  --ink:#0a0a0a;
+  --paper:#ffffff;
+  --paper-deep:#f5f5f3;
   --accent:#0a0a0a;       /* plus de couleur d'accent */
   --grey:#6b6b6b;         /* labels et textes secondaires (contraste AA) */
   --grey-display:#8c8c8c; /* 2e ligne "light" des grands titres */

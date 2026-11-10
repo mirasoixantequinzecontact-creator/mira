@@ -3,15 +3,16 @@
 //
 //  - Tout élément [data-open-booking] ouvre la modale ; data-pack="Mira Essentiel"
 //    pré-remplit les notes de la réservation (« Intéressé par : Mira Essentiel »).
-//  - Agenda Cal.com (ou Calendly) en inline, chargé À LA PREMIÈRE OUVERTURE
-//    seulement : aucune requête vers un tiers au chargement de la page.
-//  - Lien encore en TODO_ ou script en échec → repli : téléphone, WhatsApp,
+//  - Par défaut (provider "interne") : l'agenda du site (agenda.js), réservation
+//    enregistrée par notre serveur, visible dans l'espace équipe.
+//  - Option Cal.com / Calendly : agenda tiers en inline, chargé À LA PREMIÈRE
+//    OUVERTURE seulement. Script en échec → repli : téléphone, WhatsApp,
 //    formulaire « être rappelé ». Jamais de modale vide, jamais de redirection.
 //  - Accessibilité : role="dialog", aria-modal, focus piégé, Esc, retour du focus.
 // ============================================================
 import { SITE, LIENS } from './config.js';
 
-const { provider = 'cal', lien = '', dureeMin = 20 } = SITE.booking || {};
+const { provider = 'interne', lien = '', dureeMin = 20 } = SITE.booking || {};
 const LIEN_OK = lien && !/^TODO/i.test(lien);
 const LOAD_TIMEOUT = 12000;
 
@@ -47,6 +48,7 @@ function build() {
       <div class="booking-body">
         <p class="booking-loading" role="status">Chargement de l'agenda…</p>
         <div class="booking-embed" id="booking-embed"></div>
+        <p class="booking-alt" hidden>Vous préférez parler tout de suite ? <a data-contact="tel"></a> · <a data-contact="whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
         <div class="booking-fallback" hidden>
           <p class="booking-fallback-title">Réservez par téléphone ou laissez-nous vos coordonnées.</p>
           <div class="booking-fallback-actions">
@@ -66,10 +68,8 @@ function build() {
   packTag = modal.querySelector('.booking-pack');
   closeBtn = modal.querySelector('.booking-close');
 
-  const tel = fallback.querySelector('[data-contact="tel"]');
-  tel.href = LIENS.tel;
-  tel.textContent = `Appeler le ${SITE.telephoneAffiche}`;
-  fallback.querySelector('[data-contact="whatsapp"]').href = LIENS.whatsapp;
+  modal.querySelectorAll('[data-contact="tel"]').forEach(tel => { tel.href = LIENS.tel; tel.textContent = `Appeler le ${SITE.telephoneAffiche}`; });
+  modal.querySelectorAll('[data-contact="whatsapp"]').forEach(a => { a.href = LIENS.whatsapp; });
 
   closeBtn.addEventListener('click', close);
   modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
@@ -128,12 +128,26 @@ function brandName(pack) {
 
 function showFallback() {
   loading.hidden = true;
+  modal.querySelector('.booking-alt').hidden = true;
   embedBox.hidden = true;
   fallback.hidden = false;
 }
 
 // ---- Agenda ----
+async function renderInterne(pack) {
+  fallback.hidden = true;
+  embedBox.hidden = false;
+  modal.querySelector('.booking-alt').hidden = false;
+  try {
+    const { mountAgenda } = await import('./agenda.js');
+    embedBox.replaceChildren();
+    mountAgenda(embedBox, { pack });                 // remonté à chaque ouverture : créneaux à jour
+    loading.hidden = true;
+  } catch (_) { showFallback(); }
+}
+
 function render(pack) {
+  if (provider === 'interne') { renderInterne(pack); return; }
   if (!LIEN_OK) { showFallback(); return; }
   const notes = pack ? `Intéressé par : ${pack}` : '';
   fallback.hidden = true;

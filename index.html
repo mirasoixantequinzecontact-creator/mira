@@ -594,8 +594,12 @@
       </picture>
       <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Contact</span>
       <h2 class="title contact-title">À vous <span class="light">d'exister.</span></h2>
-      <p class="contact-sub">Un appel de 20 min, gratuit et sans engagement : on regarde votre lieu, vos réseaux, et ce qu'on peut filmer pour vous.</p>
-      <button type="button" class="btn-light contact-cta" data-open-booking>Réserver un appel de 20 min</button>
+      <p class="contact-sub">Un appel de 20 min, gratuit et sans engagement : on regarde votre lieu, vos réseaux, et ce qu'on peut filmer pour vous. Choisissez votre créneau, on vous appelle.</p>
+
+      <!-- Agenda de réservation (assets/js/agenda.js) : créneaux libres et réservation sans quitter la page -->
+      <div class="contact-agenda" data-agenda role="region" aria-label="Réserver un appel de 20 min">
+        <noscript><a class="btn-primary" href="/rendez-vous.html">Demander à être rappelé</a></noscript>
+      </div>
 
       <!-- SYNC config.js : telephoneAffiche, telephoneLien, whatsapp, whatsappMessage, email, instagram, tiktok -->
       <ul class="contact-list">

@@ -21,18 +21,18 @@ Ne pas publier sur le site.
 | Conservation | 3 ans — suppression automatique (`purgeOldRequests` dans `server.js`) |
 | Sécurité | Accès réservé au rôle « équipe », HTTPS, limitation des envois, anti-robots |
 
-## 1 bis. Prise de RDV en ligne (Cal.com)
+## 1 bis. Prise de RDV en ligne (agenda du site)
 
 | | |
 |---|---|
 | Finalité | Permettre aux prospects de réserver un appel de 20 min |
 | Base légale | Mesures précontractuelles prises à la demande de la personne (réservation volontaire) |
 | Personnes concernées | Prospects |
-| Données | Nom, e-mail, téléphone, réponses au formulaire de réservation, créneau choisi, pack d'intérêt (notes) |
-| Destinataires | Mira ; Cal.com (sous-traitant) |
-| Transferts hors UE | À vérifier selon l'hébergement Cal.com (clauses contractuelles types / Data Privacy Framework) |
-| Conservation | Selon les réglages du compte Cal.com — à aligner sur 3 ans maximum |
-| Sécurité | Agenda chargé uniquement au clic (aucun appel tiers au chargement du site), compte Cal.com protégé |
+| Données | Prénom, nom, établissement, e-mail, téléphone, créneau choisi, offre d'intérêt, message facultatif, date du consentement |
+| Destinataires | Mira ; hébergeur du site (sous-traitant) |
+| Transferts hors UE | Aucun |
+| Conservation | 3 ans, suppression automatique (table `appointments`) |
+| Sécurité | Liste visible du seul rôle « équipe », HTTPS, limitation des envois, anti-robots, aucun service tiers |
 
 ## 2. Comptes et suivi de projet clients
 
@@ -68,7 +68,6 @@ Ne pas publier sur le site.
 
 - Hébergeur : [nom] — vérifier qu'il propose un DPA (accord de traitement des données)
 - Google (Gmail) : DPA Google Workspace / conditions Gmail
-- Cal.com : prise de RDV en ligne — signer / accepter son DPA, vérifier le pays d'hébergement
 
 ## Journal des incidents
 

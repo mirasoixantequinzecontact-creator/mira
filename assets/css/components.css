@@ -263,6 +263,67 @@ html.modal-open{ overflow:hidden; }
 .booking-fallback-title{ font-size:18px; font-weight:700; margin-bottom:20px; }
 .booking-fallback-actions{ display:flex; flex-wrap:wrap; gap:12px; }
 
+.booking-alt{ padding:0 24px 24px; font-size:14px; color:var(--grey); }
+.booking-alt a{ color:var(--ink); border-bottom:1px solid currentColor; }
+.booking .agenda{ padding:24px; }
+
+/* ---------- 8b. Agenda de réservation (agenda.js) — modale et section contact ---------- */
+.agenda{ color:var(--ink); background:#fff; text-align:left; }
+.agenda [hidden]{ display:none !important; }
+.agenda-pick{ display:grid; gap:28px; }
+@media (min-width: 700px){ .agenda-pick{ grid-template-columns:minmax(0, 1.1fr) minmax(0, 1fr); gap:40px; } }
+.agenda-month{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.agenda-month-label{ font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:.06em; }
+.agenda-nav{ width:40px; height:40px; border:1px solid var(--border); background:#fff; color:var(--ink); font-size:20px; line-height:1; cursor:pointer; }
+.agenda-nav:hover:not(:disabled){ border-color:var(--ink); }
+.agenda-nav:disabled{ opacity:.3; cursor:default; }
+.agenda-grid{ display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; }
+.agenda-dow{ font-size:11px; font-weight:700; color:var(--grey); text-align:center; padding:4px 0 8px; }
+.agenda-day{
+  aspect-ratio:1; min-height:38px; border:1px solid var(--border); background:#fff; color:var(--ink);
+  font:inherit; font-size:14px; font-weight:600; cursor:pointer; transition:background .15s, color .15s, border-color .15s;
+}
+.agenda-day:hover:not(:disabled){ border-color:var(--ink); }
+.agenda-day:disabled{ border-color:transparent; color:#b4b4b4; font-weight:400; cursor:default; }
+.agenda-day[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:#fff; }
+.agenda-slots-title{ font-weight:700; font-size:15px; margin-bottom:14px; min-height:40px; display:flex; align-items:center; }
+.agenda-times{ display:grid; grid-template-columns:repeat(auto-fill, minmax(86px, 1fr)); gap:8px; }
+.agenda-time{
+  min-height:44px; border:1px solid var(--ink); background:#fff; color:var(--ink);
+  font:inherit; font-size:15px; font-weight:600; cursor:pointer; transition:background .15s, color .15s;
+}
+.agenda-time:hover, .agenda-time:focus-visible{ background:var(--ink); color:#fff; }
+.agenda-tz{ margin-top:14px; font-size:13px; color:var(--grey); }
+.agenda-fallback{ grid-column:1 / -1; color:var(--text); }
+.agenda-fallback a, .agenda-error a, .agenda-consent a, .agenda-done a:not(.btn-ghost){ color:var(--ink); border-bottom:1px solid currentColor; }
+.agenda-recap{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px; padding:14px 16px; background:var(--paper-deep); margin-bottom:22px; }
+.agenda-recap-dur{ color:var(--grey); }
+.agenda-link{ background:none; border:0; border-bottom:1px solid currentColor; padding:0; font:inherit; font-size:14px; color:var(--ink); cursor:pointer; }
+.agenda-fields{ display:grid; gap:16px 20px; }
+@media (min-width: 560px){ .agenda-fields{ grid-template-columns:1fr 1fr; } }
+.agenda-field{ display:flex; flex-direction:column; }
+.agenda-fields .full{ grid-column:1 / -1; }
+.agenda-field label{ font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:6px; }
+.agenda-opt{ font-weight:400; text-transform:none; letter-spacing:0; color:var(--grey); }
+.agenda-field input, .agenda-field textarea{
+  font:inherit; font-size:16px; color:var(--ink); background:#fff; border:1px solid var(--border); border-radius:0; padding:12px 14px; width:100%;
+}
+.agenda-field input:focus, .agenda-field textarea:focus{ outline:none; border-color:var(--ink); box-shadow:0 0 0 1px var(--ink); }
+.agenda-field textarea{ resize:vertical; min-height:84px; }
+.agenda-form.submitted :invalid{ border-color:#b3261e; }
+.agenda-hp{ position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden; }
+.agenda-consent{ display:block; position:relative; padding-left:30px; font-size:14px; line-height:1.5; color:var(--text); }
+.agenda-consent input{ position:absolute; left:0; top:2px; width:18px; height:18px; margin:0; accent-color:var(--ink); }
+.agenda-error{ margin-top:16px; padding:12px 14px; border:1px solid #b3261e; color:#b3261e; font-size:14px; }
+.agenda-submit{ margin-top:22px; }
+.agenda-done{ padding:8px 0; outline:none; }
+.agenda-done-kicker{ font-size:11px; font-weight:700; letter-spacing:.25em; text-transform:uppercase; color:var(--grey); margin-bottom:12px; }
+.agenda-done-title{ font-size:clamp(1.4rem, 3vw, 2rem); font-weight:700; text-transform:uppercase; letter-spacing:-0.03em; line-height:1; margin-bottom:10px; }
+.agenda-done-when{ font-weight:600; margin-bottom:12px; }
+.agenda-done p{ color:var(--text); }
+.agenda-done .agenda-done-title, .agenda-done .agenda-done-when{ color:var(--ink); }
+.agenda-ics{ margin-top:20px; }
+
 /* ---------- 9. Bouton contact flottant (contact-fab.js) ---------- */
 .contact-fab{
   position:fixed; right:16px; bottom:calc(16px + env(safe-area-inset-bottom)); z-index:150;

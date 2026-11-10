@@ -411,6 +411,7 @@ main > section.contact{ background:var(--ink); color:#fff; border-bottom:0; }
 .contact .title .light{ color:#8c8c8c; }
 .contact-sub{ color:#c8c8c8; max-width:52ch; margin:24px 0 32px; }
 .contact-cta{ min-height:56px; padding:18px 32px; font-size:13px; }
+.contact-agenda{ max-width:960px; padding:clamp(20px, 4vw, 40px); margin-bottom:clamp(40px, 6vw, 64px); }
 .contact-list{
   list-style:none; margin:56px 0 0; padding:0;
   border-top:1px solid rgba(255,255,255,.15);

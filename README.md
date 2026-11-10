@@ -38,21 +38,28 @@ Chaque fichier contient en tête une notice et le format attendu.
 
 Une liste vide fait disparaître la section concernée et son lien. **Ne publiez jamais de faux contenu** : c'est une pratique commerciale trompeuse (Code de la consommation, art. L121-2).
 
-## 4. Coordonnées, lien de réservation, mentions légales
+## 4. Agenda de réservation
+
+Les visiteurs choisissent un jour et une heure directement sur le site : dans la section Contact et dans la fenêtre « Réserver un appel ». Le rendez-vous est enregistré, le créneau disparaît de l'agenda, et l'appel apparaît dans l'**espace équipe**, rubrique « Appels réservés », d'où vous pouvez l'annuler (le créneau redevient libre) ou le supprimer.
+
+Vos horaires se règlent dans `server/disponibilites.js` : jours et plages ouvertes, durée de l'appel, délai minimum, nombre de jours réservables, jours fermés (congés, fériés). Redémarrez le serveur après modification.
+
+Aucune notification n'est envoyée : consultez l'espace équipe pour voir les nouveaux rendez-vous.
+
+## 5. Coordonnées et mentions légales
 
 Tout se trouve dans `assets/js/config.js`. Les mêmes valeurs sont aussi écrites dans les pages HTML, repérées par le commentaire `<!-- SYNC config.js -->` : modifiez les deux.
 
-- **Lien Cal.com** : `booking.lien`, par exemple `"votre-nom/20min"`. Tant qu'il vaut `TODO_LIEN_CAL`, la fenêtre de réservation propose le téléphone, WhatsApp et le formulaire de rappel.
-- **Passer à Calendly** : `booking.provider: "calendly"`, l'URL Calendly dans `lien`, et `BOOKING_PROVIDER=calendly` dans `server/.env`.
 - Toute valeur `TODO_…` reste à compléter (SIRET, nom, adresse, hébergeur…).
+- Pour utiliser Cal.com ou Calendly à la place de l'agenda du site : `booking.provider` et `booking.lien` dans `config.js`, et `BOOKING_PROVIDER` dans `server/.env`.
 
-## 5. Mettre en ligne
+## 6. Mettre en ligne
 
 1. Choisissez un hébergeur Node.js **avec disque persistant**, par exemple Railway avec un Volume monté sur `/data`.
 2. Dans les variables d'environnement, définissez :
    - `NODE_ENV=production` ;
    - `SESSION_SECRET` : une longue chaîne aléatoire, à générer avec `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` ;
-   - `DB_PATH=/data/mira.db`.
+   - `DB_PATH=/data/mira.db` (comptes, demandes et rendez-vous y sont enregistrés).
 3. Commande de démarrage : `cd server && npm install && npm start`.
 4. Activez le **HTTPS** et branchez votre domaine. Remplacez ensuite `https://mira.agency` dans `config.js`, `index.html`, `sitemap.xml` et `robots.txt` s'il diffère.
 5. ⚠ Un hébergement **gratuit sans disque persistant efface la base** (comptes, projets, demandes) à chaque déploiement.

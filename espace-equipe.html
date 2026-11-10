@@ -140,7 +140,22 @@
   </div>
 
   <div class="dash-head requests-head">
-    <span class="eyebrow">Formulaire « Démarrer un projet »</span>
+    <span class="eyebrow">Agenda du site · horaires dans server/disponibilites.js</span>
+    <h2>Appels réservés <span class="count" id="rdv-count"></span></h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th><th>Contact</th><th>Établissement</th><th>Offre</th><th>Message</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="rdv-body"></tbody>
+    </table>
+  </div>
+
+  <div class="dash-head requests-head">
+    <span class="eyebrow">Formulaire « Être rappelé »</span>
     <h2>Demandes reçues <span class="count" id="req-count"></span></h2>
   </div>
   <div class="table-wrap">
@@ -238,7 +253,55 @@
     refreshKpis();
     apply();
     loadRequests();
+    loadRdv();
   })();
+
+  // ---- Appels réservés via l'agenda du site ----
+  const fmtRdv = new Intl.DateTimeFormat('fr-FR', { weekday:'short', day:'numeric', month:'short', timeZone:'UTC' });
+  async function rdvAction(r, action){
+    const qui = r.prenom + ' ' + r.nom;
+    if (action === 'annuler' && !confirm('Annuler l’appel avec ' + qui + ' ? Le créneau redevient libre. Pensez à prévenir la personne.')) return;
+    if (action === 'supprimer' && !confirm('Supprimer définitivement le rendez-vous de ' + qui + ' ?')) return;
+    try {
+      const res = await fetch('/api/rdv/' + encodeURIComponent(r.id) + (action === 'annuler' ? '/annuler' : ''), {
+        method: action === 'annuler' ? 'POST' : 'DELETE', credentials:'same-origin', headers:{ 'Content-Type':'application/json' }
+      });
+      if (!res.ok) throw new Error();
+    } catch (e) { alert('Action impossible pour le moment.'); return; }
+    loadRdv();
+  }
+  async function loadRdv(){
+    const body = document.getElementById('rdv-body');
+    let data = { aVenir:[], passes:[] };
+    try {
+      const res = await fetch('/api/rdv', { credentials:'same-origin' });
+      if (res.ok) data = await res.json();
+    } catch (e) {}
+    const actifs = data.aVenir.filter(r => r.statut === 'confirme');
+    document.getElementById('rdv-count').textContent = '(' + actifs.length + ' à venir)';
+    body.innerHTML = '';
+    const list = [...data.aVenir, ...data.passes];
+    if (!list.length) {
+      body.innerHTML = '<tr class="empty-row"><td colspan="6">Aucun appel réservé pour le moment.</td></tr>';
+      return;
+    }
+    list.forEach(r => {
+      const passe = !data.aVenir.includes(r), annule = r.statut === 'annule';
+      const tr = document.createElement('tr');
+      if (passe || annule) tr.style.opacity = '.55';
+      tr.innerHTML = `
+        <td><div class="client">${esc(fmtRdv.format(new Date(r.date + 'T00:00:00Z')))} · ${esc(r.heure.replace(':', 'h'))}</div>
+            <div class="ref">${annule ? 'Annulé' : passe ? 'Passé' : 'Confirmé'}</div></td>
+        <td><div class="client">${esc(r.prenom)} ${esc(r.nom)}</div>
+            <div class="ref"><a href="tel:${esc(r.telephone.replace(/[^+\d]/g, ''))}">${esc(r.telephone)}</a><br><a href="mailto:${encodeURIComponent(r.email).replace(/%40/g,'@')}">${esc(r.email)}</a></div></td>
+        <td>${esc(r.etablissement)}</td>
+        <td>${esc(r.pack || '—')}</td>
+        <td><div class="msg">${esc(r.message || '')}</div></td>
+        <td>${!passe && !annule ? '<button type="button" class="del-btn" data-a="annuler">Annuler</button> ' : ''}<button type="button" class="del-btn" data-a="supprimer" title="Supprimer définitivement (droit à l'effacement RGPD)">Supprimer</button></td>`;
+      tr.querySelectorAll('[data-a]').forEach(b => b.addEventListener('click', () => rdvAction(r, b.dataset.a)));
+      body.appendChild(tr);
+    });
+  }
 
   // ---- Demandes de rendez-vous ----
   // Suppression définitive — à utiliser quand une personne demande l'effacement
