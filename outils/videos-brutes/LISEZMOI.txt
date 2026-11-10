@@ -1,0 +1,3 @@
+Déposez ici les vidéos brutes de vos réalisations (MP4 ou MOV),
+puis, dans le dossier server : npm run videos
+Les vidéos prêtes à publier sont créées dans site/videos/.

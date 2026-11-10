@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- ============================================================
+     META / SEO
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<title>Être rappelé — Mira</title>
+<meta name="description" content="Laissez vos coordonnées : mira vous rappelle au créneau de votre choix pour parler vidéo et réseaux sociaux.">
+<link rel="canonical" href="https://mira.agency/rendez-vous.html">
+<link rel="icon" href="assets/img/brand/favicon.ico" sizes="32x32">
+<link rel="icon" href="assets/img/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/img/brand/icon-512.png">
+
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/components.css">
+
+<style>
+  /* ============================================================
+     « ÊTRE RAPPELÉ » — styles propres à cette page.
+     Base, boutons, footer, modale : /assets/css/components.css.
+     ============================================================ */
+  .back-link{ font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; }
+  .back-link:hover{ text-decoration:underline; }
+
+  /* ---- En-tête de page ---- */
+  .form-hero{ padding:calc(var(--header-h) + clamp(48px, 7vw, 96px)) 0 clamp(32px, 5vw, 56px); border-bottom:1px solid var(--line); }
+  .form-hero h1{ font-size:clamp(2.6rem, 8vw, 5rem); }
+  .form-hero p{ margin-top:24px; max-width:56ch; color:var(--text); }
+  .form-hero .switch{ margin-top:12px; }
+  .link-btn{
+    background:none; border:0; border-bottom:1px solid currentColor; border-radius:0; padding:0;
+    font:inherit; color:var(--ink); cursor:pointer;
+  }
+
+  /* ---- Formulaire (ids, names et validation inchangés) ---- */
+  .form-section{ padding:clamp(40px, 6vw, 72px) 0 var(--section-pad); }
+  .form-card{ max-width:720px; }
+  form{ display:block; }
+  .form-grid{ display:grid; gap:24px 28px; grid-template-columns:1fr 1fr; }
+  @media (max-width: 640px){ .form-grid{ grid-template-columns:1fr; } }
+  .field{ display:flex; flex-direction:column; }
+  .field.full{ grid-column:1 / -1; }
+  .hp{ position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden; }
+
+  label{ font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px; color:var(--ink); }
+  label .req{ color:var(--ink); }
+  .hint{ font-size:13px; color:var(--grey); margin-top:6px; }
+
+  input, select, textarea{
+    font-family:var(--font-body); font-size:16px; color:var(--ink);
+    background:var(--paper); border:1px solid var(--border); border-radius:0;
+    padding:13px 14px; width:100%;
+    transition:border-color .2s ease;
+  }
+  input:hover, select:hover, textarea:hover{ border-color:var(--grey); }
+  input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--ink); box-shadow:0 0 0 1px var(--ink); }
+  textarea{ resize:vertical; min-height:120px; }
+  select{
+    appearance:none; cursor:pointer;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%230a0a0a' stroke-width='1.5'/></svg>");
+    background-repeat:no-repeat; background-position:right 14px center; padding-right:38px;
+  }
+  /* Champ invalide signalé seulement après tentative d'envoi */
+  form.submitted :invalid{ border-color:#b3261e; }
+
+  /* Consentement : la case garde sa taille (elle héritait de width:100%) */
+  .consent label{ display:block; position:relative; padding-left:30px; font-size:14px; font-weight:400; letter-spacing:0; text-transform:none; line-height:1.5; }
+  .consent input{ position:absolute; left:0; top:1px; width:18px; height:18px; margin:0; padding:0; accent-color:var(--ink); }
+  .consent a{ border-bottom:1px solid currentColor; }
+
+  .callout{
+    grid-column:1 / -1; display:flex; gap:12px; align-items:flex-start;
+    border:1px solid var(--line); background:var(--paper-deep); padding:18px 20px;
+    font-size:14px; color:var(--text);
+  }
+  .callout strong{ color:var(--ink); font-weight:600; }
+
+  .form-error{ grid-column:1 / -1; margin:0; padding:14px 16px; border:1px solid #b3261e; color:#b3261e; font-size:14px; }
+  .form-error a{ border-bottom:1px solid currentColor; }
+  .form-foot{ grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; gap:18px; margin-top:6px; }
+  .form-foot small{ font-size:13px; color:var(--grey); max-width:34ch; }
+  .rgpd-note{ grid-column:1 / -1; margin:0; font-size:13px; line-height:1.6; color:var(--grey); }
+  .rgpd-note a{ border-bottom:1px solid currentColor; }
+
+  /* ---- Confirmation après envoi ---- */
+  .form-success{ display:none; border:1px solid var(--line); background:var(--paper-deep); padding:clamp(28px, 5vw, 48px); max-width:720px; }
+  .form-success.is-shown{ display:block; }
+  .form-success h2{ font-size:clamp(1.4rem, 3vw, 2rem); font-weight:700; text-transform:uppercase; letter-spacing:-0.03em; line-height:1; margin-bottom:14px; }
+  .form-success p{ color:var(--text); margin:0 0 8px; }
+  .form-success .eyebrow{ display:block; font-size:11px; font-weight:700; letter-spacing:.25em; text-transform:uppercase; color:var(--grey); margin-bottom:16px; }
+  .form-success .recap{ margin-top:20px; padding-top:20px; border-top:1px solid var(--border); font-size:15px; }
+  .form-success .recap dt{ font-weight:600; color:var(--ink); }
+  .form-success .recap dd{ margin:2px 0 12px; color:var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<svg class="svg-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="m-italique" viewBox="18.5 25.7 392.7 392.7"><path fill="currentColor" fill-rule="evenodd" d="M403.33 135.67 L398.00 127.33 L392.33 121.17 L385.00 115.50 L376.17 110.67 L366.50 107.00 L358.67 105.00 L344.83 103.17 L336.17 103.00 L325.33 104.00 L315.67 106.00 L305.67 109.17 L294.00 114.33 L284.67 119.83 L275.50 126.50 L260.33 142.00 L256.67 131.33 L253.33 124.83 L249.67 119.83 L241.83 113.00 L233.00 108.33 L222.67 105.00 L209.67 103.17 L200.50 103.00 L187.67 104.00 L176.67 106.00 L165.83 109.17 L156.50 113.00 L147.50 118.00 L138.67 124.50 L131.00 131.83 L122.67 141.33 L122.17 139.33 L128.67 110.50 L128.33 109.17 L68.50 109.17 L20.50 340.33 L82.17 340.83 L83.17 340.17 L109.17 216.17 L112.33 204.83 L117.83 191.33 L123.17 181.83 L129.50 173.17 L134.67 167.67 L142.17 161.50 L150.00 156.83 L157.17 154.17 L163.17 153.00 L172.00 152.83 L179.17 154.17 L183.50 156.00 L188.00 159.00 L191.83 162.83 L194.33 166.50 L196.50 172.17 L197.00 181.17 L194.67 197.50 L165.00 340.17 L165.83 340.83 L228.33 340.67 L255.17 214.00 L259.17 201.00 L262.83 192.33 L268.00 182.83 L273.50 175.00 L280.67 167.17 L287.17 161.83 L295.83 156.67 L302.67 154.17 L308.67 153.00 L317.50 152.83 L326.83 155.00 L332.17 158.00 L337.00 162.50 L339.50 166.00 L341.83 171.50 L342.50 181.33 L340.67 195.00 L310.50 340.17 L311.50 340.83 L373.33 340.67 L407.83 178.67 L409.00 167.67 L408.83 154.17 L406.83 144.33Z"/></symbol>
+  <symbol id="wordmark" viewBox="16 16 1144 334"><path fill="currentColor" fill-rule="evenodd" d="M1086.17 272.50 L1086.50 340.67 L1156.00 340.33 L1155.83 272.33ZM449.67 109.00 L449.00 109.83 L449.00 340.00 L449.83 340.83 L511.50 340.83 L512.50 340.00 L512.50 109.83 L510.50 108.83ZM701.83 105.17 L690.67 103.00 L676.00 104.00 L663.17 107.33 L650.33 113.00 L638.50 120.83 L630.17 128.50 L623.17 137.00 L614.83 151.50 L613.67 150.83 L613.17 109.33 L553.50 109.67 L553.83 340.67 L616.67 340.33 L616.83 229.67 L619.00 210.83 L622.33 198.83 L626.83 189.17 L634.00 179.33 L642.67 171.83 L651.33 167.00 L659.83 164.00 L671.50 162.00 L684.83 161.83 L701.00 163.83 L702.33 163.33 L702.50 106.00ZM403.33 135.67 L398.00 127.33 L392.33 121.17 L385.00 115.50 L376.17 110.67 L366.50 107.00 L358.67 105.00 L344.83 103.17 L336.17 103.00 L325.33 104.00 L315.67 106.00 L305.67 109.17 L294.00 114.33 L284.67 119.83 L275.50 126.50 L260.33 142.00 L256.67 131.33 L253.33 124.83 L249.67 119.83 L241.83 113.00 L233.00 108.33 L222.67 105.00 L209.67 103.17 L200.50 103.00 L187.67 104.00 L176.67 106.00 L165.83 109.17 L156.50 113.00 L147.50 118.00 L138.67 124.50 L131.00 131.83 L122.67 141.33 L122.17 139.33 L128.67 110.50 L128.33 109.17 L68.50 109.17 L20.50 340.33 L82.17 340.83 L83.17 340.17 L109.17 216.17 L112.33 204.83 L117.83 191.33 L123.17 181.83 L129.50 173.17 L134.67 167.67 L142.17 161.50 L150.00 156.83 L157.17 154.17 L163.17 153.00 L172.00 152.83 L179.17 154.17 L183.50 156.00 L188.00 159.00 L191.83 162.83 L194.33 166.50 L196.50 172.17 L197.00 181.17 L194.67 197.50 L165.00 340.17 L165.83 340.83 L228.33 340.67 L255.17 214.00 L259.17 201.00 L262.83 192.33 L268.00 182.83 L273.50 175.00 L280.67 167.17 L287.17 161.83 L295.83 156.67 L302.67 154.17 L308.67 153.00 L317.50 152.83 L326.83 155.00 L332.17 158.00 L337.00 162.50 L339.50 166.00 L341.83 171.50 L342.50 181.33 L340.67 195.00 L310.50 340.17 L311.50 340.83 L373.33 340.67 L407.83 178.67 L409.00 167.67 L408.83 154.17 L406.83 144.33ZM739.83 128.83 L730.33 139.33 L723.00 151.67 L720.17 159.17 L718.00 168.00 L716.83 176.67 L717.33 179.83 L779.00 180.00 L780.17 179.00 L782.17 168.83 L785.17 161.83 L788.83 156.67 L792.83 153.00 L799.83 149.00 L808.83 146.17 L818.00 145.00 L827.83 145.00 L843.50 147.17 L849.50 149.50 L855.33 153.50 L859.67 158.67 L862.67 165.33 L863.83 172.00 L863.83 180.83 L862.67 185.33 L859.50 190.33 L855.17 193.83 L847.00 197.83 L830.83 201.83 L782.83 208.00 L756.67 214.00 L748.33 217.00 L739.83 221.17 L731.17 227.00 L724.83 233.00 L716.67 244.50 L712.17 255.33 L710.00 266.00 L709.50 280.83 L711.00 295.00 L714.17 305.67 L719.83 316.50 L726.00 324.33 L736.00 332.83 L746.83 338.83 L758.00 342.83 L775.17 346.00 L790.00 346.67 L804.50 345.83 L817.00 343.83 L829.00 340.83 L840.50 336.67 L849.67 331.83 L858.00 326.00 L865.50 319.33 L866.83 320.17 L869.00 334.00 L870.83 340.00 L871.83 340.83 L934.50 340.67 L934.67 339.50 L931.17 330.67 L929.17 320.50 L927.33 296.67 L926.83 158.17 L924.83 148.67 L922.00 141.33 L918.00 134.67 L913.00 128.67 L905.83 122.17 L896.67 116.17 L885.17 111.00 L875.83 108.00 L853.00 104.00 L821.83 102.67 L811.67 103.00 L794.67 105.00 L773.33 110.00 L764.83 113.17 L753.17 119.00ZM863.83 228.67 L863.83 256.00 L861.67 271.50 L859.00 278.83 L854.67 286.50 L849.67 292.17 L845.00 296.00 L837.67 300.33 L830.33 302.83 L817.67 304.67 L807.17 304.67 L797.67 303.50 L788.83 300.83 L782.33 297.00 L777.67 292.00 L775.00 287.17 L773.17 280.50 L773.17 269.00 L774.33 264.00 L776.50 259.17 L780.00 254.33 L784.33 250.33 L791.83 246.00 L800.33 243.00 L813.00 240.17 L842.67 235.83 L854.17 232.67 L862.67 228.17ZM449.17 20.50 L449.50 72.67 L512.33 72.33 L512.17 20.33Z"/></symbol>
+</svg>
+
+<a href="#main" class="skip-link">Aller au contenu principal</a>
+
+<header class="site-header" id="site-header">
+  <div class="container">
+    <a href="index.html" class="logo" aria-label="mira. — accueil"><svg viewBox="16 16 1144 334" aria-hidden="true" focusable="false"><use href="#wordmark"/></svg></a>
+    <a href="index.html" class="back-link">← Retour au site</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================================================
+       EN-TÊTE DE PAGE
+       ============================================================ -->
+  <section class="form-hero">
+    <div class="container">
+      <span class="kicker"><svg aria-hidden="true"><use href="#m-italique"/></svg>Rappel</span>
+      <h1 class="title">Être <span class="light">rappelé.</span></h1>
+      <p>Laissez vos coordonnées, on vous rappelle au créneau de votre choix.</p>
+      <p class="switch">Vous préférez choisir votre créneau tout de suite ? <button type="button" class="link-btn" data-open-booking>Réserver un appel</button></p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FORMULAIRE
+       Soumission : envoyée à /api/rendez-vous (server/server.js),
+       enregistrée en base et listée dans l'espace équipe.
+       ============================================================ -->
+  <section class="form-section">
+    <div class="container">
+
+      <form id="rdv-form" class="form-card" novalidate>
+        <div class="form-grid">
+
+          <!-- Identité -->
+          <div class="field">
+            <label for="prenom">Prénom <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="prenom" name="prenom" maxlength="80" autocomplete="given-name" required>
+          </div>
+          <div class="field">
+            <label for="nom">Nom <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="nom" name="nom" maxlength="80" autocomplete="family-name" required>
+          </div>
+
+          <!-- Entreprise -->
+          <div class="field full">
+            <label for="entreprise">Nom de l'entreprise <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="entreprise" name="entreprise" maxlength="120" autocomplete="organization" required>
+          </div>
+
+          <!-- Contact -->
+          <div class="field">
+            <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+            <input type="email" id="email" name="email" maxlength="254" autocomplete="email" placeholder="vous@entreprise.com" required>
+          </div>
+          <div class="field">
+            <label for="telephone">Numéro de téléphone <span class="req" aria-hidden="true">*</span></label>
+            <input type="tel" id="telephone" name="telephone" maxlength="30" autocomplete="tel" placeholder="+33 6 00 00 00 00" required>
+          </div>
+
+          <!-- Situation de l'entreprise -->
+          <div class="field full">
+            <label for="situation">Situation de l'entreprise <span class="req" aria-hidden="true">*</span></label>
+            <select id="situation" name="situation" required>
+              <option value="" disabled selected>Sélectionnez une option</option>
+              <option>Projet de création / lancement</option>
+              <option>Activité récente (moins de 2 ans)</option>
+              <option>Entreprise établie en croissance</option>
+              <option>Entreprise établie en repositionnement</option>
+              <option>Autre situation</option>
+            </select>
+          </div>
+
+          <!-- Raison du rendez-vous -->
+          <div class="field full">
+            <label for="raison">Raison du rendez-vous <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="raison" name="raison" maxlength="3000" placeholder="Décrivez en quelques lignes votre besoin, vos objectifs ou le contexte de votre demande." required></textarea>
+          </div>
+
+          <!-- Disponibilité pour rappel -->
+          <div class="callout">
+            <span aria-hidden="true">↺</span>
+            <span><strong>Créneau de rappel.</strong> Indiquez la date et l'heure auxquelles vous serez disponible pour être éventuellement recontacté.</span>
+          </div>
+          <div class="field">
+            <label for="date-dispo">Date de disponibilité</label>
+            <input type="date" id="date-dispo" name="date_dispo">
+            <span class="hint">Optionnel — votre préférence de jour.</span>
+          </div>
+          <div class="field">
+            <label for="heure-dispo">Heure de disponibilité</label>
+            <input type="time" id="heure-dispo" name="heure_dispo">
+            <span class="hint">Optionnel — votre préférence d'horaire.</span>
+          </div>
+
+          <!-- Champ piège anti-robots : invisible pour les humains, laissez-le vide -->
+          <div class="hp" aria-hidden="true">
+            <label for="site-web">Site web</label>
+            <input type="text" id="site-web" name="site_web" tabindex="-1" autocomplete="off">
+          </div>
+
+          <!-- Consentement RGPD -->
+          <div class="field full consent">
+            <label><input type="checkbox" name="consent" required> J'accepte que mes informations soient utilisées pour être recontacté au sujet de ma demande. <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a> <span class="req" aria-hidden="true">*</span></label>
+          </div>
+
+          <p class="form-error" id="form-error" role="alert" hidden></p>
+
+          <!-- Envoi -->
+          <div class="form-foot">
+            <button type="submit" class="btn-primary">Envoyer ma demande</button>
+            <small>Les champs marqués d'un <span class="req" aria-hidden="true">*</span> sont obligatoires.</small>
+          </div>
+
+          <!-- Information RGPD à la collecte (art. 13) -->
+          <p class="rgpd-note">
+            Les informations saisies sont utilisées par <span class="brand"><em>m</em>ira</span> uniquement pour traiter votre demande et vous recontacter.
+            Elles sont conservées 3 ans au maximum après notre dernier échange, ne sont jamais vendues ni cédées.
+            Vous pouvez y accéder, les rectifier ou les faire supprimer à tout moment en écrivant à
+            <a href="mailto:mira.soixantequinze.contact@gmail.com">mira.soixantequinze.contact@gmail.com</a>.
+            En savoir plus : <a href="confidentialite.html">politique de confidentialité</a>.
+          </p>
+
+        </div>
+      </form>
+
+      <!-- Confirmation après envoi -->
+      <div class="form-success" id="form-success" role="status" aria-live="polite">
+        <span class="eyebrow">Demande envoyée</span>
+        <h2>Merci, votre demande est bien notée.</h2>
+        <p>Nous revenons vers vous rapidement, au créneau indiqué si vous en avez précisé un.</p>
+        <dl class="recap" id="recap"></dl>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer on-dark">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <picture>
+          <source type="image/webp" srcset="assets/img/brand/monogramme-m-blanc.webp">
+          <img src="assets/img/brand/monogramme-m-blanc.png" width="228" height="160" alt="Monogramme mira : m et l'œil, by mira.soixantequinze" loading="lazy">
+        </picture>
+        <span class="footer-signature"><span class="brand"><em>m</em>ira.agency</span></span>
+      </div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h2>Navigation</h2>
+          <ul>
+            <li><a href="index.html#realisations">Réalisations</a></li>
+            <li><a href="index.html#offres">Offres</a></li>
+            <li><a href="index.html#methode">Méthode</a></li>
+            <li><a href="index.html#faq">FAQ</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Contact</h2>
+          <ul>
+            <li><button type="button" class="footer-link" data-open-booking>Réserver un appel</button></li>
+            <li><a href="rendez-vous.html">Être rappelé</a></li>
+            <li><a href="mailto:mira.soixantequinze.contact@gmail.com">Email</a><!-- SYNC config.js : email --></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Réseaux</h2>
+          <!-- SYNC config.js : instagram, tiktok, linkedin (vide = lien retiré) -->
+          <ul>
+            <li><a href="https://instagram.com/mira_soixantequinze" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li data-social="tiktok" hidden><a href="#" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+            <li data-social="linkedin" hidden><a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Légal</h2>
+          <ul>
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
+            <li><a href="confidentialite.html">Politique de confidentialité</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Espace</h2>
+          <ul>
+            <li><a href="connexion.html">Suivre mon projet</a></li>
+            <li><a href="connexion.html">Connexion équipe</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SYNC config.js : legal.editeur, legal.siret -->
+    <p class="footer-legal">© <span id="year">2026</span> <span class="brand"><em>m</em>ira</span> — TODO_PRENOM_NOM EI — SIRET TODO_SIRET · Paris, Île-de-France</p>
+
+    <svg class="footer-wordmark reveal" viewBox="16 16 1144 334" aria-hidden="true" focusable="false"><use href="#wordmark"/></svg>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JS — thème, validation, envoi vers /api/rendez-vous.
+     ============================================================ -->
+<script defer src="assets/js/config.js"></script>
+<script defer src="assets/data/realisations.js"></script>
+<script defer src="assets/js/common.js"></script>
+<script defer src="assets/js/agenda.js"></script>
+<script defer src="assets/js/booking.js"></script>
+<script>
+  // ---- Date minimale = aujourd'hui (pas de rappel dans le passé) ----
+  const dateInput = document.getElementById('date-dispo');
+  dateInput.min = new Date().toISOString().split('T')[0];
+
+  // ---- Validation + soumission ----
+  const form = document.getElementById('rdv-form');
+  const success = document.getElementById('form-success');
+  const recap = document.getElementById('recap');
+
+  const errorBox = document.getElementById('form-error');
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    form.classList.add('submitted'); // active le style des champs invalides
+
+    if (!form.checkValidity()) {
+      const firstInvalid = form.querySelector(':invalid');
+      if (firstInvalid) firstInvalid.focus();
+      return;
+    }
+
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    // ---- Envoi au serveur (enregistré en base, visible dans l'espace équipe) ----
+    errorBox.hidden = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi…';
+    try {
+      const res = await fetch('/api/rendez-vous', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        credentials:'same-origin',
+        body:JSON.stringify(data)
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw { fromServer: err.error };
+      }
+    } catch (err) {
+      errorBox.textContent = (err.fromServer || 'Envoi impossible pour le moment.') + ' Vous pouvez aussi nous écrire à ';
+      const a = document.createElement('a');
+      a.href = 'mailto:mira.soixantequinze.contact@gmail.com';
+      a.textContent = 'mira.soixantequinze.contact@gmail.com';
+      errorBox.append(a, '.');
+      errorBox.hidden = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Envoyer ma demande';
+      return;
+    }
+
+    // ---- Confirmation avec récapitulatif ----
+    const labels = {
+      prenom:'Prénom', nom:'Nom', entreprise:'Entreprise', email:'Email',
+      telephone:'Téléphone', situation:'Situation', raison:'Raison du rendez-vous',
+      date_dispo:'Date souhaitée', heure_dispo:'Heure souhaitée'
+    };
+    recap.innerHTML = '';
+    Object.keys(labels).forEach(key => {
+      if (!data[key]) return;
+      const dt = document.createElement('dt');
+      dt.textContent = labels[key];
+      const dd = document.createElement('dd');
+      dd.textContent = data[key];
+      recap.append(dt, dd);
+    });
+
+    form.style.display = 'none';
+    success.classList.add('is-shown');
+    success.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

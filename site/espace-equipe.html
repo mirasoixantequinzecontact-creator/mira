@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- ============================================================
+     ESPACE ÉQUIPE — tableau de bord interne (protégé côté serveur).
+     Projets, clients, appels réservés et demandes ; conversion d'un prospect
+     en client ; chaque projet se gère dans gestion-projet.html.
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<title>Espace équipe — Mira</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/img/brand/favicon.ico" sizes="32x32">
+<link rel="icon" href="assets/img/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/img/brand/icon-512.png">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/espace.css">
+<style>
+  /* Mise en page propre à cette page (la palette est dans /assets/css/tokens.css) */
+  body{ --ok:#3B7A57; --warn:#9A6B1E; --max-w:1180px; --gutter:5vw; }
+
+  *{box-sizing:border-box;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important; transition:none !important;}}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.5; -webkit-font-smoothing:antialiased; transition:background-color .4s ease, color .4s ease;}
+  a{color:inherit; text-decoration:none;}
+  h1,h2,h3{font-family:var(--font-display); font-weight:700; letter-spacing:-0.03em; margin:0;}
+  .container{max-width:var(--max-w); margin:0 auto; padding:0 var(--gutter);}
+  .eyebrow{font-weight:600; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:.8rem;}
+
+  /* Header */
+  .site-header{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--line);}
+
+  .site-header .container{display:flex; align-items:center; justify-content:space-between; padding:14px var(--gutter);}
+  .logo{display:inline-flex; align-items:center; gap:12px; font-family:var(--font-display); font-weight:900; font-size:1.2rem; color:var(--ink);}
+
+  .logo .tag{font-family:var(--font-body); font-weight:600; font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--grey); border:1px solid var(--border); padding:3px 8px;}
+  .header-actions{display:flex; align-items:center; gap:16px; font-size:.88rem;}
+  .header-actions .who{color:var(--grey);}
+  @media (max-width:640px){ .header-actions .who{display:none;} } .header-actions a:hover{color:var(--accent);}
+
+
+
+
+  /* Titre + KPI */
+  .dash-head{padding:clamp(32px,5vw,56px) 0 24px;}
+  .dash-head h1{font-size:clamp(1.7rem,3.4vw,2.6rem);}
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:28px;}
+  @media (max-width:760px){ .kpis{grid-template-columns:repeat(2,1fr);} }
+  .kpi{border:1px solid var(--border); padding:20px; background:var(--paper-deep);}
+  .kpi .num{font-family:var(--font-display); font-weight:700; font-size:1.9rem; line-height:1;}
+  .kpi .lbl{font-size:.8rem; color:var(--grey); margin-top:8px;}
+
+  /* Barre d'outils */
+  .toolbar{display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; padding:24px 0 16px;}
+  .filters{display:flex; gap:8px; flex-wrap:wrap;}
+  .filter-btn{border:1px solid var(--border); background:none; color:var(--grey); font-family:var(--font-body); font-size:.82rem; padding:7px 14px; cursor:pointer; transition:border-color .2s ease, color .2s ease;}
+  .filter-btn:hover, .filter-btn.is-active{border-color:var(--ink); color:var(--ink);}
+  .search{border:1px solid var(--border); background:var(--paper); color:var(--ink); padding:8px 12px; font-family:var(--font-body); font-size:.88rem; min-width:200px;}
+  .search:focus{outline:none; border-color:var(--accent);}
+
+  /* Tableau projets */
+  .table-wrap{border:1px solid var(--border); overflow-x:auto; margin-bottom:40px;}
+  table{width:100%; border-collapse:collapse; min-width:720px;}
+  th, td{text-align:left; padding:15px 18px; font-size:.9rem; border-bottom:1px solid var(--border);}
+  th{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--grey); font-weight:600; background:var(--paper-deep);}
+  tbody tr{transition:background-color .15s ease; cursor:pointer;}
+  tbody tr:hover{background:var(--paper-deep);}
+  tbody tr:last-child td{border-bottom:none;}
+  .client{font-weight:600;}
+  .ref{color:var(--grey); font-size:.82rem;}
+  .status{display:inline-flex; align-items:center; gap:7px; font-size:.8rem; font-weight:600;}
+  .status .dot{width:8px; height:8px; border-radius:50%;}
+  .status.encours .dot{background:var(--accent);} .status.encours{color:var(--accent);}
+  .status.attente .dot{background:var(--warn);} .status.attente{color:var(--warn);}
+  .status.livre .dot{background:var(--ok);} .status.livre{color:var(--ok);}
+  .mini-bar{width:90px; height:6px; background:var(--paper-deep); border:1px solid var(--border); display:inline-block; vertical-align:middle; overflow:hidden;}
+  .mini-bar span{display:block; height:100%; background:var(--accent);}
+  .pct{font-size:.8rem; color:var(--grey); margin-left:8px;}
+  .row-link{color:var(--accent); font-size:.82rem; font-weight:600; white-space:nowrap;}
+
+  .demo-note{margin:0 0 40px; padding:14px 16px; background:var(--paper-deep); border:1px solid var(--border); font-size:.78rem; color:var(--grey);}
+  .demo-note strong{color:var(--ink);}
+  .site-footer{padding:32px 0; border-top:1px solid var(--border);}
+  .site-footer .container{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; font-size:.8rem; color:var(--grey);}
+  .requests-head{margin-top:64px;}
+  .requests-head h2{margin:8px 0 0;}
+  .requests-head .count{color:var(--grey); font-weight:500;}
+  #requests-body tr{cursor:default;}
+  #requests-body .msg{max-width:42ch; white-space:pre-wrap; color:var(--grey); font-size:0.88rem;}
+  #requests-body a{border-bottom:1px solid currentColor;}
+  .del-btn{background:none; border:1px solid var(--border); color:var(--grey); font:inherit; font-size:0.8rem; padding:6px 10px; cursor:pointer;}
+  .del-btn:hover{border-color:var(--accent); color:var(--accent);}
+  .empty-row td{color:var(--grey); text-align:center; padding:28px;}
+  #clients-body tr, #rdv-body tr{cursor:default;}
+  #clients-body a, #rdv-body a{border-bottom:1px solid currentColor;}
+  .proj-links a{display:block; font-size:.85rem; border-bottom:0 !important; text-decoration:underline;}
+  td .actions{flex-wrap:nowrap;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo" aria-label="mira. — accueil"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="16 16 1144 334"><path fill="currentColor" fill-rule="evenodd" d="M1086.17 272.50 L1086.50 340.67 L1156.00 340.33 L1155.83 272.33ZM449.67 109.00 L449.00 109.83 L449.00 340.00 L449.83 340.83 L511.50 340.83 L512.50 340.00 L512.50 109.83 L510.50 108.83ZM701.83 105.17 L690.67 103.00 L676.00 104.00 L663.17 107.33 L650.33 113.00 L638.50 120.83 L630.17 128.50 L623.17 137.00 L614.83 151.50 L613.67 150.83 L613.17 109.33 L553.50 109.67 L553.83 340.67 L616.67 340.33 L616.83 229.67 L619.00 210.83 L622.33 198.83 L626.83 189.17 L634.00 179.33 L642.67 171.83 L651.33 167.00 L659.83 164.00 L671.50 162.00 L684.83 161.83 L701.00 163.83 L702.33 163.33 L702.50 106.00ZM403.33 135.67 L398.00 127.33 L392.33 121.17 L385.00 115.50 L376.17 110.67 L366.50 107.00 L358.67 105.00 L344.83 103.17 L336.17 103.00 L325.33 104.00 L315.67 106.00 L305.67 109.17 L294.00 114.33 L284.67 119.83 L275.50 126.50 L260.33 142.00 L256.67 131.33 L253.33 124.83 L249.67 119.83 L241.83 113.00 L233.00 108.33 L222.67 105.00 L209.67 103.17 L200.50 103.00 L187.67 104.00 L176.67 106.00 L165.83 109.17 L156.50 113.00 L147.50 118.00 L138.67 124.50 L131.00 131.83 L122.67 141.33 L122.17 139.33 L128.67 110.50 L128.33 109.17 L68.50 109.17 L20.50 340.33 L82.17 340.83 L83.17 340.17 L109.17 216.17 L112.33 204.83 L117.83 191.33 L123.17 181.83 L129.50 173.17 L134.67 167.67 L142.17 161.50 L150.00 156.83 L157.17 154.17 L163.17 153.00 L172.00 152.83 L179.17 154.17 L183.50 156.00 L188.00 159.00 L191.83 162.83 L194.33 166.50 L196.50 172.17 L197.00 181.17 L194.67 197.50 L165.00 340.17 L165.83 340.83 L228.33 340.67 L255.17 214.00 L259.17 201.00 L262.83 192.33 L268.00 182.83 L273.50 175.00 L280.67 167.17 L287.17 161.83 L295.83 156.67 L302.67 154.17 L308.67 153.00 L317.50 152.83 L326.83 155.00 L332.17 158.00 L337.00 162.50 L339.50 166.00 L341.83 171.50 L342.50 181.33 L340.67 195.00 L310.50 340.17 L311.50 340.83 L373.33 340.67 L407.83 178.67 L409.00 167.67 L408.83 154.17 L406.83 144.33ZM739.83 128.83 L730.33 139.33 L723.00 151.67 L720.17 159.17 L718.00 168.00 L716.83 176.67 L717.33 179.83 L779.00 180.00 L780.17 179.00 L782.17 168.83 L785.17 161.83 L788.83 156.67 L792.83 153.00 L799.83 149.00 L808.83 146.17 L818.00 145.00 L827.83 145.00 L843.50 147.17 L849.50 149.50 L855.33 153.50 L859.67 158.67 L862.67 165.33 L863.83 172.00 L863.83 180.83 L862.67 185.33 L859.50 190.33 L855.17 193.83 L847.00 197.83 L830.83 201.83 L782.83 208.00 L756.67 214.00 L748.33 217.00 L739.83 221.17 L731.17 227.00 L724.83 233.00 L716.67 244.50 L712.17 255.33 L710.00 266.00 L709.50 280.83 L711.00 295.00 L714.17 305.67 L719.83 316.50 L726.00 324.33 L736.00 332.83 L746.83 338.83 L758.00 342.83 L775.17 346.00 L790.00 346.67 L804.50 345.83 L817.00 343.83 L829.00 340.83 L840.50 336.67 L849.67 331.83 L858.00 326.00 L865.50 319.33 L866.83 320.17 L869.00 334.00 L870.83 340.00 L871.83 340.83 L934.50 340.67 L934.67 339.50 L931.17 330.67 L929.17 320.50 L927.33 296.67 L926.83 158.17 L924.83 148.67 L922.00 141.33 L918.00 134.67 L913.00 128.67 L905.83 122.17 L896.67 116.17 L885.17 111.00 L875.83 108.00 L853.00 104.00 L821.83 102.67 L811.67 103.00 L794.67 105.00 L773.33 110.00 L764.83 113.17 L753.17 119.00ZM863.83 228.67 L863.83 256.00 L861.67 271.50 L859.00 278.83 L854.67 286.50 L849.67 292.17 L845.00 296.00 L837.67 300.33 L830.33 302.83 L817.67 304.67 L807.17 304.67 L797.67 303.50 L788.83 300.83 L782.33 297.00 L777.67 292.00 L775.00 287.17 L773.17 280.50 L773.17 269.00 L774.33 264.00 L776.50 259.17 L780.00 254.33 L784.33 250.33 L791.83 246.00 L800.33 243.00 L813.00 240.17 L842.67 235.83 L854.17 232.67 L862.67 228.17ZM449.17 20.50 L449.50 72.67 L512.33 72.33 L512.17 20.33Z"/></svg> <span class="tag">Équipe</span></a>
+    <div class="header-actions">
+      <span class="who" id="who"></span>
+      <a href="connexion.html" id="logout">Déconnexion</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="dash-head">
+    <span class="eyebrow">Tableau de bord</span>
+    <div style="display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between">
+      <h1>Projets en cours</h1>
+      <div class="actions"><button type="button" class="btn ghost" data-new-client>+ Nouveau client</button><button type="button" class="btn" data-new-project>+ Nouveau projet</button></div>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="num" id="kpi-active">0</div><div class="lbl">Projets actifs</div></div>
+      <div class="kpi"><div class="num" id="kpi-wait">0</div><div class="lbl">En attente client</div></div>
+      <div class="kpi"><div class="num" id="kpi-done">0</div><div class="lbl">Livrés ce mois</div></div>
+      <div class="kpi"><div class="num" id="kpi-avg">0%</div><div class="lbl">Avancement moyen</div></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="filters" id="filters">
+      <button class="filter-btn is-active" data-filter="tous" type="button">Tous</button>
+      <button class="filter-btn" data-filter="encours" type="button">En cours</button>
+      <button class="filter-btn" data-filter="attente" type="button">En attente</button>
+      <button class="filter-btn" data-filter="livre" type="button">Livrés</button>
+    </div>
+    <input type="search" class="search" id="search" placeholder="Rechercher un client, une référence…" aria-label="Rechercher">
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Client</th><th>Prestation</th><th>Statut</th><th>Avancement</th><th>Livraison</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="projects-body"></tbody>
+    </table>
+  </div>
+
+  <div class="dash-head requests-head" id="clients">
+    <span class="eyebrow">Comptes clients · accès à leur tableau de bord</span>
+    <h2>Clients <span class="count" id="clients-count"></span></h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Client</th><th>Contact</th><th>Projets</th><th>Notes internes</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="clients-body"></tbody>
+    </table>
+  </div>
+
+  <div class="dash-head requests-head">
+    <span class="eyebrow">Agenda du site · horaires dans server/disponibilites.js</span>
+    <h2>Appels réservés <span class="count" id="rdv-count"></span></h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th><th>Contact</th><th>Établissement</th><th>Offre</th><th>Message</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="rdv-body"></tbody>
+    </table>
+  </div>
+
+  <div class="dash-head requests-head">
+    <span class="eyebrow">Formulaire « Être rappelé »</span>
+    <h2>Demandes reçues <span class="count" id="req-count"></span></h2>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Reçue le</th><th>Contact</th><th>Entreprise</th><th>Situation</th><th>Rappel souhaité</th><th>Message</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="requests-body"></tbody>
+    </table>
+  </div>
+</main>
+
+<!-- Fiche client : création (éventuellement depuis un appel ou une demande) ou modification -->
+<dialog class="dlg" id="dlg-client" aria-labelledby="dlg-client-title">
+  <form method="dialog" id="f-client" novalidate>
+    <div class="dlg-head"><div><h2 id="dlg-client-title">Nouveau client</h2><p id="dlg-client-sub">Crée un accès à son tableau de bord.</p></div><button type="button" class="dlg-close" data-close aria-label="Fermer">×</button></div>
+    <div class="dlg-body">
+      <div class="fgrid">
+        <label class="f wide"><span>Établissement / entreprise *</span><input name="name" required maxlength="300"></label>
+        <label class="f"><span>Personne à contacter</span><input name="contact" maxlength="300"></label>
+        <label class="f"><span>Téléphone</span><input name="telephone" maxlength="300"></label>
+        <label class="f wide"><span>E-mail (identifiant de connexion) *</span><input name="email" type="email" required maxlength="254"></label>
+      </div>
+      <fieldset id="client-projet" style="border:0;padding:0;margin:18px 0 0">
+        <legend class="eyebrow" style="margin-bottom:10px">Premier projet (facultatif)</legend>
+        <div class="fgrid">
+          <label class="f wide"><span>Nom du projet</span><input name="projet_name" maxlength="300" placeholder="Vidéos & community management"></label>
+          <label class="f"><span>Offre</span><input name="projet_type" list="dl-offres" maxlength="300"></label>
+          <label class="f"><span>Échéance</span><input name="projet_eta" maxlength="300" placeholder="Suivi mensuel"></label>
+        </div>
+      </fieldset>
+      <label class="f" style="margin-top:14px"><span>Notes internes (jamais visibles par le client)</span><textarea name="notes" maxlength="2000"></textarea></label>
+      <div class="form-actions"><button class="btn" id="client-submit">Créer le client</button><span class="form-msg err" role="alert"></span></div>
+    </div>
+  </form>
+</dialog>
+
+<!-- Identifiants à transmettre (affichés une seule fois) -->
+<dialog class="dlg" id="dlg-cred" aria-labelledby="dlg-cred-title">
+  <div class="dlg-head"><div><h2 id="dlg-cred-title">Accès client</h2><p>Mot de passe affiché une seule fois : transmettez-le maintenant.</p></div><button type="button" class="dlg-close" data-close aria-label="Fermer">×</button></div>
+  <div class="dlg-body">
+    <div class="secret"><strong>Adresse</strong><span id="cred-url"></span></div>
+    <div class="secret" style="margin-top:8px"><strong>Identifiant</strong><span id="cred-email"></span></div>
+    <div class="secret" style="margin-top:8px"><strong>Mot de passe</strong><span id="cred-pwd"></span></div>
+    <div class="form-actions"><button type="button" class="btn" id="cred-copy">Copier le message pour le client</button><a class="btn ghost" id="cred-project" hidden>Remplir le projet →</a><span class="form-msg" role="status"></span></div>
+  </div>
+</dialog>
+
+<!-- Nouveau projet -->
+<dialog class="dlg" id="dlg-project" aria-labelledby="dlg-project-title">
+  <form method="dialog" id="f-project" novalidate>
+    <div class="dlg-head"><div><h2 id="dlg-project-title">Nouveau projet</h2><p>Créé avec les 6 étapes habituelles, modifiables ensuite.</p></div><button type="button" class="dlg-close" data-close aria-label="Fermer">×</button></div>
+    <div class="dlg-body">
+      <div class="fgrid">
+        <label class="f wide"><span>Client *</span><select name="client_id" id="project-client" required></select></label>
+        <label class="f wide"><span>Nom du projet *</span><input name="name" required maxlength="300"></label>
+        <label class="f"><span>Offre</span><input name="type" list="dl-offres" maxlength="300"></label>
+        <label class="f"><span>Échéance</span><input name="eta" maxlength="300"></label>
+      </div>
+      <div class="form-actions"><button class="btn">Créer et ouvrir</button><span class="form-msg err" role="alert"></span></div>
+    </div>
+  </form>
+</dialog>
+<datalist id="dl-offres"><option>mira Flash</option><option>mira Essentiel</option><option>mira Essentiel+</option><option>mira Classic</option><option>mira Management</option><option>mira Logo</option><option>Pack Premium</option></datalist>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>© <span id="year"></span> <span class="brand"><em>m</em>ira</span> — interne.</span>
+    <span>Accès réservé aux équipes</span>
+  </div>
+</footer>
+
+<script>
+  // ---- Déconnexion ----
+  document.getElementById('logout').addEventListener('click', async (e) => {
+    e.preventDefault();
+    try { await fetch('/api/logout', { method:'POST', credentials:'same-origin' }); } catch (_) {}
+    location.href = 'connexion.html';
+  });
+
+  // ---- Échappement ----
+  function esc(s){ const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; }
+
+  const body = document.getElementById('projects-body');
+  let PROJECTS = [];
+  let activeFilter = 'tous';
+  let query = '';
+
+  function render(list){
+    body.innerHTML = '';
+    list.forEach(p => {
+      const tr = document.createElement('tr');
+      tr.addEventListener('click', (e) => { if (!e.target.closest('button')) location.href = 'gestion-projet.html?ref=' + encodeURIComponent(p.ref); });
+      tr.innerHTML = `
+        <td><div class="client">${esc(p.client)}</div><div class="ref">${esc(p.ref)}</div></td>
+        <td>${esc(p.type)}</td>
+        <td><span class="status ${esc(p.status)}"><span class="dot"></span>${esc(p.label)}</span></td>
+        <td><span class="mini-bar"><span style="width:${Number(p.progress)||0}%"></span></span><span class="pct">${Number(p.progress)||0}%</span></td>
+        <td>${esc(p.eta)}</td>
+        <td><div class="actions"><span class="row-link">Gérer →</span><button type="button" class="btn small danger" data-del-project>Supprimer</button></div></td>`;
+      tr.querySelector('[data-del-project]').addEventListener('click', () => deleteProject(p));
+      body.appendChild(tr);
+    });
+  }
+
+  function apply(){
+    render(PROJECTS.filter(p => {
+      const okFilter = activeFilter === 'tous' || p.status === activeFilter;
+      const okQuery = !query || (p.client + ' ' + p.ref + ' ' + p.type).toLowerCase().includes(query);
+      return okFilter && okQuery;
+    }));
+  }
+
+  function refreshKpis(){
+    document.getElementById('kpi-active').textContent = PROJECTS.filter(p => p.status === 'encours').length;
+    document.getElementById('kpi-wait').textContent   = PROJECTS.filter(p => p.status === 'attente').length;
+    document.getElementById('kpi-done').textContent   = PROJECTS.filter(p => p.status === 'livre').length;
+    document.getElementById('kpi-avg').textContent    = PROJECTS.length
+      ? Math.round(PROJECTS.reduce((s,p) => s + p.progress, 0) / PROJECTS.length) + '%' : '0%';
+  }
+
+  // ---- Filtres + recherche ----
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active'); activeFilter = btn.dataset.filter; apply();
+  }));
+  document.getElementById('search').addEventListener('input', e => { query = e.target.value.toLowerCase().trim(); apply(); });
+
+  // ---- Chargement depuis le back-end (équipe uniquement) ----
+  (async () => {
+    let me;
+    try {
+      const meRes = await fetch('/api/me', { credentials:'same-origin' });
+      if (!meRes.ok) { location.href = 'connexion.html'; return; }
+      me = (await meRes.json()).user;
+    } catch (e) { location.href = 'connexion.html'; return; }
+
+    if (me.role !== 'equipe') { location.href = 'connexion.html'; return; }
+    document.getElementById('who').textContent = me.email || '';
+
+    try {
+      const res = await fetch('/api/projects', { credentials:'same-origin' });
+      if (!res.ok) { location.href = 'connexion.html'; return; }
+      PROJECTS = await res.json();
+    } catch (e) { PROJECTS = []; }
+
+    refreshKpis();
+    apply();
+    await loadClients();
+    loadRequests();
+    loadRdv();
+  })();
+
+  async function call(url, method = 'GET', data){
+    const res = await fetch(url, { method, credentials:'same-origin', headers:{ 'Content-Type':'application/json' }, body: data ? JSON.stringify(data) : undefined });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(out.error || 'Action impossible pour le moment.');
+    return out;
+  }
+  async function reloadProjects(){
+    try { PROJECTS = await call('/api/projects'); } catch (e) {}
+    refreshKpis(); apply();
+  }
+  async function deleteProject(p){
+    if (!confirm('Supprimer définitivement le projet « ' + p.client + ' — ' + p.type + ' » (' + p.ref + ') ?\nÉtapes, activité, contenus, statistiques et publicité seront effacés.')) return;
+    try { await call('/api/projects/' + encodeURIComponent(p.ref), 'DELETE'); } catch (e) { alert(e.message); return; }
+    reloadProjects(); loadClients();
+  }
+
+  // ---- Fenêtres ----
+  document.querySelectorAll('dialog [data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+
+  // ---- Clients ----
+  let CLIENTS = [];
+  async function loadClients(){
+    try { CLIENTS = await call('/api/clients'); } catch (e) { CLIENTS = []; }
+    document.getElementById('clients-count').textContent = '(' + CLIENTS.length + ')';
+    const cb = document.getElementById('clients-body');
+    cb.innerHTML = CLIENTS.length ? '' : '<tr class="empty-row"><td colspan="5">Aucun client pour le moment. Convertissez un appel ou une demande, ou créez-en un.</td></tr>';
+    CLIENTS.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><div class="client">${esc(c.name)}</div><div class="ref">Client depuis le ${esc((c.created_at || '').slice(0, 10).split('-').reverse().join('/'))}</div></td>
+        <td>${esc(c.contact || '')}<div class="ref"><a href="mailto:${encodeURIComponent(c.email).replace(/%40/g,'@')}">${esc(c.email)}</a>${c.telephone ? '<br>' + esc(c.telephone) : ''}</div></td>
+        <td class="proj-links">${c.projets.map(p => `<a href="gestion-projet.html?ref=${encodeURIComponent(p.ref)}">${esc(p.name)}</a><span class="ref">${esc(p.ref)} · ${esc(p.status_label)}</span>`).join('') || '<span class="ref">Aucun projet</span>'}</td>
+        <td><div class="msg" style="max-width:30ch;white-space:pre-wrap;color:var(--grey);font-size:.85rem">${esc(c.notes || '')}</div></td>
+        <td><div class="actions">
+          <button type="button" class="btn small" data-a="projet">+ Projet</button>
+          <button type="button" class="btn small ghost" data-a="modifier">Modifier</button>
+          <button type="button" class="btn small ghost" data-a="mdp">Nouveau mot de passe</button>
+          <button type="button" class="btn small danger" data-a="supprimer">Supprimer</button></div></td>`;
+      tr.querySelectorAll('[data-a]').forEach(b => b.addEventListener('click', () => clientAction(c, b.dataset.a)));
+      cb.appendChild(tr);
+    });
+    const sel = document.getElementById('project-client');
+    sel.innerHTML = '<option value="">— Choisir —</option>' + CLIENTS.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  }
+
+  async function clientAction(c, a){
+    if (a === 'projet') return openProject(c.id);
+    if (a === 'modifier') return openClient({ edit: c });
+    if (a === 'mdp') {
+      if (!confirm('Générer un nouveau mot de passe pour ' + c.name + ' ? L’ancien ne fonctionnera plus.')) return;
+      try { const r = await call('/api/clients/' + c.id + '/mot-de-passe', 'POST', {}); showCredentials(c.email, r.password, null, c.name); }
+      catch (e) { alert(e.message); }
+      return;
+    }
+    if (a === 'supprimer') {
+      const n = c.projets.length;
+      if (!confirm('Supprimer définitivement ' + c.name + ' ?\n\nSon accès est coupé immédiatement' + (n ? ' et ses ' + n + ' projet(s) — étapes, contenus, statistiques, publicité — sont effacés.' : '.') + '\nCette action est irréversible.')) return;
+      try { await call('/api/clients/' + c.id, 'DELETE'); } catch (e) { alert(e.message); return; }
+      loadClients(); reloadProjects(); loadRequests(); loadRdv();
+    }
+  }
+
+  // Fiche client — création, modification, ou conversion d'un prospect (source)
+  const dlgClient = document.getElementById('dlg-client'), fClient = document.getElementById('f-client');
+  let clientCtx = {};
+  function openClient(ctx = {}){
+    clientCtx = ctx; fClient.reset(); fClient.querySelector('.form-msg').textContent = '';
+    const edit = ctx.edit;
+    document.getElementById('dlg-client-title').textContent = edit ? 'Modifier ' + edit.name : ctx.source ? 'Convertir en client' : 'Nouveau client';
+    document.getElementById('dlg-client-sub').textContent = edit ? 'Le nouvel e-mail devient son identifiant.' : ctx.source ? 'Les informations du prospect sont reprises. Un accès à son tableau de bord est créé.' : 'Crée un accès à son tableau de bord.';
+    document.getElementById('client-submit').textContent = edit ? 'Enregistrer' : 'Créer le client';
+    document.getElementById('client-projet').hidden = !!edit;
+    const v = edit || ctx.prefill || {};
+    ['name', 'contact', 'telephone', 'email', 'notes', 'projet_name', 'projet_type'].forEach(k => { if (v[k] != null) fClient.elements[k].value = v[k]; });
+    dlgClient.showModal();
+  }
+  fClient.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = Object.fromEntries(new FormData(fClient));
+    const msg = fClient.querySelector('.form-msg');
+    try {
+      if (clientCtx.edit) {
+        await call('/api/clients/' + clientCtx.edit.id, 'PUT', { name:f.name, contact:f.contact, telephone:f.telephone, email:f.email, notes:f.notes });
+        dlgClient.close(); loadClients(); reloadProjects(); return;
+      }
+      const r = await call('/api/clients', 'POST', {
+        name:f.name, contact:f.contact, telephone:f.telephone, email:f.email, notes:f.notes,
+        projet: f.projet_name ? { name:f.projet_name, type:f.projet_type, eta:f.projet_eta } : null,
+        source: clientCtx.source || null
+      });
+      dlgClient.close();
+      await loadClients(); reloadProjects(); loadRequests(); loadRdv();
+      showCredentials(r.email, r.password, r.ref, f.name);
+    } catch (err) { msg.textContent = err.message; }
+  });
+  document.querySelectorAll('[data-new-client]').forEach(b => b.addEventListener('click', () => openClient()));
+
+  // Identifiants + message prêt à envoyer
+  const dlgCred = document.getElementById('dlg-cred');
+  function showCredentials(email, pwd, ref, name){
+    const url = location.origin + '/connexion.html';
+    document.getElementById('cred-url').textContent = url;
+    document.getElementById('cred-email').textContent = email;
+    document.getElementById('cred-pwd').textContent = pwd;
+    const link = document.getElementById('cred-project');
+    link.hidden = !ref; if (ref) link.href = 'gestion-projet.html?ref=' + encodeURIComponent(ref);
+    const copy = document.getElementById('cred-copy');
+    copy.onclick = async () => {
+      const txt = `Bonjour,\n\nVotre espace client mira est prêt : vous y suivez l'avancement de votre projet, vos contenus, vos statistiques et votre publicité.\n\nAdresse : ${url}\nIdentifiant : ${email}\nMot de passe : ${pwd}\n\nÀ très vite,\nL'équipe mira`;
+      try { await navigator.clipboard.writeText(txt); dlgCred.querySelector('.form-msg').textContent = 'Message copié.'; }
+      catch (e) { dlgCred.querySelector('.form-msg').textContent = 'Copie impossible : sélectionnez le texte à la main.'; }
+    };
+    dlgCred.querySelector('.form-msg').textContent = '';
+    dlgCred.showModal();
+  }
+
+  // Nouveau projet
+  const dlgProject = document.getElementById('dlg-project'), fProject = document.getElementById('f-project');
+  function openProject(clientId){
+    fProject.reset(); fProject.querySelector('.form-msg').textContent = '';
+    if (clientId) fProject.elements.client_id.value = clientId;
+    dlgProject.showModal();
+  }
+  fProject.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = Object.fromEntries(new FormData(fProject));
+    if (!f.client_id) { fProject.querySelector('.form-msg').textContent = CLIENTS.length ? 'Choisissez un client.' : 'Créez d’abord un client.'; return; }
+    try { const r = await call('/api/projects', 'POST', f); location.href = 'gestion-projet.html?ref=' + encodeURIComponent(r.ref); }
+    catch (err) { fProject.querySelector('.form-msg').textContent = err.message; }
+  });
+  document.querySelectorAll('[data-new-project]').forEach(b => b.addEventListener('click', () => openProject()));
+
+  // Bouton « Convertir en client » (appel réservé ou demande) / mention du client créé
+  function convertCell(r, type){
+    const c = r.client_id && CLIENTS.find(x => x.id === r.client_id);
+    if (c) return `<span class="tag-ok">Client : ${esc(c.name)}</span>`;
+    return '<button type="button" class="btn small" data-convert>Convertir en client</button>';
+  }
+  function bindConvert(tr, r, type){
+    const b = tr.querySelector('[data-convert]');
+    if (!b) return;
+    b.addEventListener('click', () => openClient({
+      source: { type, id: r.id },
+      prefill: {
+        name: type === 'rdv' ? r.etablissement : r.entreprise,
+        contact: r.prenom + ' ' + r.nom, telephone: r.telephone, email: r.email,
+        projet_type: r.pack || '',
+        notes: (type === 'rdv' ? 'Appel du ' + r.date + ' à ' + r.heure + (r.message ? ' — ' + r.message : '') : 'Demande : ' + (r.situation || '') + ' — ' + (r.raison || '')).slice(0, 2000)
+      }
+    }));
+  }
+
+  // ---- Appels réservés via l'agenda du site ----
+  const fmtRdv = new Intl.DateTimeFormat('fr-FR', { weekday:'short', day:'numeric', month:'short', timeZone:'UTC' });
+  async function rdvAction(r, action){
+    const qui = r.prenom + ' ' + r.nom;
+    if (action === 'annuler' && !confirm('Annuler l’appel avec ' + qui + ' ? Le créneau redevient libre. Pensez à prévenir la personne.')) return;
+    if (action === 'supprimer' && !confirm('Supprimer définitivement le rendez-vous de ' + qui + ' ?')) return;
+    try {
+      const res = await fetch('/api/rdv/' + encodeURIComponent(r.id) + (action === 'annuler' ? '/annuler' : ''), {
+        method: action === 'annuler' ? 'POST' : 'DELETE', credentials:'same-origin', headers:{ 'Content-Type':'application/json' }
+      });
+      if (!res.ok) throw new Error();
+    } catch (e) { alert('Action impossible pour le moment.'); return; }
+    loadRdv();
+  }
+  async function loadRdv(){
+    const body = document.getElementById('rdv-body');
+    let data = { aVenir:[], passes:[] };
+    try {
+      const res = await fetch('/api/rdv', { credentials:'same-origin' });
+      if (res.ok) data = await res.json();
+    } catch (e) {}
+    const actifs = data.aVenir.filter(r => r.statut === 'confirme');
+    document.getElementById('rdv-count').textContent = '(' + actifs.length + ' à venir)';
+    body.innerHTML = '';
+    const list = [...data.aVenir, ...data.passes];
+    if (!list.length) {
+      body.innerHTML = '<tr class="empty-row"><td colspan="6">Aucun appel réservé pour le moment.</td></tr>';
+      return;
+    }
+    list.forEach(r => {
+      const passe = !data.aVenir.includes(r), annule = r.statut === 'annule';
+      const tr = document.createElement('tr');
+      if (passe || annule) tr.style.opacity = '.55';
+      tr.innerHTML = `
+        <td><div class="client">${esc(fmtRdv.format(new Date(r.date + 'T00:00:00Z')))} · ${esc(r.heure.replace(':', 'h'))}</div>
+            <div class="ref">${annule ? 'Annulé' : passe ? 'Passé' : 'Confirmé'}</div></td>
+        <td><div class="client">${esc(r.prenom)} ${esc(r.nom)}</div>
+            <div class="ref"><a href="tel:${esc(r.telephone.replace(/[^+\d]/g, ''))}">${esc(r.telephone)}</a><br><a href="mailto:${encodeURIComponent(r.email).replace(/%40/g,'@')}">${esc(r.email)}</a></div></td>
+        <td>${esc(r.etablissement)}</td>
+        <td>${esc(r.pack || '—')}</td>
+        <td><div class="msg">${esc(r.message || '')}</div></td>
+        <td><div class="actions">${annule ? '' : convertCell(r, 'rdv')}${!passe && !annule ? '<button type="button" class="del-btn" data-a="annuler">Annuler</button>' : ''}<button type="button" class="del-btn" data-a="supprimer" title="Supprimer définitivement (droit à l'effacement RGPD)">Supprimer</button></div></td>`;
+      tr.querySelectorAll('[data-a]').forEach(b => b.addEventListener('click', () => rdvAction(r, b.dataset.a)));
+      bindConvert(tr, r, 'rdv');
+      body.appendChild(tr);
+    });
+  }
+
+  // ---- Demandes de rendez-vous ----
+  // Suppression définitive — à utiliser quand une personne demande l'effacement
+  // de ses données, ou quand la demande n'a plus d'utilité.
+  async function deleteRequest(r){
+    if (!confirm('Supprimer définitivement la demande de ' + r.prenom + ' ' + r.nom + ' ?')) return;
+    try {
+      const res = await fetch('/api/requests/' + encodeURIComponent(r.id), {
+        method:'DELETE', credentials:'same-origin', headers:{ 'Content-Type':'application/json' }
+      });
+      if (!res.ok) throw new Error();
+    } catch (e) { alert('Suppression impossible pour le moment.'); return; }
+    loadRequests();
+  }
+
+  async function loadRequests(){
+    const rb = document.getElementById('requests-body');
+    let list = [];
+    try {
+      const res = await fetch('/api/requests', { credentials:'same-origin' });
+      if (res.ok) list = await res.json();
+    } catch (e) {}
+    document.getElementById('req-count').textContent = '(' + list.length + ')';
+    rb.innerHTML = '';
+    if (!list.length) {
+      rb.innerHTML = '<tr class="empty-row"><td colspan="7">Aucune demande pour le moment.</td></tr>';
+      return;
+    }
+    list.forEach(r => {
+      const tr = document.createElement('tr');
+      const when = [r.date_dispo, r.heure_dispo].filter(Boolean).join(' à ') || '—';
+      tr.innerHTML = `
+        <td>${esc(r.created_at)}</td>
+        <td><div class="client">${esc(r.prenom)} ${esc(r.nom)}</div>
+            <div class="ref"><a href="mailto:${encodeURIComponent(r.email).replace(/%40/g,'@')}">${esc(r.email)}</a><br>${esc(r.telephone)}</div></td>
+        <td>${esc(r.entreprise)}</td>
+        <td>${esc(r.situation)}</td>
+        <td>${esc(when)}</td>
+        <td><div class="msg">${esc(r.raison)}</div></td>
+        <td><div class="actions">${convertCell(r, 'demande')}<button type="button" class="del-btn" title="Supprimer définitivement (droit à l'effacement RGPD)">Supprimer</button></div></td>`;
+      tr.querySelector('.del-btn').addEventListener('click', () => deleteRequest(r));
+      bindConvert(tr, r, 'demande');
+      rb.appendChild(tr);
+    });
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

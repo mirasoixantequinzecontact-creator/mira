@@ -1,10 +1,18 @@
 # Site mira — mode d'emploi
 
-Vitrine (`index.html`), formulaire « Être rappelé », espace client, espace équipe et serveur (dossier `server/`).
+```
+mira/
+├── site/      le site : pages, styles, scripts, images, polices, vidéos
+├── server/    le serveur : connexion, agenda, espaces équipe et client, base de données
+├── outils/    préparation des vidéos (+ dossier où déposer les vidéos brutes)
+└── README.md  ce mode d'emploi
+```
 
-## 1. Lancer le site sur votre ordinateur
+## 1. Voir le site
 
-Prérequis : [Node.js](https://nodejs.org) 20 ou plus.
+**Aperçu rapide** : double-cliquez sur `site/index.html`. La vitrine s'affiche comme en ligne, avec les contenus de démonstration. L'agenda est en aperçu : la réservation, la connexion et les formulaires demandent le serveur.
+
+**Site complet** (réservation, formulaires, espaces équipe et client) — prérequis : [Node.js](https://nodejs.org) 20 ou plus :
 
 ```bash
 cd server
@@ -12,18 +20,22 @@ npm install
 npm start
 ```
 
-Ouvrez ensuite **http://localhost:3000**. Il faut toujours passer par cette adresse : un double-clic sur un fichier `.html` ne fonctionne pas.
+Ouvrez ensuite **http://localhost:3000**.
 
-En local, des contenus de **démonstration** (marqués « DÉMO ») remplissent les réalisations, l'avant/après, les logos, les résultats et les témoignages. Ils ne s'affichent **jamais** en ligne.
+Au premier lancement, une base de démonstration est créée et les mots de passe des deux comptes de test s'affichent dans le terminal (vous pouvez les imposer dans `server/.env` avec `SEED_ADMIN_PASSWORD` et `SEED_CLIENT_PASSWORD`). Pour changer un mot de passe : `npm run password -- adresse@email.fr "nouveau-mot-de-passe"` (12 caractères minimum).
+
+En local (localhost ou double-clic), des contenus de **démonstration** (marqués « DÉMO ») remplissent les réalisations, l'avant/après, les logos, les résultats et les témoignages. Ils ne s'affichent **jamais** en ligne.
+
+> npm 11 et plus : si un avertissement « install-scripts » cite better-sqlite3, lancez `npm install-scripts approve better-sqlite3` puis `npm rebuild better-sqlite3`.
 
 ## 2. Ajouter une réalisation vidéo
 
-1. Déposez le fichier brut (MP4 ou MOV) dans `brief/videos/`.
-2. À la racine du projet, lancez `npm run videos`. Il faut ffmpeg ; sous Windows, installez-le avec `winget install ffmpeg`.
-3. Le script crée la vidéo compressée, un aperçu de 6 secondes et une image d'attente dans `videos/`, puis affiche une ligne.
-4. Collez cette ligne dans `assets/data/realisations.js`, puis remplacez le nom du lieu, la ville et le format (`Fragments`, `Mirage` ou `TikTok Trend`).
+1. Déposez le fichier brut (MP4 ou MOV) dans `outils/videos-brutes/`.
+2. Dans le dossier `server`, lancez `npm run videos`. Il faut ffmpeg ; sous Windows : `winget install ffmpeg`.
+3. Le script crée la vidéo compressée, un aperçu de 6 secondes et une image d'attente dans `site/videos/`, puis affiche une ligne.
+4. Collez cette ligne dans `site/assets/data/realisations.js`, puis remplacez le nom du lieu, la ville et le format (`Fragments`, `Mirage` ou `TikTok Trend`).
 
-Un fichier nommé `showreel.mp4` remplace automatiquement les photos d'ambiance sous l'accroche.
+Un fichier `site/videos/showreel.mp4` remplace automatiquement les photos d'ambiance sous l'accroche.
 
 ## 3. Ajouter un autre contenu
 
@@ -31,10 +43,10 @@ Chaque fichier contient en tête une notice et le format attendu.
 
 | Contenu | Fichier | Remarque |
 |---|---|---|
-| Logo client | `assets/data/clients.js` | Logo à placer dans `assets/img/clients/`. La section n'apparaît qu'à partir de 4 logos. |
-| Témoignage vidéo | `assets/data/temoignages.js` | Même procédure que pour les vidéos. |
-| Avis écrit | `index.html`, section `#temoignages` | Copiez un modèle `review-card` en dehors du commentaire. Uniquement de vrais avis, avec l'accord du client. |
-| Résultat avant / après | `assets/data/resultats.js` (abonnés) et `assets/data/avantApres.js` (étalonnage) | — |
+| Logo client | `site/assets/data/clients.js` | Logo à placer dans `site/assets/img/clients/`. La section n'apparaît qu'à partir de 4 logos. |
+| Témoignage vidéo | `site/assets/data/temoignages.js` | Même procédure que pour les vidéos. |
+| Avis écrit | `site/index.html`, section `#temoignages` | Copiez un modèle `review-card` en dehors du commentaire. Uniquement de vrais avis, avec l'accord du client. |
+| Résultat avant / après | `site/assets/data/resultats.js` (abonnés) et `site/assets/data/avantApres.js` (étalonnage) | — |
 
 Une liste vide fait disparaître la section concernée et son lien. **Ne publiez jamais de faux contenu** : c'est une pratique commerciale trompeuse (Code de la consommation, art. L121-2).
 
@@ -48,7 +60,7 @@ Aucune notification n'est envoyée : consultez l'espace équipe pour voir les no
 
 ## 5. Espace équipe et espace client
 
-Connectez-vous sur `/connexion.html` avec un compte équipe.
+Connectez-vous sur http://localhost:3000/connexion.html avec un compte équipe.
 
 - **Convertir un prospect** : sur un appel réservé ou une demande reçue, cliquez sur « Convertir en client ». Ses informations sont reprises, un compte et (si vous le nommez) un premier projet sont créés. Le mot de passe s'affiche une seule fois, avec un message prêt à copier pour le client.
 - **Clients** : modifier, générer un nouveau mot de passe, ajouter un projet, ou supprimer (compte, projets et tableau de bord effacés, accès coupé immédiatement).
@@ -65,10 +77,11 @@ Les statistiques sont saisies à la main à partir des statistiques Instagram et
 
 ## 6. Coordonnées et mentions légales
 
-Tout se trouve dans `assets/js/config.js`. Les mêmes valeurs sont aussi écrites dans les pages HTML, repérées par le commentaire `<!-- SYNC config.js -->` : modifiez les deux.
+Tout se trouve dans `site/assets/js/config.js`. Les mêmes valeurs sont aussi écrites dans les pages HTML, repérées par le commentaire `<!-- SYNC config.js -->` : modifiez les deux.
 
 - Toute valeur `TODO_…` reste à compléter (SIRET, nom, adresse, hébergeur…).
 - Pour utiliser Cal.com ou Calendly à la place de l'agenda du site : `booking.provider` et `booking.lien` dans `config.js`, et `BOOKING_PROVIDER` dans `server/.env`.
+- Registre des traitements RGPD : `server/REGISTRE-RGPD.md`.
 
 ## 7. Mettre en ligne
 
@@ -81,4 +94,10 @@ Tout se trouve dans `assets/js/config.js`. Les mêmes valeurs sont aussi écrite
 4. Activez le **HTTPS** et branchez votre domaine. Remplacez ensuite `https://mira.agency` dans `config.js`, `index.html`, `sitemap.xml` et `robots.txt` s'il diffère.
 5. ⚠ Un hébergement **gratuit sans disque persistant efface la base** (comptes, projets, demandes) à chaque déploiement.
 
+En production, le serveur refuse de démarrer sans `SESSION_SECRET` solide et ne crée jamais de comptes de démonstration.
+
 Les fichiers CSS et JS sont mis en cache 7 jours. Après une mise à jour, demandez aux visiteurs réguliers de recharger la page, ou ajoutez `?v=2` aux liens dans les pages HTML.
+
+## Sécurité (résumé)
+
+Mots de passe hachés (bcrypt), session dans un cookie httpOnly régénérée à chaque connexion, rôles vérifiés côté serveur (un client ne voit que ses projets), limitation des tentatives et des envois, anti-CSRF, en-têtes de sécurité (CSP, anti-iframe, HSTS en production). Seul le dossier `site/` est servi, et seulement les pages prévues : le dossier `server/` (base, `.env`, code) n'est jamais accessible depuis le web.

@@ -1,8 +1,0 @@
-{
-  "name": "mira-site",
-  "private": true,
-  "description": "Outils du site mira (le serveur a son propre package.json dans server/)",
-  "scripts": {
-    "videos": "node scripts/prepare-videos.mjs"
-  }
-}

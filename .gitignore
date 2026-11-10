@@ -1,12 +1,14 @@
+# Dépendances et base de données locale
 node_modules/
-server/node_modules/
 server/.env
-server/mira.db
-server/mira.db-shm
-server/mira.db-wal
-brief/videos/*
-!brief/videos/LISEZMOI.txt
+server/mira.db*
+
+# Vidéos brutes (lourdes) : seul le mode d'emploi est suivi
+outils/videos-brutes/*
+!outils/videos-brutes/LISEZMOI.txt
+
+# Médias de démonstration générés localement (jamais publiés)
+site/videos/demo/
+
 # Réglages locaux de l'éditeur
 .claude/
-# Médias de démonstration générés localement (jamais publiés)
-videos/demo/

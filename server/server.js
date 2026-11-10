@@ -16,7 +16,7 @@ const bcrypt = require('bcryptjs');
 const { db } = require('./db');
 
 const app = express();
-const ROOT = path.join(__dirname, '..');           // dossier contenant les .html
+const ROOT = path.join(__dirname, '..', 'site');   // le site publié (pages, assets, polices, vidéos)
 const PORT = process.env.PORT || 3000;
 const IS_PROD = process.env.NODE_ENV === 'production';
 

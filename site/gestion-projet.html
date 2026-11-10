@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- ============================================================
+     GESTION D'UN PROJET — équipe uniquement (protégé côté serveur).
+     Infos, étapes, activité, contenus, statistiques réseaux et publicité :
+     tout ce qui est saisi ici apparaît dans le tableau de bord du client (suivi.html).
+     ============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<title>Gestion du projet — Mira</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/img/brand/favicon.ico" sizes="32x32">
+<link rel="icon" href="assets/img/brand/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/espace.css">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); line-height:1.5; -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+  h1,h2,h3{font-family:var(--font-display); font-weight:700; letter-spacing:-0.03em; margin:0;}
+  .container{max-width:1180px; margin:0 auto; padding:0 5vw;}
+  .eyebrow{font-weight:600; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--grey); display:block; margin-bottom:.6rem;}
+  .site-header{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.95); border-bottom:1px solid var(--line);}
+  .site-header .container{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 5vw;}
+  .logo{display:inline-flex; align-items:center; gap:12px; color:var(--ink);}
+  .logo svg{height:22px; width:auto;}
+  .logo .tag{font-weight:600; font-size:.65rem; letter-spacing:.1em; text-transform:uppercase; color:var(--grey); border:1px solid var(--border); padding:3px 8px;}
+  .header-actions{display:flex; align-items:center; gap:16px; font-size:.88rem;}
+  .page-head{padding:clamp(28px,5vw,48px) 0 20px; display:flex; flex-wrap:wrap; gap:16px 24px; align-items:flex-end; justify-content:space-between;}
+  .page-head h1{font-size:clamp(1.6rem,3.4vw,2.4rem);}
+  .page-head .sub{color:var(--grey); margin-top:6px;}
+  .table-wrap{border:1px solid var(--border); overflow-x:auto; margin-top:18px;}
+  table{width:100%; border-collapse:collapse; min-width:640px;}
+  th, td{text-align:left; padding:11px 14px; font-size:.86rem; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--grey); font-weight:600; background:var(--paper-deep); white-space:nowrap;}
+  td.num{text-align:right; font-variant-numeric:tabular-nums;}
+  tbody tr:last-child td{border-bottom:none;}
+  .panel{border:1px solid var(--border); padding:20px; background:var(--paper-deep);}
+  .panel h3{font-size:1rem; margin-bottom:14px;}
+  .step-row{display:grid; grid-template-columns:1.2fr 2fr 140px 140px auto; gap:8px; align-items:end; padding:12px 0; border-bottom:1px solid var(--border);}
+  @media (max-width:860px){ .step-row{grid-template-columns:1fr 1fr;} .step-row .f.d{grid-column:1 / -1;} }
+  .act-list{list-style:none; margin:16px 0 0; padding:0;}
+  .act-list li{display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--border); font-size:.9rem;}
+  .act-list .time{color:var(--grey); font-size:.8rem; min-width:64px;}
+  .act-list li span:nth-child(2){flex:1;}
+  section{scroll-margin-top:120px;}
+  .site-footer{padding:32px 0; margin-top:64px; border-top:1px solid var(--border); font-size:.8rem; color:var(--grey);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="espace-equipe.html" class="logo" aria-label="Retour au tableau de bord"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="16 16 1144 334"><path fill="currentColor" fill-rule="evenodd" d="M1086.17 272.50 L1086.50 340.67 L1156.00 340.33 L1155.83 272.33ZM449.67 109.00 L449.00 109.83 L449.00 340.00 L449.83 340.83 L511.50 340.83 L512.50 340.00 L512.50 109.83 L510.50 108.83ZM701.83 105.17 L690.67 103.00 L676.00 104.00 L663.17 107.33 L650.33 113.00 L638.50 120.83 L630.17 128.50 L623.17 137.00 L614.83 151.50 L613.67 150.83 L613.17 109.33 L553.50 109.67 L553.83 340.67 L616.67 340.33 L616.83 229.67 L619.00 210.83 L622.33 198.83 L626.83 189.17 L634.00 179.33 L642.67 171.83 L651.33 167.00 L659.83 164.00 L671.50 162.00 L684.83 161.83 L701.00 163.83 L702.33 163.33 L702.50 106.00ZM403.33 135.67 L398.00 127.33 L392.33 121.17 L385.00 115.50 L376.17 110.67 L366.50 107.00 L358.67 105.00 L344.83 103.17 L336.17 103.00 L325.33 104.00 L315.67 106.00 L305.67 109.17 L294.00 114.33 L284.67 119.83 L275.50 126.50 L260.33 142.00 L256.67 131.33 L253.33 124.83 L249.67 119.83 L241.83 113.00 L233.00 108.33 L222.67 105.00 L209.67 103.17 L200.50 103.00 L187.67 104.00 L176.67 106.00 L165.83 109.17 L156.50 113.00 L147.50 118.00 L138.67 124.50 L131.00 131.83 L122.67 141.33 L122.17 139.33 L128.67 110.50 L128.33 109.17 L68.50 109.17 L20.50 340.33 L82.17 340.83 L83.17 340.17 L109.17 216.17 L112.33 204.83 L117.83 191.33 L123.17 181.83 L129.50 173.17 L134.67 167.67 L142.17 161.50 L150.00 156.83 L157.17 154.17 L163.17 153.00 L172.00 152.83 L179.17 154.17 L183.50 156.00 L188.00 159.00 L191.83 162.83 L194.33 166.50 L196.50 172.17 L197.00 181.17 L194.67 197.50 L165.00 340.17 L165.83 340.83 L228.33 340.67 L255.17 214.00 L259.17 201.00 L262.83 192.33 L268.00 182.83 L273.50 175.00 L280.67 167.17 L287.17 161.83 L295.83 156.67 L302.67 154.17 L308.67 153.00 L317.50 152.83 L326.83 155.00 L332.17 158.00 L337.00 162.50 L339.50 166.00 L341.83 171.50 L342.50 181.33 L340.67 195.00 L310.50 340.17 L311.50 340.83 L373.33 340.67 L407.83 178.67 L409.00 167.67 L408.83 154.17 L406.83 144.33ZM739.83 128.83 L730.33 139.33 L723.00 151.67 L720.17 159.17 L718.00 168.00 L716.83 176.67 L717.33 179.83 L779.00 180.00 L780.17 179.00 L782.17 168.83 L785.17 161.83 L788.83 156.67 L792.83 153.00 L799.83 149.00 L808.83 146.17 L818.00 145.00 L827.83 145.00 L843.50 147.17 L849.50 149.50 L855.33 153.50 L859.67 158.67 L862.67 165.33 L863.83 172.00 L863.83 180.83 L862.67 185.33 L859.50 190.33 L855.17 193.83 L847.00 197.83 L830.83 201.83 L782.83 208.00 L756.67 214.00 L748.33 217.00 L739.83 221.17 L731.17 227.00 L724.83 233.00 L716.67 244.50 L712.17 255.33 L710.00 266.00 L709.50 280.83 L711.00 295.00 L714.17 305.67 L719.83 316.50 L726.00 324.33 L736.00 332.83 L746.83 338.83 L758.00 342.83 L775.17 346.00 L790.00 346.67 L804.50 345.83 L817.00 343.83 L829.00 340.83 L840.50 336.67 L849.67 331.83 L858.00 326.00 L865.50 319.33 L866.83 320.17 L869.00 334.00 L870.83 340.00 L871.83 340.83 L934.50 340.67 L934.67 339.50 L931.17 330.67 L929.17 320.50 L927.33 296.67 L926.83 158.17 L924.83 148.67 L922.00 141.33 L918.00 134.67 L913.00 128.67 L905.83 122.17 L896.67 116.17 L885.17 111.00 L875.83 108.00 L853.00 104.00 L821.83 102.67 L811.67 103.00 L794.67 105.00 L773.33 110.00 L764.83 113.17 L753.17 119.00ZM863.83 228.67 L863.83 256.00 L861.67 271.50 L859.00 278.83 L854.67 286.50 L849.67 292.17 L845.00 296.00 L837.67 300.33 L830.33 302.83 L817.67 304.67 L807.17 304.67 L797.67 303.50 L788.83 300.83 L782.33 297.00 L777.67 292.00 L775.00 287.17 L773.17 280.50 L773.17 269.00 L774.33 264.00 L776.50 259.17 L780.00 254.33 L784.33 250.33 L791.83 246.00 L800.33 243.00 L813.00 240.17 L842.67 235.83 L854.17 232.67 L862.67 228.17ZM449.17 20.50 L449.50 72.67 L512.33 72.33 L512.17 20.33Z"/></svg> <span class="tag">Équipe</span></a>
+    <div class="header-actions">
+      <a href="espace-equipe.html">← Tableau de bord</a>
+    </div>
+  </div>
+</header>
+
+<main class="container" id="main">
+  <div class="page-head">
+    <div>
+      <span class="eyebrow" id="p-ref">Projet</span>
+      <h1 id="p-name">Chargement…</h1>
+      <p class="sub" id="p-client"></p>
+    </div>
+    <div class="actions">
+      <a class="btn ghost" id="see-client" href="#">Voir comme le client</a>
+      <button type="button" class="btn danger" id="del-project">Supprimer le projet</button>
+    </div>
+  </div>
+</main>
+
+<nav class="subnav" aria-label="Sections du projet">
+  <div class="container">
+    <ul>
+      <li><a href="#infos">Infos</a></li>
+      <li><a href="#etapes">Étapes</a></li>
+      <li><a href="#activite">Activité</a></li>
+      <li><a href="#publications">Contenus</a></li>
+      <li><a href="#stats">Réseaux</a></li>
+      <li><a href="#pubs">Publicité</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+
+  <section id="infos">
+    <div class="section-head"><div><h2>Infos du projet</h2><p>Visible par le client en haut de son suivi.</p></div></div>
+    <form class="panel" id="f-infos">
+      <div class="fgrid">
+        <label class="f wide"><span>Nom du projet *</span><input name="name" required maxlength="300"></label>
+        <label class="f"><span>Client</span><select name="client_id" id="client-select"><option value="">— Aucun compte —</option></select></label>
+        <label class="f"><span>Offre / prestation</span><input name="type" list="dl-offres" maxlength="300"></label>
+        <label class="f"><span>Statut</span><select name="status"><option value="encours">En cours</option><option value="attente">En attente client</option><option value="livre">Livré</option></select></label>
+        <label class="f"><span>Avancement (%)</span><input name="progress" type="number" min="0" max="100" step="5"></label>
+        <label class="f"><span>Démarré le</span><input name="start_date" maxlength="300" placeholder="12 mai 2026"></label>
+        <label class="f"><span>Livraison / échéance</span><input name="eta" maxlength="300" placeholder="Suivi mensuel, 30 juin…"></label>
+        <label class="f"><span>Interlocuteur</span><input name="pm" maxlength="300"></label>
+      </div>
+      <div class="form-actions"><button class="btn">Enregistrer</button><span class="form-msg" role="status"></span></div>
+    </form>
+  </section>
+
+  <section id="etapes">
+    <div class="section-head"><div><h2>Étapes</h2><p>La frise du client. Une seule étape « En cours » de préférence.</p></div></div>
+    <div class="panel">
+      <div id="steps"></div>
+      <div class="form-actions">
+        <button type="button" class="btn ghost" id="add-step">+ Ajouter une étape</button>
+        <button type="button" class="btn" id="save-steps">Enregistrer les étapes</button>
+        <span class="form-msg" id="steps-msg" role="status"></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="activite">
+    <div class="section-head"><div><h2>Activité</h2><p>Les nouvelles que voit le client (« Tournage terminé », « Campagne lancée »…).</p></div></div>
+    <form class="panel" id="f-act">
+      <label class="f"><span>Nouveau message</span><textarea name="text" maxlength="2000" required></textarea></label>
+      <div class="form-actions"><button class="btn">Publier</button><span class="form-msg" role="status"></span></div>
+      <ul class="act-list" id="act-list"></ul>
+    </form>
+  </section>
+
+  <section id="publications" data-res="publications"></section>
+  <section id="stats" data-res="stats"></section>
+  <section id="pubs" data-res="pubs"></section>
+</div>
+
+<datalist id="dl-offres"><option>mira Flash</option><option>mira Essentiel</option><option>mira Essentiel+</option><option>mira Classic</option><option>mira Management</option><option>mira Logo</option><option>Pack Premium</option></datalist>
+<datalist id="dl-format"><option>Reel</option><option>Post</option><option>Carrousel</option><option>Story</option><option>TikTok</option><option>Vidéo</option><option>Photo</option><option>Autre</option></datalist>
+<datalist id="dl-reseau"><option>Instagram</option><option>TikTok</option><option>Facebook</option><option>YouTube</option><option>LinkedIn</option><option>Fichier</option></datalist>
+<datalist id="dl-regie"><option>Meta</option><option>TikTok</option><option>Google</option></datalist>
+<datalist id="dl-objectif"><option>Notoriété</option><option>Trafic</option><option>Messages</option><option>Réservations</option><option>Abonnés</option></datalist>
+
+<footer class="site-footer"><div class="container">Espace équipe — les modifications sont visibles immédiatement par le client.</div></footer>
+
+<script>
+  const REF = (new URLSearchParams(location.search).get('ref') || '').toUpperCase();
+  const API = '/api/projects/' + encodeURIComponent(REF);
+  function esc(s){ const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; }
+  async function call(url, method = 'GET', body){
+    const res = await fetch(url, { method, credentials:'same-origin', headers:{ 'Content-Type':'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    if (res.status === 401) { location.href = 'connexion.html'; throw new Error(); }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Action impossible pour le moment.');
+    return data;
+  }
+  function flash(el, text, err){ el.textContent = text; el.classList.toggle('err', !!err); if (!err) setTimeout(() => { if (el.textContent === text) el.textContent = ''; }, 2500); }
+  const nf = new Intl.NumberFormat('fr-FR');
+  const eur = new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' });
+  const fmtMois = (m) => m ? new Intl.DateTimeFormat('fr-FR', { month:'short', year:'numeric', timeZone:'UTC' }).format(new Date(m + '-01T00:00:00Z')) : '';
+  const fmtDate = (d) => d ? new Intl.DateTimeFormat('fr-FR', { day:'numeric', month:'short', year:'numeric', timeZone:'UTC' }).format(new Date(d + 'T00:00:00Z')) : '';
+  const STATUTS = { prevu:'Prévu', a_valider:'À valider par le client', valide:'Validé', publie:'Publié / livré' };
+
+  // ============================================================
+  //  Éditeurs génériques : contenus, statistiques, publicité
+  //  [clé, libellé, type, options] — types : date, month, text, long, int, num, url, select, list (suggestions)
+  // ============================================================
+  const EDITEURS = {
+    publications: {
+      titre:'Contenus', aide:'Tout ce qui est produit : à venir, à faire valider par le client, publié ou livré (fichiers).',
+      champs:[ ['date','Date *','date'], ['titre','Titre *','text',{wide:1}], ['format','Format','list','dl-format'], ['plateforme','Réseau','list','dl-reseau'],
+               ['statut','Statut','select',STATUTS], ['lien','Lien (publication ou fichiers)','url',{wide:1}],
+               ['vues','Vues','int'], ['likes','J’aime','int'], ['commentaires','Commentaires','int'], ['partages','Partages','int'], ['note','Note pour le client','long',{wide:1}] ],
+      colonnes:['date','titre','format','plateforme','statut','vues','likes'],
+    },
+    stats: {
+      titre:'Statistiques des réseaux', aide:'Un relevé par mois et par réseau (chiffres des statistiques Instagram / TikTok). Ressaisir un même mois et réseau le remplace.',
+      champs:[ ['mois','Mois *','month'], ['plateforme','Réseau *','list','dl-reseau'], ['abonnes','Abonnés','int'], ['portee','Comptes touchés','int'], ['vues','Vues','int'], ['interactions','Interactions','int'] ],
+      colonnes:['mois','plateforme','abonnes','portee','vues','interactions'],
+    },
+    pubs: {
+      titre:'Publicité', aide:'Budget et résultats des campagnes sponsorisées, par mois.',
+      champs:[ ['mois','Mois *','month'], ['plateforme','Régie','list','dl-regie'], ['campagne','Campagne *','text',{wide:1}], ['objectif','Objectif','list','dl-objectif'],
+               ['budget','Budget prévu (€)','num'], ['depense','Dépensé (€)','num'], ['impressions','Impressions','int'], ['clics','Clics','int'], ['resultats','Résultats (selon l’objectif)','int'] ],
+      colonnes:['mois','plateforme','campagne','objectif','budget','depense','resultats'],
+    },
+  };
+  const TYPES = {}; Object.values(EDITEURS).forEach(e => e.champs.forEach(([k, , t]) => TYPES[k] = t));
+  const libelle = (cfg, k) => cfg.champs.find(c => c[0] === k)[1].replace(' *', '');
+  function cell(k, v){
+    if (v == null || v === '') return '<td class="muted">—</td>';
+    const t = TYPES[k];
+    if (t === 'int') return `<td class="num">${nf.format(v)}</td>`;
+    if (t === 'num') return `<td class="num">${eur.format(v)}</td>`;
+    if (t === 'month') return `<td>${esc(fmtMois(v))}</td>`;
+    if (t === 'date') return `<td style="white-space:nowrap">${esc(fmtDate(v))}</td>`;
+    if (k === 'statut') return `<td><span class="tag-ok">${esc(STATUTS[v] || v)}</span></td>`;
+    return `<td>${esc(v)}</td>`;
+  }
+  function input([k, label, type, opt]){
+    const wide = opt && opt.wide ? ' wide' : '';
+    if (type === 'select') return `<label class="f${wide}"><span>${label}</span><select name="${k}">${Object.entries(opt).map(([v, l]) => `<option value="${v}">${esc(l)}</option>`).join('')}</select></label>`;
+    if (type === 'long') return `<label class="f${wide}"><span>${label}</span><textarea name="${k}" maxlength="2000"></textarea></label>`;
+    const attrs = { date:'type="date"', month:'type="month" placeholder="AAAA-MM"', int:'type="number" min="0" step="1"', num:'type="number" min="0" step="0.01"', url:'type="url" placeholder="https://…"', text:'maxlength="300"', list:`maxlength="300" list="${opt}"` }[type];
+    return `<label class="f${wide}"><span>${label}</span><input name="${k}" ${attrs}></label>`;
+  }
+
+  const DATA = {};
+  function mountEditor(res){
+    const cfg = EDITEURS[res], sec = document.getElementById(res);
+    sec.innerHTML = `
+      <div class="section-head"><div><h2>${cfg.titre} <span class="count"></span></h2><p>${cfg.aide}</p></div></div>
+      <form class="panel" novalidate>
+        <h3>Ajouter</h3>
+        <div class="fgrid">${cfg.champs.map(input).join('')}</div>
+        <div class="form-actions"><button class="btn">Ajouter</button><button type="button" class="btn ghost" data-cancel hidden>Annuler la modification</button><span class="form-msg" role="status"></span></div>
+      </form>
+      <div class="table-wrap"><table><thead><tr>${cfg.colonnes.map(k => `<th>${esc(libelle(cfg, k))}</th>`).join('')}<th></th></tr></thead><tbody></tbody></table></div>`;
+    const form = sec.querySelector('form'), msg = sec.querySelector('.form-msg'), cancel = sec.querySelector('[data-cancel]');
+    let editId = null;
+    const reset = () => { editId = null; form.reset(); form.querySelector('h3').textContent = 'Ajouter'; form.querySelector('.btn').textContent = 'Ajouter'; cancel.hidden = true; };
+    cancel.addEventListener('click', reset);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {}; cfg.champs.forEach(([k]) => body[k] = form.elements[k].value);
+      try {
+        await call(API + '/' + res + (editId ? '/' + editId : ''), editId ? 'PUT' : 'POST', body);
+        flash(msg, editId ? 'Modifié.' : 'Ajouté.'); reset(); load(res);
+      } catch (err) { flash(msg, err.message, true); }
+    });
+    sec.querySelector('tbody').addEventListener('click', async (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      const row = DATA[res].find(r => r.id == b.dataset.id);
+      if (b.dataset.a === 'edit') {
+        editId = row.id; cfg.champs.forEach(([k]) => form.elements[k].value = row[k] ?? '');
+        form.querySelector('h3').textContent = 'Modifier'; form.querySelector('.btn').textContent = 'Enregistrer'; cancel.hidden = false;
+        form.scrollIntoView({ behavior:'smooth', block:'start' }); form.elements[cfg.champs[0][0]].focus({ preventScroll:true });
+      } else if (b.dataset.a === 'del' && confirm('Supprimer cette ligne ?')) {
+        try { await call(API + '/' + res + '/' + row.id, 'DELETE'); load(res); } catch (err) { alert(err.message); }
+      }
+    });
+  }
+  function renderEditor(res){
+    const cfg = EDITEURS[res], sec = document.getElementById(res), rows = DATA[res] || [];
+    sec.querySelector('.count').textContent = '(' + rows.length + ')';
+    sec.querySelector('tbody').innerHTML = rows.length ? rows.map(r => `<tr>${cfg.colonnes.map(k => cell(k, r[k])).join('')}
+      <td><div class="actions"><button type="button" class="btn small ghost" data-a="edit" data-id="${r.id}">Modifier</button><button type="button" class="btn small danger" data-a="del" data-id="${r.id}">Supprimer</button></div></td></tr>`).join('')
+      : `<tr><td colspan="${cfg.colonnes.length + 1}" class="muted" style="text-align:center;padding:24px">Rien pour le moment.</td></tr>`;
+  }
+  async function load(only){
+    const t = await call(API + '/tableau');
+    for (const res of Object.keys(EDITEURS)) if (!only || only === res) { DATA[res] = t[res]; renderEditor(res); }
+  }
+
+  // ============================================================
+  //  Infos, étapes, activité
+  // ============================================================
+  const fInfos = document.getElementById('f-infos');
+  let PROJET;
+  async function loadProject(){
+    PROJET = await call(API);
+    document.title = PROJET.name + ' — Gestion — Mira';
+    document.getElementById('p-ref').textContent = PROJET.ref;
+    document.getElementById('p-name').textContent = PROJET.name;
+    document.getElementById('p-client').textContent = PROJET.clientName ? 'Client : ' + PROJET.clientName + (PROJET.clientId ? '' : ' (sans compte client)') : '';
+    document.getElementById('see-client').href = 'suivi.html?ref=' + encodeURIComponent(PROJET.ref);
+    const v = { name:PROJET.name, client_id:PROJET.clientId || '', type:PROJET.type, status:PROJET.statusCode, progress:PROJET.progress, start_date:PROJET.start, eta:PROJET.eta, pm:PROJET.pm };
+    Object.entries(v).forEach(([k, val]) => { if (fInfos.elements[k]) fInfos.elements[k].value = val ?? ''; });
+    renderSteps(PROJET.steps);
+    document.getElementById('act-list').innerHTML = PROJET.activity.map(a => `<li><span class="time">${esc(a.time)}</span><span>${esc(a.text)}</span><button type="button" class="btn small ghost" data-act="${a.id}">Retirer</button></li>`).join('') || '<li class="muted">Aucune activité.</li>';
+  }
+  fInfos.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const body = Object.fromEntries(new FormData(fInfos));
+    try { await call(API, 'PUT', body); flash(fInfos.querySelector('.form-msg'), 'Enregistré.'); loadProject(); }
+    catch (err) { flash(fInfos.querySelector('.form-msg'), err.message, true); }
+  });
+
+  const stepsBox = document.getElementById('steps');
+  function stepRow(s = {}){
+    const d = document.createElement('div'); d.className = 'step-row';
+    d.innerHTML = `
+      <label class="f"><span>Étape</span><input data-k="title" maxlength="300"></label>
+      <label class="f d"><span>Description</span><input data-k="desc" maxlength="2000"></label>
+      <label class="f"><span>État</span><select data-k="state"><option value="done">Terminée</option><option value="current">En cours</option><option value="todo">À venir</option></select></label>
+      <label class="f"><span>Date / mention</span><input data-k="when" maxlength="300"></label>
+      <div class="actions"><button type="button" class="btn small ghost" data-mv="-1" aria-label="Monter">↑</button><button type="button" class="btn small ghost" data-mv="1" aria-label="Descendre">↓</button><button type="button" class="btn small danger" data-rm aria-label="Retirer l’étape">×</button></div>`;
+    d.querySelector('[data-k="title"]').value = s.title || '';
+    d.querySelector('[data-k="desc"]').value = s.desc || '';
+    d.querySelector('[data-k="state"]').value = s.state || 'todo';
+    d.querySelector('[data-k="when"]').value = s.when || '';
+    return d;
+  }
+  function renderSteps(steps){ stepsBox.replaceChildren(...steps.map(stepRow)); }
+  document.getElementById('add-step').addEventListener('click', () => { const r = stepRow(); stepsBox.append(r); r.querySelector('input').focus(); });
+  stepsBox.addEventListener('click', (e) => {
+    const row = e.target.closest('.step-row'); if (!row) return;
+    if (e.target.closest('[data-rm]')) row.remove();
+    const mv = e.target.closest('[data-mv]');
+    if (mv) { if (mv.dataset.mv === '-1' && row.previousElementSibling) row.after(row.previousElementSibling); else if (mv.dataset.mv === '1' && row.nextElementSibling) row.before(row.nextElementSibling); }
+  });
+  document.getElementById('save-steps').addEventListener('click', async () => {
+    const etapes = [...stepsBox.children].map(r => Object.fromEntries([...r.querySelectorAll('[data-k]')].map(i => [i.dataset.k, i.value])));
+    try { await call(API + '/etapes', 'PUT', { etapes }); flash(document.getElementById('steps-msg'), 'Étapes enregistrées.'); }
+    catch (err) { flash(document.getElementById('steps-msg'), err.message, true); }
+  });
+
+  const fAct = document.getElementById('f-act');
+  fAct.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try { await call(API + '/activite', 'POST', { text: fAct.elements.text.value }); fAct.reset(); flash(fAct.querySelector('.form-msg'), 'Publié.'); loadProject(); }
+    catch (err) { flash(fAct.querySelector('.form-msg'), err.message, true); }
+  });
+  document.getElementById('act-list').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    try { await call(API + '/activite/' + b.dataset.act, 'DELETE'); loadProject(); } catch (err) { alert(err.message); }
+  });
+
+  document.getElementById('del-project').addEventListener('click', async () => {
+    if (!confirm('Supprimer définitivement le projet « ' + (PROJET?.name || REF) + ' » ?\nÉtapes, activité, contenus, statistiques et publicité seront effacés.')) return;
+    try { await call(API, 'DELETE'); location.href = 'espace-equipe.html'; } catch (err) { alert(err.message); }
+  });
+
+  // ---- Chargement ----
+  (async () => {
+    if (!REF) { location.href = 'espace-equipe.html'; return; }
+    Object.keys(EDITEURS).forEach(mountEditor);
+    try {
+      const clients = await call('/api/clients');
+      document.getElementById('client-select').insertAdjacentHTML('beforeend', clients.map(c => `<option value="${c.id}">${esc(c.name)} — ${esc(c.email)}</option>`).join(''));
+      await loadProject();
+      await load();
+    } catch (err) {
+      document.getElementById('p-name').textContent = 'Projet introuvable.';
+    }
+  })();
+</script>
+</body>
+</html>
