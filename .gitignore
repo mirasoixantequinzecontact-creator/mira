@@ -7,8 +7,5 @@ server/mira.db*
 outils/videos-brutes/*
 !outils/videos-brutes/LISEZMOI.txt
 
-# Médias de démonstration générés localement (jamais publiés)
-site/videos/demo/
-
 # Réglages locaux de l'éditeur
 .claude/
